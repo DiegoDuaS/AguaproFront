@@ -10,7 +10,7 @@ function App() {
     <>
       <div>
           <ul>
-            < Card/>
+            Hola
           </ul>
       </div>
     </>
