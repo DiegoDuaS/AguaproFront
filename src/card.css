@@ -1,0 +1,46 @@
+li {
+    height: 330px; 
+    width: 220px; 
+    border: 1px solid #CCCBC8;
+    background-color: #CCCBC8;
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-right: 40px;
+    text-align: center;
+    
+}
+
+img.small {
+    width: 90%;
+    height: 50%;
+    border-radius: 5px;
+}
+
+.titulo {
+    font-size: 1.6em;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #006686;
+    
+}
+
+.precio {
+    font-size: 1.5em;
+    font-weight: lighter;
+    color: #4f4e4e;
+}
+
+button.moreinfo {
+    background-color: #006686;
+    margin-top: 10px;
+    width: 90%;
+    font-size: 1.2em;
+    font-weight: normal;
+}
+
+button.moreinfo:hover {
+    background-color: #D4EAF7;
+    color: #006686;
+}

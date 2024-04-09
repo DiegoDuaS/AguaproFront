@@ -2,12 +2,14 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './index.css'
+import Card from './card.jsx'
 import './styles.css'
 import searchIcon from './image/searchIcon.png'; // Placeholder search icon
 import cartIcon from './image/cartIcon.png'; // Placeholder cart icon
 import userIcon from './image/userIcon.png'; // Placeholder user icon
 import notificationIcon from './image/notificationIcon.png'; // Placeholder notification icon
 import menuIcon from './image/menuIcon.png';
+
 
 function App() {
 
