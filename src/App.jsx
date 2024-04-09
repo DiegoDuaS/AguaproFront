@@ -68,11 +68,18 @@ function App() {
           <img style={{ top: '20px',height:'20px', width:'30px'}} src={menuIcon} alt="menu" />
       </div>
       <main className="main-content">
-        {/* Your main content goes here */}
-        <div>
-          <p>Hola</p>
-        </div>
+        <h2> Tipo de Producto</h2>
+        <ul>
+          <Card/>
+          <Card/>
+          <Card/>
+          <Card/>
+          <Card/>
+        </ul>
       </main>
+      <footer>
+        Todos los Derechos Reservados a Aguatesa 2024
+      </footer>
     </>
   );
 }

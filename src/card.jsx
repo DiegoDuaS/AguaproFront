@@ -8,7 +8,6 @@ function Card(){
                 <div class="titulo">Producto 1</div>
                 <div class="precio">Q20.00</div>
                 <button class='moreinfo'> Más Infromación </button>
-
             </li>
         </>
     )
