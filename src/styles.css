@@ -4,6 +4,7 @@
   position: fixed;
   width: 100%;
   top: 0;
+  z-index: 2;
   left: 0;
   height: 90px; /* Increase height to accommodate the new header structure */
   display: flex;
@@ -47,7 +48,7 @@
   left: 0;
   background-color: #fff; /* Change background color for better visibility */
   min-width: 160px;
-  z-index: 1;
+  z-index: 2;
   display: none;
 }
 
@@ -99,6 +100,7 @@
   top: 90px; /* Adjust top position */
   position: fixed;
   width: 100%;
+  z-index: 1;
   height: 40px;
   padding-left:20px;
   display: flex;
