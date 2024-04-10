@@ -5,7 +5,7 @@
   width: 100%;
   top: 0;
   left: 0;
-  height: 80px; /* Increase height to accommodate the new header structure */
+  height: 90px; /* Increase height to accommodate the new header structure */
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -14,7 +14,7 @@
 }
 
 .brand {
-  font-size: 1.5rem; /* Adjust font size as needed */
+  font-size: 2.5rem; /* Adjust font size as needed */
   font-weight: bold;
   color: #00668C;
 }
@@ -71,6 +71,9 @@
   width: 400px;
   border: none;
   height:40px;
+  padding: 0; /* Reset padding */
+  margin: 0; /* Reset margin */
+  box-sizing: border-box;
 }
 
 .search-btn {
@@ -93,7 +96,7 @@
 
 .fixed-section {
   background-color: #ECEBEB;
-  top: 80px; /* Adjust top position */
+  top: 90px; /* Adjust top position */
   position: fixed;
   width: 100%;
   height: 40px;
