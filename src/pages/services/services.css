@@ -1,0 +1,42 @@
+.textservice{
+    color: black;
+    margin: 10px;
+    text-align: justify;
+    width: auto;
+}
+
+.subtitlem{
+    color:black;
+    justify-self: flex-start;
+}
+
+h3{
+    color:#00668C; 
+    margin-bottom: 40px;
+    font-size: 1.5em; 
+    margin: 10px;
+}
+
+.mant{
+    height: 200px;
+}
+
+.imagescontainer{
+    margin: 30px;
+}
+
+.main-content-ser{
+    padding: 20px;
+    padding-left: 150px;
+    padding-right: 150px;
+    align-items: center;
+    overflow: auto;
+    display: flex;
+    margin-top: 120px;
+    flex-direction: column;
+}
+
+.per{
+    height: 520px;
+    width: 270px;
+}
