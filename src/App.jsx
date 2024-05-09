@@ -2,6 +2,7 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './index.css'
+import './styles.scss'
 import './styles.css'
 import menuIcon from './image/menuIcon.png';
 import Card from './components/card'
@@ -9,6 +10,7 @@ import Header from './components/header'
 import BombasAgua from './pages/products/bombasagua'
 import Mantenimiento from './pages/services/mantenimiento'
 import Perforacion from './pages/services/perforacion'
+import CustomNav from "./components/CustomNav.jsx";
 
 
 function App() {

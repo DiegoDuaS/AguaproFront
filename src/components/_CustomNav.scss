@@ -1,0 +1,49 @@
+@import url('https://fonts.googleapis.com/css?family=Lato&display=swap');
+$backgroundColor: white;
+$textcolor:#000000;
+$borderLeftColor:#58b5fc;
+
+.navbar-menu {
+  height:100vh;
+  background-color:$backgroundColor;
+  box-shadow: 1px 1px 7px rgba(0,0,0,0.15);
+  transition: all 0.5s ease;
+  
+}
+.burger{
+  display:flex;
+  justify-content: flex-end;
+}
+.burger img {
+  padding: 25px 8px 0px 0px;
+  cursor: pointer;
+}
+.navbar__list {
+  list-style-type: none;
+  
+}
+.navbar__li {
+  display: inline-block;
+  padding:0px 0px 0px 12px;
+  position: relative;
+  top:2.5px;
+  font-size: 16px;
+  letter-spacing: 0px;
+  line-height: 38px;
+  color: $textcolor;
+  font-family: "Lato";
+  font-weight: 400;
+  vertical-align: middle;
+}
+.navbar__li-box:first-child {
+  margin-top:53px;
+  
+}
+.navbar__li-box {
+  height: 43px;
+  margin-top:15px;
+}
+.navbar__li-box:hover {
+  border-left: 7px solid $borderLeftColor;
+  cursor: pointer;
+}
