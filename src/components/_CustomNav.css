@@ -1,0 +1,40 @@
+.navbar-menu {
+  position: fixed;
+  top: 120px; /* Altura de la sección fija (ajustar según sea necesario) */
+  bottom: 0;
+  left:0;
+  background-color:white;
+  box-shadow: 1px 1px 7px rgba(0,0,0,0.15);
+  transition: all 0.5s ease;
+  
+}
+.navbar__list {
+  list-style-type: none;
+  
+}
+.navbar__li {
+  display: inline-block;
+  padding:0px 0px 0px 12px;
+  position: relative;
+  top:2.5px;
+  font-size: 16px;
+  letter-spacing: 0px;
+  line-height: 38px;
+  color: #000000;
+  font-weight: 400;
+  vertical-align: middle;
+  left:0;
+  background-color:white;
+  border: none;
+  margin-left: 10px;
+  box-shadow: none;  
+}
+.navbar__li-box {
+  height: 43px;
+  margin-top:15px;
+  left:0;
+}
+.navbar__li-box:hover {
+  border-left: 7px solid #58b5fc;
+  cursor: pointer;
+}

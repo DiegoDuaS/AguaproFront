@@ -1,29 +1,20 @@
 import { useState } from "react";
 import PropTypes from 'prop-types';
+import './_CustomNav.css'
+import menuIcon from '../image/menuIcon.png';
 
-const CustomNav = ({ li, onOptionSelect }) => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const toggleSidebar = () => {
-    setIsOpen(!isOpen);
-  };
-
+const CustomNav = ({ li, onOptionSelect, isOpen }) => { // Receive isOpen prop
   const handleOptionClick = (option) => {
     onOptionSelect(option);
-    setIsOpen(false);
   };
 
   return (
-    <nav className="navbar-menu" style={{ width: isOpen ? 250 : 0, overflow: 'hidden' }}>
-      <div className="burger" onClick={toggleSidebar}>
-        <img style={{ width: '50px', height: '50px' }} src={menu} alt="burger" />
-      </div>
-      <ul className="navbar__list">
+    <nav className="navbar-menu" style={{ width: isOpen ? 250 : 0 }}>
+      
+      <ul className="navbar__list" style={{ display: isOpen ? "block" : "none" }}> 
         {li.map((item, i) => (
-          <div className="navbar__li-box" key={i} onClick={() => handleOptionClick(item[0])}>
-            <li className="navbar__li" style={{ display: isOpen ? "block" : "none" }}>
-              {item[0]}
-            </li>
+          <div className="navbar__li-box" key={i} onClick={() => handleOptionClick(item)}>
+            <li className="navbar__li" >{item}</li> 
           </div>
         ))}
       </ul>
@@ -32,8 +23,11 @@ const CustomNav = ({ li, onOptionSelect }) => {
 };
 
 CustomNav.propTypes = {
-  li: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.node]))).isRequired,
-  onOptionSelect: PropTypes.func.isRequired
+  li: PropTypes.arrayOf(PropTypes.string).isRequired,
+  onOptionSelect: PropTypes.func.isRequired,
+  isOpen: PropTypes.bool.isRequired, // isOpen prop validation
 };
 
 export default CustomNav;
+
+  
