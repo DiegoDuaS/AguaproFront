@@ -12,6 +12,9 @@
   list-style-type: none;
   
 }
+.navbar__li-box:nth-child(2){
+  margin-top:63px;
+}
 .navbar__li {
   display: inline-block;
   padding:0px 0px 0px 12px;
@@ -28,43 +31,53 @@
   border: none;
   margin-left: 10px;
   box-shadow: none;
-  height: 43px;  
+  height: 43px;
+  cursor: pointer;  
+}
+.navbar__li:hover {
+  background-color: 7px solid #58b5fc; /* Apply hover effect to navbar__li */
 }
 .navbar__li-box {
   height: 43px;
   margin-top:15px;
   left:0;
 }
+
 .navbar__li-box:hover {
   border-left: 7px solid #58b5fc;
-  cursor: pointer;
+  cursor: point;
+}
+.navbar__li-box:nth-child(2).open-submenu {
+  margin-top: 63px;
 }
 .submenu {
-  position: absolute;
-  top: 0;
-  left: 150px; /* Ajusta la posición del submenu para que esté alineado con el borde derecho del sidebar */
-  width: 250px; /* Ancho del submenu */
+  position: relative;
+  width: 200px; /* Ancho del submenu */
   background-color: white; /* Color de fondo del submenu */
   border: none; /* Borde del submenu */
-  border-top: none; /* Para que el borde superior del submenu no se superponga con el borde del sidebar */
   list-style: none; /* Quita los estilos de la lista */
   padding: 0;
   margin: 0;
   display: none; /* Oculta el submenu inicialmente */
-  height: 43px;
+  right:0;
 }
 
 .submenu.open {
-  display: block; /* Muestra el submenu cuando la clase 'open' está presente */
+  display: block;
 }
 
 .submenu li {
+  position:relative;
   padding: 10px 15px;
   cursor: pointer;
-  height: 43px;
-  background-color: white; /* Color de fondo del submenu */
+  background-color: white;
   border: none;
+  height: 43px;
+  box-shadow:none;
   margin:0;
+  width:170px;
+  border-radius:0;
+  right:0;
 }
 
 .submenu li:hover {

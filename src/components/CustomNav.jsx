@@ -4,7 +4,7 @@ import './_CustomNav.css'
 import menuIcon from '../image/menuIcon.png';
 
 const CustomNav = ({ items, onOptionSelect, isOpen, setIsSidebarOpen, setActivePage }) => {
-  const [selectedOption, setSelectedOption] = React.useState(null);
+  const [selectedOption, setSelectedOption] = React.useState(null); 
 
   const handleOptionClick = (option) => {
     if (selectedOption === option) {
@@ -24,15 +24,17 @@ const CustomNav = ({ items, onOptionSelect, isOpen, setIsSidebarOpen, setActiveP
     setIsSidebarOpen(false); // Close the sidebar when a submenu item is clicked
   };
 
+const sidebarHeight = selectedOption && selectedOption.subItems ? selectedOption.subItems.length * 43 + 120 : 120;
+
   return (
     <nav className="navbar-menu" style={{ width: isOpen ? 250 : 0 }}>
       <ul className="navbar__list" style={{ display: isOpen ? "block" : "none" }}>
         {items.map((item, index) => (
-          <div className="navbar__li-box" key={index}>
-            <li className="navbar__li">
+          <div className="navbar__li-box"  key={index}>
+            <li className="navbar__li" >
               <div onClick={() => handleOptionClick(item)}>{item.name}</div>
               {selectedOption === item && isOpen && item.subItems && (
-                <ul className="submenu" style={{ display: "block" }}>
+                <ul className={`submenu ${selectedOption.name === item.name ? 'open' : ''}`}>
                   {item.subItems.map((subItem, subIndex) => (
                     <li key={subIndex} onClick={() => handleSubMenuClick(subItem)}>
                       {subItem}

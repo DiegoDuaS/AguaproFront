@@ -12,6 +12,7 @@ import CustomNav from "./components/CustomNav.jsx";
 
 function App() {
   const [activePage, setActivePage] = useState('Perforacion'); // Assuming 'Perforacion' is the default active page
+  console.log('Initial active page:', activePage);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // State to manage sidebar open/close
 
   const toggleSidebar = () => {
