@@ -23,6 +23,8 @@ function App() {
     setIsSidebarOpen(false); // Close sidebar when an option is selected
   };
 
+  // Define your page components, e.g., BombasAgua, Mantenimiento, Perforacion, etc.
+
   return (
     <>
       <Header />
@@ -34,18 +36,22 @@ function App() {
           onClick={toggleSidebar} // Use toggleSidebar here
         />
         <CustomNav
-          li={["Productos", "Servicios"]} // Simplified the array structure
+          items={[
+            { name: 'Productos', subItems: ['Bombas de agua'] }, // Define submenu items
+            { name: 'Servicios', subItems: ['Perforacion', 'Mantenimiento'] }, // Define submenu items
+          ]}
           onOptionSelect={handleOptionSelect}
           isOpen={isSidebarOpen} // Pass the state to CustomNav
+          setIsSidebarOpen={setIsSidebarOpen}
+          setActivePage={setActivePage}
         />
       </div>
-      <div>
-        {activePage === 'Servicios' && (
-          <div>
-            <Perforacion />
-          </div>
-         )}
-      </div>
+
+      {/* Render your active page based on activePage state */}
+      {activePage === 'Bombas de agua' && <BombasAgua />}
+      {activePage === 'Perforacion' && <Perforacion />}
+      {activePage === 'Mantenimiento' && <Mantenimiento />}
+
       <footer>Todos los Derechos Reservados a Aguatesa 2024</footer>
     </>
   );

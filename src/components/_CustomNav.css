@@ -27,7 +27,8 @@
   background-color:white;
   border: none;
   margin-left: 10px;
-  box-shadow: none;  
+  box-shadow: none;
+  height: 43px;  
 }
 .navbar__li-box {
   height: 43px;
@@ -37,4 +38,35 @@
 .navbar__li-box:hover {
   border-left: 7px solid #58b5fc;
   cursor: pointer;
+}
+.submenu {
+  position: absolute;
+  top: 0;
+  left: 150px; /* Ajusta la posición del submenu para que esté alineado con el borde derecho del sidebar */
+  width: 250px; /* Ancho del submenu */
+  background-color: white; /* Color de fondo del submenu */
+  border: none; /* Borde del submenu */
+  border-top: none; /* Para que el borde superior del submenu no se superponga con el borde del sidebar */
+  list-style: none; /* Quita los estilos de la lista */
+  padding: 0;
+  margin: 0;
+  display: none; /* Oculta el submenu inicialmente */
+  height: 43px;
+}
+
+.submenu.open {
+  display: block; /* Muestra el submenu cuando la clase 'open' está presente */
+}
+
+.submenu li {
+  padding: 10px 15px;
+  cursor: pointer;
+  height: 43px;
+  background-color: white; /* Color de fondo del submenu */
+  border: none;
+  margin:0;
+}
+
+.submenu li:hover {
+  background-color: #f0f0f0;
 }
