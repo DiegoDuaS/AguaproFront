@@ -11,7 +11,7 @@ import Perforacion from './pages/services/perforacion'
 import CustomNav from "./components/CustomNav.jsx";
 
 function App() {
-  const [activePage, setActivePage] = useState('Perforacion'); // Assuming 'Perforacion' is the default active page
+  const [activePage, setActivePage] = useState('Bombas de agua'); // Assuming 'Perforacion' is the default active page
   console.log('Initial active page:', activePage);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // State to manage sidebar open/close
 
@@ -39,7 +39,7 @@ function App() {
         <CustomNav
           items={[
             { name: 'Productos', subItems: ['Bombas de agua'] }, // Define submenu items
-            { name: 'Servicios', subItems: ['Perforacion', 'Mantenimiento'] }, // Define submenu items
+            { name: 'Servicios', subItems: ['Perforación de Pozos', 'Mantenimiento de Pozos'] }, // Define submenu items
           ]}
           onOptionSelect={handleOptionSelect}
           isOpen={isSidebarOpen} // Pass the state to CustomNav
@@ -50,8 +50,8 @@ function App() {
 
       {/* Render your active page based on activePage state */}
       {activePage === 'Bombas de agua' && <BombasAgua />}
-      {activePage === 'Perforacion' && <Perforacion />}
-      {activePage === 'Mantenimiento' && <Mantenimiento />}
+      {activePage === 'Perforación de Pozos' && <Perforacion />}
+      {activePage === 'Mantenimiento de Pozos' && <Mantenimiento />}
 
       <footer>Todos los Derechos Reservados a Aguatesa 2024</footer>
     </>
