@@ -27,12 +27,12 @@
   color: #000000;
   vertical-align: middle;
   left:0;
-  background-color:white;
   border: none;
   margin-left: 10px;
   box-shadow: none;
   height: 43px;
-  cursor: pointer;  
+  cursor: pointer;
+  background-color:white;  
 }
 .navbar__li:hover {
   background-color: 7px solid #58b5fc; /* Apply hover effect to navbar__li */
