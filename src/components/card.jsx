@@ -2,7 +2,7 @@ import './card.css'
 
 function Card({ nombre, precio, imagen, onMoreInfoClick }) {
     return (
-        <li>
+        <li className='smallcards'>
             <img src={imagen} alt="Descripción de la imagen" className='small' />
             <div className="titulo">{nombre}</div>
             <div className="precio">{precio}</div>

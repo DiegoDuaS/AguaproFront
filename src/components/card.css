@@ -1,8 +1,8 @@
-li {
+li.smallcards {
     height: 340px; 
     width: 220px; 
-    border: 1px solid #FFFEFB;
-    background-color: #FFFEFB;
+    border: 1px solid #F5F4F1;
+    background-color: #F5F4F1;
     border-radius: 5px;
     padding: 20px;
     margin-bottom: 10px;
