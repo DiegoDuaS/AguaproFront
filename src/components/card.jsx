@@ -5,7 +5,7 @@ function Card({ nombre, precio, imagen, onMoreInfoClick }) {
         <li className='smallcards'>
             <img src={imagen} alt="Descripción de la imagen" className='small' />
             <div className="titulo">{nombre}</div>
-            <div className="precio">{precio}</div>
+            <div className="precios">{precio}</div>
             <button className='moreinfo' onClick={onMoreInfoClick}> Más Información </button>
         </li>
     );
