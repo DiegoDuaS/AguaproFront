@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Card from "../../components/card";
 import LargeCard from "../../components/LargeCard";
+import './products.css'
 
 const BombasAgua = () => {
   const [isLargeCardOpen, setIsLargeCardOpen] = useState(false);
@@ -14,7 +15,7 @@ const BombasAgua = () => {
   };
 
   return (
-    <main className="main-content">
+    <main className="main-content-prod">
       <h2>Bombas de Agua</h2>
       <ul className="small-card-list">
         <Card
