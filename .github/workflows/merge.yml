@@ -11,19 +11,24 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
+      with:
+        fetch-depth: 0  # Asegura que se obtengan todas las ramas y el historial
     - name: Setup Node.js
       uses: actions/setup-node@v2
       with:
-        node-version: '16'  
+        node-version: '16' 
     - name: Install Dependencies
       run: npm install
     - name: Build
       run: npm run build
+    - name: Ensure testing branch exists
+      run: |
+        git fetch origin testing:refs/remotes/origin/testing || git checkout -b testing
+        git checkout testing
     - name: Merge development to testing
       run: |
         git config --global user.name 'github-actions[bot]'
         git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-        git checkout testing
         git merge development --no-ff
         git push origin testing
 
@@ -33,18 +38,23 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
+      with:
+        fetch-depth: 0  # Asegura que se obtengan todas las ramas y el historial
     - name: Setup Node.js
       uses: actions/setup-node@v2
       with:
-        node-version: '16'  
+        node-version: '16' 
     - name: Install Dependencies
       run: npm install
     - name: Build
       run: npm run build
+    - name: Ensure main branch exists
+      run: |
+        git fetch origin main:refs/remotes/origin/main || git checkout -b main
+        git checkout main
     - name: Merge testing to main
       run: |
         git config --global user.name 'github-actions[bot]'
         git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-        git checkout main
         git merge testing --no-ff
         git push origin main
