@@ -1,9 +1,6 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './index.css'
 import menuIcon from './image/menuIcon.png';
-import Card from './components/card'
 import Header from './components/header'
 import BombasAgua from './pages/products/bombasagua'
 import Mantenimiento from './pages/services/mantenimiento'
