@@ -2,9 +2,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import './LargeCard.css'; // Import your CSS file
 import { IoIosArrowDown } from "react-icons/io";
 
-const LargeCard = ({ isOpen, closeCard }) => {
+const LargeCard = ({ isOpen, closeCard, product, addToCart }) => {
   const cardRef = useRef(null);
-  const [sizeSelected, setSizeSelected] = useState(1);
+  const [quantity, setQuantity] = useState(1);
+  const [sizeSelected, setSizeSelected] = useState('4\'\'');
 
   const handleClickOutside = (event) => {
     if (cardRef.current && !cardRef.current.contains(event.target)) {
@@ -26,45 +27,51 @@ const LargeCard = ({ isOpen, closeCard }) => {
 
   if (!isOpen) return null;
 
+  const handleAddToCart = () => {
+    const productToAdd = {
+      ...product,
+      quantity: quantity,
+      size: sizeSelected,
+    };
+    addToCart(productToAdd);
+  };
+
   return (
     <div className="large-card" ref={cardRef}>
       <button className="close-button" onClick={closeCard}>X</button>
       <div className="left-section">
         <div className='photo-title'>
-          <img src="https://images.squarespace-cdn.com/content/v1/5b60a97de7494070b92f2702/1633103417460-HSYJWDNDGRI5GC5PHXS3/aguatesa.png" alt="Descripción de la imagen" className='image-maxcard' />
-          <div className="product-title">Bomba Sumergible de Acero Inoxidable</div>
-          <p className='price'>Q.1000.00</p>
+          <img src={product.imagen} alt={product.nombre} />
+          <div className="product-title">{product.nombre}</div>
+          <p className='price'>Q {product.precio}</p>
         </div>
       </div>
       <div className="right-section">
         <div className="infobox">
-          <p className='info'><strong>Descpripción:</strong> Placeholder de una descpripcion de producto larga para probar la funcionalidad del texto.</p>
-          <p className='info'><strong>Marca:</strong> Placeholder</p>
-          <p className='info'><strong>Material:</strong> Placeholder</p>
-          <p className='info'><strong>Profundidad:</strong> Placeholder</p>
-          <p className='info'><strong>Presión Funcional:</strong> Placeholder</p>
-          <p className='info'><strong>Cabeza:</strong> Placeholder</p>
-          <p className='info'><strong>Descarga:</strong> Placeholder</p>
-          <p className='info'><strong>Aplicaciones:</strong> Placeholder</p>
-          <p className='info'><strong>Temperatura Media:</strong> Placeholder</p>
-          <p className='info'><strong>Energía Máxima:</strong> Placeholder</p>
+          <p className='info'><strong>Descpripción:</strong> {product.description}</p>
+          {/* Add other product details as needed */}
         </div>
         <div className="size-section">
           <div className="brand">Tamaño</div>
-            <div className='selection'>
-              <li className='select-size'> 4'' </li>
-              <li className='select-size'> 6'' </li>
-              <li className='select-size'> 8'' </li>
-              <li className='select-size'> 10'' </li>
-            </div>
-        </div>
-        <div className="add-to-cart"> 
-          <div className='cuantity-box'>
-            1
-            <IoIosArrowDown />
+          <div className='selection'>
+            {['4\'\'', '6\'\'', '8\'\'', '10\'\''].map(size => (
+              <li
+                key={size}
+                className={`select-size ${sizeSelected === size ? 'selected' : ''}`}
+                onClick={() => setSizeSelected(size)}
+              >
+                {size}
+              </li>
+            ))}
           </div>
-
-          <button className='add'>Agregar al Carrito</button>
+        </div>
+        <div className="add-to-cart">
+          <div className='quantity-box'>
+            <button onClick={() => setQuantity(quantity > 1 ? quantity - 1 : 1)}>-</button>
+            <span>{quantity}</span>
+            <button onClick={() => setQuantity(quantity + 1)}>+</button>
+          </div>
+          <button className='add' onClick={handleAddToCart}>Agregar al Carrito</button>
         </div>
       </div>
     </div>
