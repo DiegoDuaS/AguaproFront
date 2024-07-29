@@ -73,7 +73,7 @@ const BombasAgua = ({ onCartUpdate }) => {
             key={product.id_producto}
             nombre={product.nombre}
             precio={product.precio}
-            imagen={'https://images.squarespace-cdn.com/content/v1/5b60a97de7494070b92f2702/1633103417460-HSYJWDNDGRI5GC5PHXS3/aguatesa.png>'}
+            imagen={`/image/${product.id_producto}.png`}
             onMoreInfoClick={() => openCard(product)}
           />
         ))}
