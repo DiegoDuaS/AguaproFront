@@ -41,14 +41,14 @@ const LargeCard = ({ isOpen, closeCard, product, addToCart }) => {
       <button className="close-button" onClick={closeCard}>X</button>
       <div className="left-section">
         <div className='photo-title'>
-          <img src={product.imagen} alt={product.nombre} />
+          <img className='imagecard' src={`/image/${product.id_producto}.png`} alt={product.nombre} />
           <div className="product-title">{product.nombre}</div>
           <p className='price'>Q {product.precio}</p>
         </div>
       </div>
       <div className="right-section">
         <div className="infobox">
-          <p className='info'><strong>Descpripción:</strong> {product.description}</p>
+          <p className='info'><strong>Descpripción:</strong> {product.descripción}</p>
           {/* Add other product details as needed */}
         </div>
         <div className="size-section">

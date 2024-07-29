@@ -77,13 +77,12 @@
 }
 
 .infobox{
-  max-width: 700px;
+  width: 500px;
   height: 250px;
   background-color: white;
   border-radius: 10px;
   overflow-y: scroll;
   text-align: left;
-  left: 20px;
 }
 
 .infobox::-webkit-scrollbar {
@@ -177,6 +176,12 @@
 
 .add{
   background-color: #00668C;
+}
+
+.imagecard{
+  height: 250px;
+  width: 250px;
+  border-radius: 10px;
 }
 
 
