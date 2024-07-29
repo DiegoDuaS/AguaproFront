@@ -44,8 +44,9 @@ const Cart = ({ cartItems, updateCartItem, removeCartItem, closeCart }) => {
                     <button onClick={() => updateCartItem(item.id, item.quantity > 1 ? item.quantity - 1 : 1)}>-</button>
                     <span>{item.quantity}</span>
                     <button onClick={() => updateCartItem(item.id, item.quantity + 1)}>+</button>
+                    <button onClick={() => removeCartItem(item.id)}>Remove</button>
                   </div>
-                  <button onClick={() => removeCartItem(item.id)}>Remove</button>
+                  
                 </div>
               </div>
             ))}
