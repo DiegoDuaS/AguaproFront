@@ -30,6 +30,20 @@ function App() {
   const handleCartUpdate = (updatedCartItems) => {
     setCartItems(updatedCartItems);
   };
+  
+  const removeCartItem = (id) => {
+    const updatedCartItems = cartItems.filter(item => item.id !== id);
+    setCartItems(updatedCartItems);
+    handleCartUpdate(updatedCartItems);
+  };
+
+  const updateCartItem = (id, newQuantity) => {
+    const updatedCartItems = cartItems.map(item =>
+      item.id === id ? { ...item, quantity: newQuantity } : item
+    );
+    setCartItems(updatedCartItems);
+    handleCartUpdate(updatedCartItems);
+  };
 
   const closeCart = () => {
     setIsCartOpen(false);
@@ -62,16 +76,8 @@ function App() {
       {isCartOpen && (
         <Cart
           cartItems={cartItems}
-          updateCartItem={(id, quantity) => {
-            setCartItems((prevItems) =>
-              prevItems.map((item) =>
-                item.id === id ? { ...item, quantity } : item
-              )
-            );
-          }}
-          removeCartItem={(id) => {
-            setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
-          }}
+          updateCartItem={updateCartItem}
+          removeCartItem={removeCartItem}
           closeCart={closeCart}
         />
       )}

@@ -14,6 +14,7 @@
   z-index: 1000;
   padding: 20px;
   margin-top: 20px;
+  color: #000000;
 }
 
 .large {
@@ -156,8 +157,8 @@
 }
 
 .cuantity-box{
-  background-color: white;
-  color: black;
+  background-color: #ddd;
+  color:#000000;
   text-align: center;
   width: 60px;
   border-radius: 10px;
