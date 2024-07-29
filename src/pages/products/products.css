@@ -9,3 +9,23 @@
     flex-direction: column;
     width: 100%;
 }
+
+.loading{
+    color: black;
+}
+
+.main-content-loading{
+    padding: 20px;
+    padding-left: 50px;
+    padding-right: 50px;
+    align-items: center;
+    overflow: auto;
+    display: flex;
+    margin-top: 120px;
+    flex-direction: column;
+    min-width: 200vh;
+}
+
+.space{
+    height: 150px;
+}
