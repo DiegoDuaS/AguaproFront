@@ -59,6 +59,7 @@
   padding: 5px 10px;
   margin: 0 5px;
   cursor: pointer;
+  color: #000000;
 }
 
 .quantity-controls button:hover {
@@ -77,6 +78,7 @@
   flex-direction: column;
   text-align: center;
   align-items: center;
+  color:  #000000;
 }
 
 .checkout-button {
