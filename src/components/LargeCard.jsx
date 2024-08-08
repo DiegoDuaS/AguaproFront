@@ -52,7 +52,7 @@ const LargeCard = ({ isOpen, closeCard, product, addToCart }) => {
           {/* Add other product details as needed */}
         </div>
         <div className="size-section">
-          <div className="brand">Tamaño</div>
+          <div className="brand2">Tamaño</div>
           <div className='selection'>
             {['4\'\'', '6\'\'', '8\'\'', '10\'\''].map(size => (
               <li
