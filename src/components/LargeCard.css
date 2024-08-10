@@ -184,5 +184,14 @@
   border-radius: 10px;
 }
 
+.brand2 {
+  font-size: 2rem; /* Adjust font size as needed */
+  font-weight: bold;
+  color: #00668C;
+  padding-left: 40px;
+  font-family: "Khand";
+  letter-spacing: 3px;
+}
+
 
 
