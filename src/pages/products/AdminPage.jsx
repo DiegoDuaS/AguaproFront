@@ -62,7 +62,7 @@ const AdminPage = ({ onRouteChange }) => {
           onOptionSelect={handleOptionSelect}
           isExpanded={isExpanded}
         />
-        <div className="admin-content-container" style={{ flex: '1', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <div className="admin-content-container" style={{ flex: '1', display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-start' }}>
           {renderSelectedPage()}
         </div>
       </div>

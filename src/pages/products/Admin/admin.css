@@ -1,0 +1,62 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Jockey+One&family=Khand:wght@300;400;500;600;700&family=Questrial&family=Teachers:ital,wght@0,400..800;1,400..800&display=swap');
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Aligns items to the upper left */
+  padding: 20px; /* Optional padding */
+  margin-top: 80px;
+  margin-left:40px;
+}  
+  .search-bar {
+    display: flex;
+    align-items: center;
+    height:40px;
+  }
+  
+  .search-bar form {
+    display: flex;
+    align-items: center;
+  }
+.search-btn img {
+  width: 20px; /* Adjust size as needed */
+  height: 20px; /* Adjust size as needed */
+}  
+  .search-bar input[type="text"] {
+    width: 400px;
+    border: none;
+    height:40px;
+  }
+  
+  .search-btn {
+    background-color: #F3F3F4;
+    border: none;
+    cursor: pointer;
+    border-top-left-radius: 0; /* Border radius for the top-left corner */
+    border-bottom-left-radius: 0; /* Border radius for the bottom-left corner */
+    border-top-right-radius: 5px; /* No border radius for the top-right corner */
+    border-bottom-right-radius: 5px;
+    height:40px;
+    margin-top:20px;
+  }
+
+.searchbar {
+    float: none;
+    display: block;
+    text-align: left;
+    width: 100%;
+    margin: 0;
+    border: none;
+    background-color:#F3F3F4;
+    margin-top: 20px;
+    height:40px;
+    border-top-left-radius: 5px; /* No border radius for the top-right corner */
+    border-bottom-left-radius: 5px;
+    padding-left:10px;
+}
+.text {
+    color:#00668C; 
+    font-size: 2.5em;
+    margin-bottom:0;
+    font-family: "Khand";
+    font-weight: bold;
+  }
