@@ -5,7 +5,7 @@ const Cart = ({ cartItems, updateCartItem, removeCartItem, closeCart }) => {
  console.log('Cart items:', cartItems);
  const [total, setTotal] = useState(0);
  const cartRef = useRef(null);
-
+ 
   useEffect(() => {
     const calculatedTotal = cartItems.reduce((sum, item) => sum + (item.precio * item.quantity), 0);
     setTotal(calculatedTotal.toFixed(2)); // Keeping two decimal places
@@ -35,7 +35,7 @@ const Cart = ({ cartItems, updateCartItem, removeCartItem, closeCart }) => {
         <>
           <div className="cart-items">
             {cartItems.map((item) => (
-              <div key={item.id} className="cart-item">
+              <div key={item.id_producto} className="cart-item">
                 <img src={item.imagen} alt={item.nombre} className="cart-item-image" />
                 <div className="cart-item-details">
                   <p>{item.nombre}</p>
@@ -43,8 +43,8 @@ const Cart = ({ cartItems, updateCartItem, removeCartItem, closeCart }) => {
                   <div className="quantity-controls">
                     <button onClick={() => updateCartItem(item.id, item.quantity > 1 ? item.quantity - 1 : 1)}>-</button>
                     <span>{item.quantity}</span>
-                    <button onClick={() => updateCartItem(item.id, item.quantity + 1)}>+</button>
-                    <button onClick={() => removeCartItem(item.id)}>Remove</button>
+                    <button onClick={() => updateCartItem(item.id_producto, item.quantity + 1)}>+</button>
+                    <button onClick={() => removeCartItem(item.id_producto)}>Remove</button>
                   </div>
                   
                 </div>

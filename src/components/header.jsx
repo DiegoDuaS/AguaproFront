@@ -3,7 +3,7 @@ import userIcon from '../image/userIcon.png';
 import notificationIcon from '../image/notificationIcon.png';
 import cartIcon from '../image/cartIcon.png';
 
-function Header({ nombre, precio, imagen, toggleCart }) {
+function Header({ nombre, precio, imagen, toggleCart, navigateToLogin }) {
 
     return (
         <header className="fixed-header">
@@ -11,7 +11,7 @@ function Header({ nombre, precio, imagen, toggleCart }) {
         <div style={{marginRight: '20px'}} className="icons">
           {/* Cart, User, and Notification icons */}
           <img src={cartIcon} alt="Cart" onClick={toggleCart}/>
-          <img src={userIcon} alt="User" />
+          <img src={userIcon} alt="User" onClick={navigateToLogin}/>
           <img src={notificationIcon} alt="Notifications" />
         </div>
       </header>

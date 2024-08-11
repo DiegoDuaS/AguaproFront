@@ -1,0 +1,70 @@
+.Anavbar-menu {
+  background-color: #f8f9fa;
+  box-shadow: 1px 1px 7px rgba(0, 0, 0, 0.15);
+  transition: width 0.3s ease;
+  margin-top: 80px;
+  top:80px;
+}
+
+.Anavbar-menu.collapsed {
+  width: 65px;
+}
+
+.Anavbar-menu.expanded {
+  width: 200px;
+}
+
+.Anavbar__list {
+  list-style-type: none;
+  padding: 0;
+}
+.Anavbar__li-box {
+  padding: 15px;
+  cursor: pointer;
+  margin:0px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  left:0;
+  
+}
+
+.Anavbar__icon {
+  width: 50px;
+  height: 50px;
+}
+
+.Anavbar__label {
+  margin-left: 10px;
+  font-size: 16px;
+  vertical-align: middle;
+}
+
+.Anavbar__li:hover {
+  background-color: 7px solid #58b5fc; /* Apply hover effect to navbar__li */
+}
+
+.Anavbar__li-box:hover {
+  border-left: 7px solid #58b5fc;
+  cursor: point;
+}
+
+.Anavbar__li {
+  display: inline-block;
+  padding:0px 0px 0px 12px;
+  position: relative;
+  top:2.5px;
+  font-size: 16px;
+  font-weight: bold;
+  letter-spacing: 0px;
+  line-height: 38px;
+  color: #000000;
+  vertical-align: middle;
+  left:0;
+  border: none;
+  margin-left: 10px;
+  box-shadow: none;
+  height: 43px;
+  cursor: pointer;
+  background-color:white;  
+}
