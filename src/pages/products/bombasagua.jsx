@@ -31,19 +31,22 @@ const BombasAgua = ({ onCartUpdate }) => {
 
   // Función para agregar productos al carrito
   const addToCart = (product) => {
-    setCartItems((prevItems) => {
-      const existingItem = prevItems.find((item) => item.id_producto === product.id_producto);
-      if (existingItem) {
-        return prevItems.map((item) =>
-          item.id_producto === product.id_producto ? { ...item, quantity: item.quantity + product.quantity } : item
-        );
-      } else {
-        return [...prevItems, product];
-      }
-    });
+  setCartItems((prevItems) => {
+    const existingItem = prevItems.find((item) => item.id_producto === product.id_producto);
+    const updatedItems = existingItem
+      ? prevItems.map((item) =>
+          item.id_producto === product.id_producto
+            ? { ...item, quantity: item.quantity + product.quantity }
+            : item
+        )
+      : [...prevItems, { ...product, quantity: product.quantity || 1 }];
 
-    onCartUpdate([...cartItems, product]);
-  };
+    onCartUpdate(updatedItems);
+
+    return updatedItems;
+  });
+};
+
 
   // Pantalla de carga
   if (isLoading) {
