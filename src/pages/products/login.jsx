@@ -14,29 +14,32 @@ const LoginPage = ({ onRouteChange }) => {
   };
 return (
     <div className="mainContainer">
-      <div className="titleContainer">Login</div>
+      <div className="titleContainer">Aguatesa Login</div>
+      
       <div className="inputContainer">
+      <div className="spacelogin"></div>
         <input
           className="inputBox"
           type="text"
-          placeholder="Enter your username"
+          placeholder="Ingrese su usuario"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
         <input
           className="inputBox"
           type="password"
-          placeholder="Enter your password"
+          placeholder="Ingrese su contraseña"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
         <button className="inputButton" onClick={handleLogin}>
-          Login
+          Iniciar Sesión
         </button>
         <button className="inputButton" onClick={() => onRouteChange('Bombas de agua')}>
-          Back
+          Regresar
         </button>
         {error && <div className="errorMessage">{error}</div>}
+        <div className="spacelogin"></div>
       </div>
     </div>
   );

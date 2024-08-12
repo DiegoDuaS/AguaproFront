@@ -51,10 +51,11 @@
 .titleContainer {
   display: flex;
   flex-direction: column;
-  font-size: 64px;
+  font-size: 55px;
   font-weight: bolder;
   align-items: center;
   justify-content: center;
+  color: #00668C;
 }
 
 .inputContainer {
@@ -62,6 +63,9 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  background-color: #F5F4F1;
+  border-radius: 10px;
+  width: 500px;
 }
 
 .inputBox {
@@ -69,21 +73,28 @@
   width: 400px;
   font-size: large;
   border-radius: 8px;
-  border: 1px solid grey;
+  border: 1px solid rgb(211, 209, 209);
+  background-color:rgb(211, 209, 209) ;
   padding-left: 8px;
   margin-bottom: 16px;
+  font-size: 15px;
+  color: black;
 }
 
 .inputButton {
   border: none;
-  background: cornflowerblue;
+  background:#00668C;;
   color: white;
   padding: 12px 24px;
   margin: 8px;
-  font-size: 24px;
+  font-size: 20px;
   border-radius: 8px;
   cursor: pointer;
 }
 #root {
   width: 100%;
+}
+
+.spacelogin{
+  height: 75px;
 }
