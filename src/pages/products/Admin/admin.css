@@ -6,6 +6,7 @@
   padding: 20px; /* Optional padding */
   margin-top: 80px;
   margin-left:40px;
+  width: -webkit-fill-available;
 }  
   .search-bar {
     display: flex;
@@ -59,4 +60,42 @@
     margin-bottom:0;
     font-family: "Khand";
     font-weight: bold;
+  }
+
+  .loadingcontainer{
+    width: -webkit-fill-available;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between
+  }
+
+  .product-table {
+    width: 100%;
+    margin-top: 20px;
+  }
+  
+  .table-header {
+    background-color: #f5f5f5;
+    border-bottom: 1px solid #000000;
+    padding: 10px 0;
+  }
+  
+  .table-header .MuiGrid-item {
+    text-align: left;
+    padding-left: 15px;
+  }
+  
+  .table-row {
+    padding: 10px 0;
+  }
+  
+  .table-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-gap: 5px;
+    text-align: center;
   }
