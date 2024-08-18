@@ -9,7 +9,7 @@ const AdminHeader = ({ handleLogout, isExpanded, toggleMenu }) => {
       <div className="burger-icon" onClick={toggleMenu}>
         <img src={menuIcon} alt="Menu" style={{ cursor: 'pointer' }} />
       </div>
-      <div className="company-name">AGUATESA admin</div>
+      <div className="company-name">AGUATESA ADMIN</div>
       <div style={{marginRight: '40px'}} className="user-icon" onClick={handleLogout}>
         <img src={userIcon} alt="User" style={{ cursor: 'pointer' }} />
       </div>

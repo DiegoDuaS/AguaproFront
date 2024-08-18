@@ -73,6 +73,7 @@
   margin-right: 40px;
   margin-top: 40px;
   align-items: flex-end;
+  justify-content: space-around;
  
 }
 
@@ -83,6 +84,8 @@
   border-radius: 10px;
   overflow-y: scroll;
   text-align: left;
+  padding-top: 15px;
+  padding-bottom: 20px;
 }
 
 .infobox::-webkit-scrollbar {
@@ -109,6 +112,7 @@
   font-size: 1em;
   padding-left: 40px;
   padding-right: 10px;
+  padding-top: 5px;
 }
 
 .size-section{
