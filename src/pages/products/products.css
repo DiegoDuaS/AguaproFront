@@ -23,7 +23,7 @@
     display: flex;
     margin-top: 120px;
     flex-direction: column;
-    min-width: 200vh;
+    width: -webkit-fill-available;
 }
 
 .space{

@@ -4,6 +4,7 @@
   transition: width 0.3s ease;
   margin-top: 80px;
   top:80px;
+  height: 100%;
 }
 
 .Anavbar-menu.collapsed {
