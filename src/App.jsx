@@ -106,7 +106,6 @@ function App() {
       {activePage === 'Mantenimiento de Pozos' && <Mantenimiento />}
        </>
       )}
-      <footer>Todos los Derechos Reservados a Aguatesa 2024</footer>
     </>
   );
 }

@@ -6,6 +6,7 @@
   padding: 20px; /* Optional padding */
   margin-top: 80px;
   margin-left:40px;
+  margin-right: 40px;
   width: -webkit-fill-available;
 }  
   .search-bar {
@@ -23,6 +24,7 @@
   height: 20px; /* Adjust size as needed */
 }  
   .search-bar input[type="text"] {
+    color: #000000;
     width: 400px;
     border: none;
     height:40px;
@@ -73,9 +75,11 @@
     justify-content: space-between
   }
 
-  .product-table {
+  .table {
     width: 100%;
-    margin-top: 20px;
+    margin-top: 45px;
+    border: 1px solid #ddd;
+    align-items: center;
   }
   
   .table-header {
@@ -91,11 +95,40 @@
   
   .table-row {
     padding: 10px 0;
+    align-items: center;
+    justify-items: center
   }
+  
   
   .table-grid {
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
+    grid-template-columns: repeat(8, 1fr);
     grid-gap: 5px;
+    padding: 10px 0;
     text-align: center;
+    align-items: center;
+    background-color: white;
+  }
+  
+  .table-header {
+    background-color: #f5f5f5;
+    border-bottom: 2px solid #ddd;
+  }
+  
+  .table-row {
+    border-bottom: 1px solid #ddd;
+    background-color: white;
+  }
+
+  .table-text{
+    color:#000000;
+  }
+
+  .more-edit{
+    background-color: #00668C;
+    width: 60%;
+  }
+
+  .more-edit:hover{
+    background-color: #0182b1;
   }
