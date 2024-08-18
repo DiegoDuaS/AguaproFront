@@ -62,7 +62,7 @@ const ProductosPage = () => {
         <h3>Disponibilidad</h3>
         <h3>Marca</h3>
         <h3>Mas Información</h3>
-        <h3>Editar</h3>
+        <h3>Edita</h3>
       </div>
       {productos.map((producto, index) => (
         <div className="table-grid table-row" key={index}>
