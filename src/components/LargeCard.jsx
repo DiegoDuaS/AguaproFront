@@ -82,10 +82,10 @@ const LargeCard = ({ isOpen, closeCard, product, addToCart }) => {
           </div>
         </div>
         <div className="add-to-cart">
-          <div className='quantity-box'>
-            <button onClick={() => setQuantity(quantity > 1 ? quantity - 1 : 1)}>-</button>
-            <span>{quantity}</span>
-            <button onClick={() => setQuantity(quantity + 1)}>+</button>
+          <div className='cuantity-box'>
+            <button class='addq' onClick={() => setQuantity(quantity > 1 ? quantity - 1 : 1)}>-</button>
+            <span class="quantity">{quantity}</span>
+            <button class='remove' onClick={() => setQuantity(quantity + 1)}>+</button>
           </div>
           <button className='add' onClick={handleAddToCart}>Agregar al Carrito</button>
         </div>
