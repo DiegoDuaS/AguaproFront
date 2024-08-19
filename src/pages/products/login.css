@@ -1,0 +1,100 @@
+
+@keyframes mltShdSpin {
+    0% {
+      box-shadow: 0 -0.83em 0 -0.4em,
+      0 -0.83em 0 -0.42em, 0 -0.83em 0 -0.44em,
+      0 -0.83em 0 -0.46em, 0 -0.83em 0 -0.477em;
+    }
+    5%,
+    95% {
+      box-shadow: 0 -0.83em 0 -0.4em, 
+      0 -0.83em 0 -0.42em, 0 -0.83em 0 -0.44em, 
+      0 -0.83em 0 -0.46em, 0 -0.83em 0 -0.477em;
+    }
+    10%,
+    59% {
+      box-shadow: 0 -0.83em 0 -0.4em, 
+      -0.087em -0.825em 0 -0.42em, -0.173em -0.812em 0 -0.44em, 
+      -0.256em -0.789em 0 -0.46em, -0.297em -0.775em 0 -0.477em;
+    }
+    20% {
+      box-shadow: 0 -0.83em 0 -0.4em, -0.338em -0.758em 0 -0.42em,
+       -0.555em -0.617em 0 -0.44em, -0.671em -0.488em 0 -0.46em, 
+       -0.749em -0.34em 0 -0.477em;
+    }
+    38% {
+      box-shadow: 0 -0.83em 0 -0.4em, -0.377em -0.74em 0 -0.42em,
+       -0.645em -0.522em 0 -0.44em, -0.775em -0.297em 0 -0.46em, 
+       -0.82em -0.09em 0 -0.477em;
+    }
+    100% {
+      box-shadow: 0 -0.83em 0 -0.4em, 0 -0.83em 0 -0.42em, 
+      0 -0.83em 0 -0.44em, 0 -0.83em 0 -0.46em, 0 -0.83em 0 -0.477em;
+    }
+  }
+
+  @keyframes round {
+    0% { transform: rotate(0deg) }
+    100% { transform: rotate(360deg) }
+  }
+
+/* App.css */
+.mainContainer {
+  flex-direction: column;
+  display: flex;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 100%;
+  background-color: #ffffff;
+}
+
+.titleContainer {
+  display: flex;
+  flex-direction: column;
+  font-size: 55px;
+  font-weight: bolder;
+  align-items: center;
+  justify-content: center;
+  color: #00668C;
+}
+
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #F5F4F1;
+  border-radius: 10px;
+  width: 500px;
+}
+
+.inputBox {
+  height: 48px;
+  width: 400px;
+  font-size: large;
+  border-radius: 8px;
+  border: 1px solid rgb(211, 209, 209);
+  background-color:rgb(211, 209, 209) ;
+  padding-left: 8px;
+  margin-bottom: 16px;
+  font-size: 15px;
+  color: black;
+}
+
+.inputButton {
+  border: none;
+  background:#00668C;;
+  color: white;
+  padding: 12px 24px;
+  margin: 8px;
+  font-size: 20px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+#root {
+  width: 100%;
+}
+
+.spacelogin{
+  height: 75px;
+}

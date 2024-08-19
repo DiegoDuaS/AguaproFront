@@ -1,97 +1,94 @@
-import React, { useState } from 'react';
+// Importar y usar la librería Material-UI
+// Créditos: Esta librería fue creada por MUI
+// Fuente: https://github.com/mui/material-ui/tree/master
+// Descripción: Componentes que implementan el Material Design System de Google
+
+import { useState } from 'react';
+import useApiP from '../../hooks/useAPIProducts';
+import useApiPr from '../../hooks/useAPIProduct';
 import Card from "../../components/card";
 import LargeCard from "../../components/LargeCard";
-import './products.css'
+import { CircularProgress } from '@mui/material';
+import './products.css';
 
 const BombasAgua = ({ onCartUpdate }) => {
   const [isLargeCardOpen, setIsLargeCardOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [cartItems, setCartItems] = useState([]);
+  const { data: productos, errorMessage, isLoading } = useApiP('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/productos');
 
+  // Función para abrir tarjeta de información
   const openCard = (product) => {
     setSelectedProduct(product);
-    console.log('producto:', product);
     setIsLargeCardOpen(true);
   };
 
+  // Función para cerrar tarjeta de información
   const closeCard = () => {
     setIsLargeCardOpen(false);
     setSelectedProduct(null);
   };
 
+  // Función para agregar productos al carrito
   const addToCart = (product) => {
-    setCartItems((prevItems) => {
-      const existingItem = prevItems.find((item) => item.id === product.id);
-      if (existingItem) {
-        return prevItems.map((item) =>
-          item.id === product.id ? { ...item, quantity: item.quantity + product.quantity } : item
-        );
-      } else {
-        return [...prevItems, product];
-      }
-    });
+  setCartItems((prevItems) => {
+    const existingItem = prevItems.find((item) => item.id_producto === product.id_producto);
+    const updatedItems = existingItem
+      ? prevItems.map((item) =>
+          item.id_producto === product.id_producto
+            ? { ...item, quantity: item.quantity + product.quantity }
+            : item
+        )
+      : [...prevItems, { ...product, quantity: product.quantity || 1 }];
 
-    onCartUpdate([...cartItems, product]);
-  };
+    onCartUpdate(updatedItems);
+
+    return updatedItems;
+  });
+};
 
 
-  const products = [
-    {
-      id: 1,
-      nombre: 'Producto 1',
-      precio: 20.00,
-      imagen: 'https://images.squarespace-cdn.com/content/v1/5b60a97de7494070b92f2702/1633103417460-HSYJWDNDGRI5GC5PHXS3/aguatesa.png>',
-      description: 'Descripción de Producto 1'
-    },
-    {
-      id: 2,
-      nombre: 'Producto 2',
-      precio: 20.00,
-      imagen: 'https://images.squarespace-cdn.com/content/v1/5b60a97de7494070b92f2702/1633103417460-HSYJWDNDGRI5GC5PHXS3/aguatesa.png>',
-      description: 'Descripción de Producto 2'
-    },
-    {
-      id: 3,
-      nombre: 'Producto 3',
-      precio: 20.00,
-      imagen: 'https://images.squarespace-cdn.com/content/v1/5b60a97de7494070b92f2702/1633103417460-HSYJWDNDGRI5GC5PHXS3/aguatesa.png>',
-      description: 'Descripción de Producto 3'
-    },
-    {
-      id: 4,
-      nombre: 'Producto 4',
-      precio: 20.00,
-      imagen: 'https://images.squarespace-cdn.com/content/v1/5b60a97de7494070b92f2702/1633103417460-HSYJWDNDGRI5GC5PHXS3/aguatesa.png>',
-      description: 'Descripción de Producto 4'
-    },
-    {
-      id: 5,
-      nombre: 'Producto 5',
-      precio: 20.00,
-      imagen: 'https://images.squarespace-cdn.com/content/v1/5b60a97de7494070b92f2702/1633103417460-HSYJWDNDGRI5GC5PHXS3/aguatesa.png>',
-      description: 'Descripción de Producto 5'
-    }
-  ];
+  // Pantalla de carga
+  if (isLoading) {
+    return (
+      <main className="main-content-loading">
+        <h2>Bombas de Agua</h2>
+        <div className='space' />
+        <CircularProgress />
+        <p className='loading'>Cargando productos...</p>
+        <div className='space' />
+      </main>
+    );
+  }
 
+  // Pantalla de Error
+  if (errorMessage) {
+    return <p>{errorMessage}</p>;
+  }
+
+  // Pantalla Principal
   return (
     <main className="main-content-prod">
       <h2>Bombas de Agua</h2>
       <ul className="small-card-list">
-        {products.map(product => (
+        {productos.map(product => (
           <Card
+            key={product.id_producto}
             nombre={product.nombre}
             precio={product.precio}
-            imagen={product.imagen}
+            imagen={`/image/${product.id_producto}.png`}
             onMoreInfoClick={() => openCard(product)}
           />
         ))}
       </ul>
-      <LargeCard
-        isOpen={isLargeCardOpen}
-        closeCard={closeCard}
-        product={selectedProduct}
-        addToCart={addToCart}
-      />
+      {selectedProduct && (
+        <LargeCard
+          isOpen={isLargeCardOpen}
+          closeCard={closeCard}
+          product={selectedProduct}
+          addToCart={addToCart}
+        />
+      )}
     </main>
   );
 };
