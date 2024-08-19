@@ -1,4 +1,4 @@
-name: Merge Workflow
+name: Create Pull Request from Development to Testing
 
 on:
   push:
@@ -6,55 +6,19 @@ on:
       - development
 
 jobs:
-  merge-to-testing:
+  create-pull-request:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
+    - name: Checkout repository
       uses: actions/checkout@v2
-      with:
-        fetch-depth: 0  # Asegura que se obtengan todas las ramas y el historial
-    - name: Setup Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '16' 
-    - name: Install Dependencies
-      run: npm install
-    - name: Build
-      run: npm run build
-    - name: Ensure testing branch exists
-      run: |
-        git fetch origin testing:refs/remotes/origin/testing || git checkout -b testing
-        git checkout testing
-    - name: Merge development to testing
-      run: |
-        git config --global user.name 'github-actions[bot]'
-        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-        git merge development --no-ff
-        git push origin testing
 
-  merge-to-production:
-    needs: merge-to-testing
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v2
+    - name: Create Pull Request from development to testing
+      uses: peter-evans/create-pull-request@v5
       with:
-        fetch-depth: 0  # Asegura que se obtengan todas las ramas y el historial
-    - name: Setup Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '16' 
-    - name: Install Dependencies
-      run: npm install
-    - name: Build
-      run: npm run build
-    - name: Ensure main branch exists
-      run: |
-        git fetch origin main:refs/remotes/origin/main || git checkout -b main
-        git checkout main
-    - name: Merge testing to main
-      run: |
-        git config --global user.name 'github-actions[bot]'
-        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-        git merge testing --no-ff
-        git push origin main
+        token: ${{ secrets.GITHUB_TOKEN }}
+        commit-message: 'Merge development into testing'
+        branch: development
+        base: testing
+        title: 'Pull Request: Merge development into testing'
+        body: |
+          This pull request was automatically created to merge the `development` branch into the `testing` branch.
