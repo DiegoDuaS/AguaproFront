@@ -94,3 +94,14 @@
 .checkout-button:hover {
   background-color: #0056b3;
 }
+
+.emptycart{
+  color: #000;
+}
+
+.emptycartholder{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+}

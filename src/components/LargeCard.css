@@ -59,7 +59,8 @@
 
 .price{
   color: black;
-  font-size: 1.2em;
+  font-size: 1.5em;
+  font-weight: 600;
   margin: 0;
   padding-top: 10px;
 }
@@ -160,23 +161,20 @@
 }
 
 .cuantity-box{
-  background-color: #ddd;
+  background-color: #ffffff;
   color:#000000;
   text-align: center;
-  width: 60px;
+  width: 150px;
   border-radius: 10px;
-  border: 0.2px solid black;
+  height: 45px;
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: space-between;
   margin-right: 20px;
   cursor: pointer;
 }
 
-.cuantity-box:hover{
-  background-color: rgb(228, 227, 227);
-}
 
 .add{
   background-color: #00668C;
@@ -196,6 +194,34 @@
   font-family: "Khand";
   letter-spacing: 3px;
 }
+
+.addq{
+  background-color: #00668C;
+  border-radius: 10px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  height: 46px;
+  font-weight: bolder;
+}
+
+.remove{
+  background-color: #00668C;
+  border-radius: 10px;
+  height: 46px;
+  font-weight: bolder;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.addq:hover{
+  background-color: #008ec1;
+}
+
+.remove:hover{
+  background-color: #008ec1;
+}
+
+
 
 
 
