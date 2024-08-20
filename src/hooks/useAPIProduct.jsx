@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const useApiPr = (id) => {
+const useApiPr = (url) => {
   const [data, setData] = useState([]);
   const [errorMessage, setErrorMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -8,7 +8,8 @@ const useApiPr = (id) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/productos/${id}`);
+
+        const response = await fetch(url);
 
         if (response.ok) {
           const responseData = await response.json();
