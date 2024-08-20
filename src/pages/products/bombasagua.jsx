@@ -5,7 +5,6 @@
 
 import { useState } from 'react';
 import useApiP from '../../hooks/useAPIProducts';
-import useApiPr from '../../hooks/useAPIProduct';
 import Card from "../../components/card";
 import LargeCard from "../../components/LargeCard";
 import { CircularProgress } from '@mui/material';

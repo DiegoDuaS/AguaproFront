@@ -143,3 +143,14 @@
   .addbutton{
     background-color: #00668C;
   }
+
+  .error-container{
+    width: -webkit-fill-available;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: space-between
+  }

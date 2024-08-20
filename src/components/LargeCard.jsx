@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import './LargeCard.css'; // Import your CSS file
-import { IoIosArrowDown } from "react-icons/io";
+import './LargeCard.css'; 
 
 const LargeCard = ({ isOpen, closeCard, product, addToCart }) => {
   const cardRef = useRef(null);
@@ -48,24 +47,23 @@ const LargeCard = ({ isOpen, closeCard, product, addToCart }) => {
       </div>
       <div className="right-section">
         <div className="infobox">
-          <p className='info'><strong>Descpripción:</strong> {product.descripción}</p>
+          <p className='info'><strong>Descripción:</strong> {product.descripción}</p>
           <p className='info'><strong>Marca:</strong> {product.marca}</p>
           <p className='info'><strong>Material:</strong> {product.material}</p>
-          <p className='info'><strong>Profundidad:</strong> {product.profundidad}m</p>
-          <p className='info'><strong>Conexión Tuberia:</strong> {product.conexion_tuberia}</p>
-          <p className='info'><strong>Presion Funcional:</strong> {product.presion_funcional}atm</p>
-          <p className='info'><strong>Boquilla:</strong> {product.head}cm</p>
-          <p className='info'><strong>Caudal:</strong> {product.flow_rate}</p>
+          <p className='info'><strong>Profundidad:</strong> {product.profundidad} m</p>
+          <p className='info'><strong>Conexión Tubería:</strong> {product.conexion_tuberia}</p>
+          <p className='info'><strong>Presión Funcional:</strong> {product.presion_funcional} bar</p>
+          <p className='info'><strong>Head:</strong> {product.head} m</p>
+          <p className='info'><strong>Caudal:</strong> {product.flow_rate} m³/h</p>
           <p className='info'><strong>Aplicaciones:</strong> {product.aplicaciones}</p>
-          <p className='info'><strong>Temperatura Media:</strong> {product.temperatura_media}°C</p>
-          <p className='info'><strong>Galones Por Minuto Minimo:</strong> {product.min_gpm}</p>
-          <p className='info'><strong>Galones Por Minuto Máximo:</strong> {product.max_gpm}</p>
+          <p className='info'><strong>Temperatura Media:</strong> {product.temperatura_media} °C</p>
+          <p className='info'><strong>GPM Mínimo:</strong> {product.min_gpm} gal/min</p>
+          <p className='info'><strong>GPM Máximo:</strong> {product.max_gpm} gal/min</p>
           <p className='info'><strong>Capacitor:</strong> {product.capacitor}</p>
-          <p className='info'><strong>Temperatura Liquida Minima:</strong> {product.temperatura_liquida_min}°C</p>
-          <p className='info'><strong>Temperatura Liquida Máxima:</strong> {product.temperatura_liquida_max}°C</p>
-          <p className='info'><strong>Temperatura Ambiente:</strong> {product.temperatura_ambiente}°C</p>
-          <p className='info'><strong>Presión:</strong> {product.presion}</p>
-          {/* Add other product details as needed */}
+          <p className='info'><strong>Temperatura Líquida Mínima:</strong> {product.temperatura_liquida_min} °C</p>
+          <p className='info'><strong>Temperatura Líquida Máxima:</strong> {product.temperatura_liquida_max} °C</p>
+          <p className='info'><strong>Temperatura Ambiente:</strong> {product.temperatura_ambiente} °C</p>
+          <p className='info'><strong>Presión:</strong> {product.presion} bar</p>
         </div>
         <div className="size-section">
           <div className="brand2">Tamaño</div>
