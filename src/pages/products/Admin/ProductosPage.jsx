@@ -42,15 +42,18 @@ const ProductosPage = () => {
   return (
     <div className="container">
       <div className="text">Productos</div>
-      <div className="search-bar">
-        <input
-          className="searchbar"
-          type="text"
-          placeholder="Search Productos..."
-        />
-        <button className="search-btn">
-          <img src={searchIcon} alt="Search" />
-        </button>
+      <div className='modbar'>
+        <div className="search-bar">
+          <input
+            className="searchbar"
+            type="text"
+            placeholder="Search Productos..."
+          />
+          <button className="search-btn">
+            <img src={searchIcon} alt="Search" />
+          </button>
+        </div>
+        <button className='addbutton'> Agregar Producto +</button>
       </div>
       {/* PANTALLA PRINCIPAL SIN BUSCAR */}
       <div className="table">

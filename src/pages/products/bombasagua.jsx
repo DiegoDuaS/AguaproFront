@@ -9,6 +9,7 @@ import useApiPr from '../../hooks/useAPIProduct';
 import Card from "../../components/card";
 import LargeCard from "../../components/LargeCard";
 import { CircularProgress } from '@mui/material';
+import { BiError } from "react-icons/bi";
 import './products.css';
 
 const BombasAgua = ({ onCartUpdate }) => {
@@ -63,7 +64,13 @@ const BombasAgua = ({ onCartUpdate }) => {
 
   // Pantalla de Error
   if (errorMessage) {
-    return <p>{errorMessage}</p>;
+    <main className="main-content-loading">
+        <h2>Bombas de Agua</h2>
+        <div className='space' />
+        <BiError color='black' size={80}/>
+        <p className='loading'>Error Cargando Productos:{errorMessage}</p>
+        <div className='space' />
+      </main>
   }
 
   // Pantalla Principal
