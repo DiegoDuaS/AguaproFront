@@ -7,7 +7,7 @@
     display: flex;
     margin-top: 120px;
     flex-direction: column;
-    width: 100%;
+    width: -webkit-fill-available;
 }
 
 .loading{
@@ -21,7 +21,7 @@
     align-items: center;
     overflow: auto;
     display: flex;
-    margin-top: 120px;
+    margin-top: 50px;
     flex-direction: column;
     width: -webkit-fill-available;
 }

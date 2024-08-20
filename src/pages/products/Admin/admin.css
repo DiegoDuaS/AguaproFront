@@ -13,6 +13,7 @@
     display: flex;
     align-items: center;
     height:40px;
+    align-items: flex-end
   }
   
   .search-bar form {
@@ -131,4 +132,14 @@
 
   .more-edit:hover{
     background-color: #0182b1;
+  }
+
+  .modbar{
+    width: 100%;
+    display: flex;
+    justify-content: space-between
+  }
+
+  .addbutton{
+    background-color: #00668C;
   }
