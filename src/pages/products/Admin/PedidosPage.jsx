@@ -68,6 +68,7 @@ const PedidosPage = () => {
           <img src={searchIcon} alt="Search" />
         </button>
       </div>
+
       {/* PANTALLA PRINCIPAL SIN BUSCAR */}
       <div className="table">
         <div className="table-grid table-header">
