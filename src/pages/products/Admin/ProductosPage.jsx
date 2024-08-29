@@ -6,12 +6,14 @@ import useApiP from '../../../hooks/useAPIProducts';
 import { useState } from 'react';
 import { CiEdit } from "react-icons/ci";
 import InfoProdCard from '../../../components/infoProdCard';
+import EditProdCard from '../../../components/EditProdCard';
 import { BiError } from "react-icons/bi";
 
 const ProductosPage = () => {
 
   const { data: productos, errorMessage, isLoading } = useApiP('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/productos');
   const [isInformationCardOpen, setisInformationCardOpen] = useState(false);
+  const [isEditCardOpen, setisEditCardOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
   const openCard = (producto) => {
@@ -21,6 +23,16 @@ const ProductosPage = () => {
 
   const closeCard = () => {
     setisInformationCardOpen(false);
+    setSelectedProduct(null);
+  };
+
+  const openEditCard = (producto) => {
+    setSelectedProduct(producto);
+    setisEditCardOpen(true);
+  };
+
+  const closeEditCard = () => {
+    setisEditCardOpen(false);
     setSelectedProduct(null);
   };
 
@@ -113,14 +125,25 @@ const ProductosPage = () => {
               onClick={() => openCard(producto)}>
               ...
             </button>
-            <button className='more-edit'> <CiEdit size={25}/> </button>
+            <button className='more-edit'
+              onClick={() => openEditCard(producto)}>
+              <CiEdit size={25}/>
+              
+            </button>
           </div>
         ))}
       </div>
-      {selectedProduct && (
+      {selectedProduct && isInformationCardOpen && (
         <InfoProdCard
           isOpen={isInformationCardOpen}
           closeCard={closeCard}
+          product={selectedProduct}
+        />
+      )}
+      {selectedProduct && isEditCardOpen && (
+        <EditProdCard
+          isOpen={isEditCardOpen}
+          closeCard={closeEditCard}
           product={selectedProduct}
         />
       )}
