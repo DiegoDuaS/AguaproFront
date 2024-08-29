@@ -9,9 +9,11 @@ import InfoProdCard from '../../../components/infoProdCard';
 import EditProdCard from '../../../components/EditProdCard';
 import { BiError } from "react-icons/bi";
 
+
 const ProductosPage = () => {
 
   const { data: productos, errorMessage, isLoading } = useApiP('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/productos');
+
   const [isInformationCardOpen, setisInformationCardOpen] = useState(false);
   const [isEditCardOpen, setisEditCardOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -51,7 +53,6 @@ const ProductosPage = () => {
           </button>
         </div>
         <div className='space' />
-        
         <div className='loadingcontainer'>
           <CircularProgress />
           <p className='loading'>Cargando productos...</p>
