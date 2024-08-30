@@ -146,6 +146,7 @@ const ProductosPage = () => {
           isOpen={isEditCardOpen}
           closeCard={closeEditCard}
           product={selectedProduct}
+          refetchProducts={refetch}
         />
       )}
     </div>

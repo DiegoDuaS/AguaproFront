@@ -5,7 +5,7 @@ import ProductosPage from '../pages/products/Admin/ProductosPage';
 import useUpdateProduct from '../hooks/useUpdateProduct';
 import { getSizeIndex, getEnergiaIndex, getCondicionesIndex, getTipoIndex } from '../hooks/useFetchs';
 
-const EditProdCard = ({ isOpen, closeCard, product}) => {
+const EditProdCard = ({ isOpen, closeCard, product, refetchProducts}) => {
     
     const cardRef = useRef(null);
 
@@ -158,6 +158,7 @@ const EditProdCard = ({ isOpen, closeCard, product}) => {
             if (!responseCaracteristicasVariables.ok) {
                 throw new Error('Error al actualizar las características variables');
             }
+            await refetchProducts();
 
             alert('Cambios guardados exitosamente');
             closeCard();
