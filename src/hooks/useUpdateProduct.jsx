@@ -1,17 +1,14 @@
 import { useState } from 'react';
 
 const useUpdateProduct = (url) => {
-  const [isUpdating, setIsUpdating] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
-  const [successMessage, setSuccessMessage] = useState(null);
-
   const updateProduct = async (productId, productData) => {
-    setIsUpdating(true);
+    setIsLoading(true);
     setErrorMessage(null);
-    setSuccessMessage(null);
 
     try {
-      const response = await fetch(`${url}/productos/${productId}`, {
+      const response = await fetch(`${url}/${productId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -20,23 +17,28 @@ const useUpdateProduct = (url) => {
       });
 
       if (response.ok) {
-        const responseData = await response.json();
-        setSuccessMessage('Product updated successfully!');
-        return responseData;
-      } else if (response.status === 404) {
-        setErrorMessage('Product not found.');
+        const result = await response.json();
+        if (result.message === 'Product updated successfully') {
+          // Update was successful
+          return { success: true };
+        } else {
+          setErrorMessage('Respuesta inesperada del servidor.');
+        }
       } else {
-        setErrorMessage('Failed to update product.');
+        setErrorMessage(`Error al actualizar producto: ${response.status}`);
       }
     } catch (error) {
-      console.error('Error updating product:', error);
-      setErrorMessage('Error connecting to the server.');
+      console.error('Error al actualizar producto:', error);
+      setErrorMessage('Error al conectarse al servidor.');
     } finally {
-      setIsUpdating(false);
+      setIsLoading(false);
     }
+
+    return { success: false };
   };
 
-  return { updateProduct, isUpdating, errorMessage, successMessage };
+  return { updateProduct, isLoading, errorMessage };
 };
 
 export default useUpdateProduct;
+
