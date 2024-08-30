@@ -12,6 +12,7 @@ import AdminPage from './pages/products/AdminPage';
 import { AuthProvider } from './hooks/authProvider.jsx'; // Importa el AuthProvider
 import validateToken from './hooks/Auth';
 
+
 function App() {
   const [activePage, setActivePage] = useState('Bombas de agua'); // Página activa inicial
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Estado para la barra lateral

@@ -3,7 +3,6 @@ import { useState } from 'react';
 const useUpdateProduct = (url) => {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
-
   const updateProduct = async (productId, productData) => {
     setIsLoading(true);
     setErrorMessage(null);

@@ -41,6 +41,7 @@ const EditProdCard = ({ isOpen, closeCard, product, refetchProducts}) => {
     const [condicionesIndex, setCondicionesIndex] = useState(null);
     const [tipoIndex, setTipoIndex] = useState(null); 
 
+
     const handleClickOutside = (event) => {
         if (cardRef.current && !cardRef.current.contains(event.target)) {
         closeCard();
@@ -167,7 +168,6 @@ const EditProdCard = ({ isOpen, closeCard, product, refetchProducts}) => {
             alert('Hubo un error al guardar los cambios. Inténtalo de nuevo.');
         }
     };             
-         
 
     return (
         <div className="large-card-prod" ref={cardRef}>
@@ -306,6 +306,7 @@ const EditProdCard = ({ isOpen, closeCard, product, refetchProducts}) => {
                                 onChange={(e) => setSizeRange(e.target.value)}
                             />
                         </div>
+
                     </div>
                 </div>
                 <div className='section'>

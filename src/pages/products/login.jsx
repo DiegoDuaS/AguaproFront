@@ -27,9 +27,9 @@ const LoginPage = ({ onRouteChange }) => {
         
         if (response.ok) {
             onRouteChange('AdminPage');
-            console.log('Logging in with', username, password);
-                    
+            console.log('Logging in with', username, password);                 
             // Save token to local storage
+
             console.log("token", localStorage.getItem('token'));
             return;
         }
