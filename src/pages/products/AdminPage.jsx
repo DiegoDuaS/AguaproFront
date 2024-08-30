@@ -9,6 +9,7 @@ import AdminHeader from "../../components/AdminHeader.jsx";
 import PropTypes from 'prop-types';
 import { orders, products, analytics, clients } from './images.js';
 
+
 const AdminPage = ({ onRouteChange }) => {
   const [selectedOption, setSelectedOption] = useState('Pedidos');
   const [isExpanded, setIsExpanded] = useState(false);
@@ -41,6 +42,10 @@ const AdminPage = ({ onRouteChange }) => {
     onRouteChange('Bombas de agua');
   };
 
+  const handleLeave = () => {
+    onRouteChange('Bombas de agua');
+  };
+
   const toggleMenu = () => {
     setIsExpanded(!isExpanded);
   };
@@ -51,6 +56,7 @@ const AdminPage = ({ onRouteChange }) => {
         handleLogout={handleLogout} 
         isExpanded={isExpanded} 
         toggleMenu={toggleMenu} 
+        handleLeave={handleLeave}
       />
       <div style={{ display: 'flex', flex: '1' }}>
         <CustomNav
