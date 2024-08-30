@@ -3,12 +3,13 @@ import useApiPr from '../hooks/useAPIProduct';
 import './EditProdCard.css';
 import ProductosPage from '../pages/products/Admin/ProductosPage';
 import useUpdateProduct from '../hooks/useUpdateProduct';
+import { getSizeIndex, getEnergiaIndex, getCondicionesIndex, getTipoIndex } from '../hooks/useFetchs';
 
 const EditProdCard = ({ isOpen, closeCard, product}) => {
     
     const cardRef = useRef(null);
 
-    const { updateProduct, isLoading, errorMessage } = useUpdateProduct('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/productos');
+    const { updateProduct, isLoading, errorMessage } = useUpdateProduct('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app');
 
     const [nombre, setNombre] = useState(product.nombre);
     const [descripción, setDescripción] = useState(product.descripción);
@@ -33,7 +34,12 @@ const EditProdCard = ({ isOpen, closeCard, product}) => {
     const [temperaturaLiquidaMin, setTemperaturaLiquidaMin] = useState(product.temperatura_liquida_min);
     const [temperaturaAmbiente, setTemperaturaAmbiente] = useState(product.temperatura_ambiente);
     const [presion, setPresion] = useState(product.presion);
-    const [flowRate, setFlowRate] = useState(product.flow_rate); 
+    const [flowRate, setFlowRate] = useState(product.flow_rate);
+
+    const [sizeIndex, setSizeIndex] = useState(null);
+    const [energiaIndex, setEnergiaIndex] = useState(null);
+    const [condicionesIndex, setCondicionesIndex] = useState(null);
+    const [tipoIndex, setTipoIndex] = useState(null); 
 
     const handleClickOutside = (event) => {
         if (cardRef.current && !cardRef.current.contains(event.target)) {
@@ -54,39 +60,113 @@ const EditProdCard = ({ isOpen, closeCard, product}) => {
     }, [isOpen]);
 
     if (!isOpen) return null;
+    
+    useEffect(() => {
+        if (isOpen) {
+            const fetchIndices = async () => {
+                try {
+                    const sizeIdx = await getSizeIndex(minGpm, maxGpm, product.size_range);
+                    setSizeIndex(sizeIdx);
+
+                    const energiaIdx = await getEnergiaIndex(minHp, maxHp, capacitor);
+                    setEnergiaIndex(energiaIdx);
+
+                    const condicionesIdx = await getCondicionesIndex(temperaturaLiquidaMin, temperaturaLiquidaMax, temperaturaAmbiente, presion);
+                    setCondicionesIndex(condicionesIdx);
+
+                    const tipoIdx = await getTipoIndex(tipoProducto);
+                    setTipoIndex(tipoIdx);
+                } catch (error) {
+                    console.error('Error al obtener índices:', error);
+                    alert('Hubo un error al obtener los índices. Inténtalo de nuevo.');
+                }
+            };
+
+            fetchIndices();
+        }
+    }, [isOpen, minGpm, maxGpm, minHp, maxHp, capacitor, temperaturaLiquidaMin, temperaturaLiquidaMax, temperaturaAmbiente, presion, tipoProducto, product.size_range]);
 
     const handleSave = async () => {
-        const productData = {
-            nombre,
-            descripción,
-            tipo_producto: tipoProducto,
-            precio,
-            disponibilidad,
-            marca,
-            material,
-            profundidad,
-            temperatura_liquida_max: temperaturaLiquidaMax,
-            conexion_tuberia: conexionTuberia,
-            presion_funcional: presionFuncional,
-            head,
-            aplicaciones,
-            temperatura_media: temperaturaMedia,
-            min_gpm: minGpm,
-            max_gpm: maxGpm,
-            min_hp: minHp,
-            max_hp: maxHp,
-            capacitor,
-            temperatura_liquida_min: temperaturaLiquidaMin,
-            temperatura_ambiente: temperaturaAmbiente,
-            presion,
-            flow_rate: flowRate,
-        };
+        try {
+            if (sizeIndex === null || energiaIndex === null || condicionesIndex === null || tipoIndex === null) {
+                alert('Error: No se pudieron obtener todos los índices necesarios.');
+                return;
+            }
 
-        const result = await updateProduct(product.id_producto, productData);
-        if (result.success) {
+            // Actualizar el producto principal
+            const response = await fetch(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/productos/${product.id_producto}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ nombre, descripción, tipo_producto: tipoIndex }),
+            });
+            if (!response.ok) {
+                throw new Error('Error al actualizar el producto');
+            }
+
+            // Actualizar las características fijas
+            const responseCaracteristicas = await fetch(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/caracteristicas/${product.id_caracteristicas}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    marca,
+                    material,
+                    profundidad,
+                    conexion_tuberia: conexionTuberia,
+                    presion_funcional: presionFuncional,
+                    head,
+                    flow_rate: flowRate,
+                    aplicaciones,
+                    producto: product.id_producto,
+                    energia: energiaIndex,
+                    condiciones: condicionesIndex,
+                    temperatura_media: temperaturaMedia,
+                }),
+            });
+            if (!responseCaracteristicas.ok) {
+                throw new Error('Error al actualizar las características fijas');
+            }
+
+            // Actualizar las características variables
+            const responseCaracteristicasVariables = await fetch(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/caracteristicas/variables/${product.id_caracteristicas}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    temperatura_liquida_max: temperaturaLiquidaMax,
+                    conexion_tuberia: conexionTuberia,
+                    presion_funcional: presionFuncional,
+                    head,
+                    flow_rate: flowRate,
+                    aplicaciones,
+                    temperatura_media: temperaturaMedia,
+                    min_gpm: minGpm,
+                    max_gpm: maxGpm,
+                    min_hp: minHp,
+                    max_hp: maxHp,
+                    capacitor,
+                    temperatura_liquida_min: temperaturaLiquidaMin,
+                    temperatura_ambiente: temperaturaAmbiente,
+                    presion,
+                }),
+            });
+
+            if (!responseCaracteristicasVariables.ok) {
+                throw new Error('Error al actualizar las características variables');
+            }
+
+            alert('Cambios guardados exitosamente');
             closeCard();
+        } catch (error) {
+            console.error('Error al guardar los cambios:', error);
+            alert('Hubo un error al guardar los cambios. Inténtalo de nuevo.');
         }
-    };
+    };             
+         
 
     return (
         <div className="large-card-prod" ref={cardRef}>
