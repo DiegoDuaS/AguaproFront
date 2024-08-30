@@ -2,12 +2,17 @@ import React, { useEffect, useRef, useState } from 'react';
 import useApiPr from '../hooks/useAPIProduct';
 import './EditProdCard.css';
 import ProductosPage from '../pages/products/Admin/ProductosPage';
+import useUpdateProduct from '../hooks/useUpdateProduct';
 
 const EditProdCard = ({ isOpen, closeCard, product}) => {
     
     const cardRef = useRef(null);
+
+    const { updateProduct, isLoading, errorMessage } = useUpdateProduct('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/productos');
+
     const [nombre, setNombre] = useState(product.nombre);
     const [descripción, setDescripción] = useState(product.descripción);
+    const [sizeRange, setSizeRange] = useState(product.size_range);
     const [tipoProducto, setTipoProducto] = useState(product.tipo_producto);
     const [precio, setPrecio] = useState(product.precio);
     const [disponibilidad, setDisponibilidad] = useState(product.disponibilidad);
@@ -50,6 +55,38 @@ const EditProdCard = ({ isOpen, closeCard, product}) => {
 
     if (!isOpen) return null;
 
+    const handleSave = async () => {
+        const productData = {
+            nombre,
+            descripción,
+            tipo_producto: tipoProducto,
+            precio,
+            disponibilidad,
+            marca,
+            material,
+            profundidad,
+            temperatura_liquida_max: temperaturaLiquidaMax,
+            conexion_tuberia: conexionTuberia,
+            presion_funcional: presionFuncional,
+            head,
+            aplicaciones,
+            temperatura_media: temperaturaMedia,
+            min_gpm: minGpm,
+            max_gpm: maxGpm,
+            min_hp: minHp,
+            max_hp: maxHp,
+            capacitor,
+            temperatura_liquida_min: temperaturaLiquidaMin,
+            temperatura_ambiente: temperaturaAmbiente,
+            presion,
+            flow_rate: flowRate,
+        };
+
+        const result = await updateProduct(product.id_producto, productData);
+        if (result.success) {
+            closeCard();
+        }
+    };
 
     return (
         <div className="large-card-prod" ref={cardRef}>
@@ -178,6 +215,16 @@ const EditProdCard = ({ isOpen, closeCard, product}) => {
                                 onChange={(e) => setHead(e.target.value)}
                             />
                         </div>
+                       <div className="table-row2">
+                            <div className="table-cell title">Size Range</div>
+                            <input
+                                type="text"
+                                className="table-cell input"
+                                value={sizeRange}
+                                placeholder={product.size_range}
+                                onChange={(e) => setSizeRange(e.target.value)}
+                            />
+                        </div>
                     </div>
                 </div>
                 <div className='section'>
@@ -295,7 +342,10 @@ const EditProdCard = ({ isOpen, closeCard, product}) => {
                     </div>
                 </div>
             </div>
-	    <button className="save-button">Guardar</button>
+            <button className="save-button" onClick={handleSave} disabled={isLoading}>
+                {isLoading ? 'Guardando...' : 'Guardar'}
+            </button>
+            {errorMessage && <p className="error-message">{errorMessage}</p>}	    
         </div>
     );
 };

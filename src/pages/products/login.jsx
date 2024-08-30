@@ -29,6 +29,7 @@ const LoginPage = ({ onRouteChange }) => {
             onRouteChange('AdminPage');
             console.log('Logging in with', username, password);
             console.log("token", localStorage.getItem('token'));
+            //localStorage.setItem('token', token);
             return;
         }
     } catch (error) {
