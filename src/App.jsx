@@ -10,6 +10,7 @@ import Cart from './components/cart';
 import LoginPage from './pages/products/login';
 import AdminPage from './pages/products/AdminPage';
 import { AuthProvider } from './hooks/authProvider.jsx'; // Importa el AuthProvider
+import validateToken from './hooks/Auth';
 
 function App() {
   const [activePage, setActivePage] = useState('Bombas de agua'); // Página activa inicial
@@ -25,9 +26,24 @@ function App() {
     setIsCartOpen(!isCartOpen);
   };
 
-  const navigateToLogin = () => {
+  const navigateToLogin = async () => {
+  const token = localStorage.getItem('token');
+  console.log(token);
+
+  if (!token) {
+    // No token stored, redirect to login
     setActivePage('Login');
-  };
+  } else {
+    const isValid = await validateToken(token);
+    if (isValid) {
+      // Token is valid, redirect to admin page
+      setActivePage('AdminPage');
+    } else {
+      // Token is invalid, redirect to login
+      setActivePage('Login');
+    }
+  }
+};
 
   const handleOptionSelect = (option) => {
     setActivePage(option);
