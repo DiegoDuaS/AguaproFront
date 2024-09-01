@@ -1,0 +1,28 @@
+.large-card-newprod {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 900px;
+    height:60%;
+    background-color: #F5F4F1;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    z-index: 1000;
+    padding: 20px;
+    padding-top: 20px;
+    margin-top: 20px;
+    color: #000000;
+    align-items: center;
+  }
+
+  .text {
+    color:#00668C; 
+    font-size: 2.5em;
+    margin-bottom:0;
+    font-family: "Khand";
+    font-weight: bold;
+  }

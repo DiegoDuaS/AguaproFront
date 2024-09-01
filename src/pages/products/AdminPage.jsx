@@ -8,6 +8,7 @@ import CustomNav from "../../components/AdminNav.jsx";
 import AdminHeader from "../../components/AdminHeader.jsx";
 import PropTypes from 'prop-types';
 import { orders, products, analytics, clients } from './images.js';
+import { BsBoxSeam } from "react-icons/bs";
 
 
 const AdminPage = ({ onRouteChange }) => {
