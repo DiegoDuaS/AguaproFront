@@ -18,7 +18,7 @@ const PedidosPage = () => {
           <input
             className="searchbar"
             type="text"
-            placeholder="Search Productos..."
+            placeholder="Search Pedidos..."
           />
           <button className="search-btn">
             <img src={searchIcon} alt="Search" />
@@ -41,7 +41,7 @@ const PedidosPage = () => {
           <input
             className="searchbar"
             type="text"
-            placeholder="Search Productos..."
+            placeholder="Search Pedidos..."
           />
           <button className="search-btn">
             <img src={searchIcon} alt="Search" />
@@ -73,19 +73,45 @@ const PedidosPage = () => {
       {/* PANTALLA PRINCIPAL SIN BUSCAR */}
       <div className="table">
         <div className="table-grid table-header">
-          <h3>Id</h3>
+          <h3>Pedido Id</h3>
+          <h3>Cliente</h3>
+          <h3>NIT</h3>
+          <h3>Total</h3>
+          <h3>Dirección</h3>
+          <h3>Descuento</h3>
+          <h3>Productos</h3>
           <h3>Estado</h3>
         </div>
         {pedidos.map((pedido, index) => (
           <div className="table-grid table-row" key={index}>
-            <p className='table-text'>#{pedido.id_predido}</p>
-            <p className='table-text'>{pedido.status}</p>
+            <p className='table-text'>#{pedido.id_pedido}</p>
+            <p className='table-text'>{pedido.cliente}</p>
+            <p className='table-text'>{pedido.nit_empresa}</p>
+            <p className='table-text'>Q.{pedido.monto_total}</p>
+            <p className='table-text'>{pedido.direccion}</p>
+            <p className='table-text'>
+              {pedido.id_descuento === 0 ? (
+                'N/A'
+              ) : pedido.id_descuento === 1 ? (
+                '5%'
+              ) : pedido.id_descuento === 2 ? (
+                '10%'
+              ) : pedido.id_descuento === 3 ? (
+                '15%'
+              ) : pedido.id_descuento === 4 ? (
+                '20%'
+              ) : pedido.id_descuento === 5 ? (
+                '25%'
+              ) : (
+                'Otro tipo de descuento'
+              )}
+            </p>
             <button 
               className='more-edit' 
             >
               ...
             </button>
-            <button className='more-edit'> <CiEdit size={25}/> </button>
+
           </div>
         ))}
       </div>

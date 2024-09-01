@@ -12,11 +12,11 @@ const AdminHeader = ({ handleLogout, isExpanded, toggleMenu, handleLeave}) => {
         <img src={menuIcon} alt="Menu" style={{ cursor: 'pointer' }} />
       </div>
       <div className="company-name">AGUATESA ADMIN</div>
-      <div style={{marginRight: '40px'}} className="user-icon" onClick={handleLeave}>
+      <div style={{marginRight: '40px'}} className="user-icon" onClick={handleLeave} title="Página Principal">
         <FaUser style={{ cursor: 'pointer' }} color='black' size={30}/>
       </div>
-      <div style={{marginRight: '40px'}} className="logout-icon" onClick={handleLogout}>
-        <CiLogout style={{ cursor: 'pointer' }} color='black' size={30} />
+      <div style={{marginRight: '40px'}} className="logout-icon" onClick={handleLogout} title="Logout">
+    	  <CiLogout style={{ cursor: 'pointer' }} color='black' size={30} />
       </div>
     </header>
   );

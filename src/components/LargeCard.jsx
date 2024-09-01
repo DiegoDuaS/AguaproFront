@@ -65,20 +65,6 @@ const LargeCard = ({ isOpen, closeCard, product, addToCart }) => {
           <p className='info'><strong>Temperatura Ambiente:</strong> {product.temperatura_ambiente} °C</p>
           <p className='info'><strong>Presión:</strong> {product.presion} bar</p>
         </div>
-        <div className="size-section">
-          <div className="brand2">Tamaño</div>
-          <div className='selection'>
-            {['4\'\'', '6\'\'', '8\'\'', '10\'\''].map(size => (
-              <li
-                key={size}
-                className={`select-size ${sizeSelected === size ? 'selected' : ''}`}
-                onClick={() => setSizeSelected(size)}
-              >
-                {size}
-              </li>
-            ))}
-          </div>
-        </div>
         <div className="add-to-cart">
           <div className='cuantity-box'>
             <button class='addq' onClick={() => setQuantity(quantity > 1 ? quantity - 1 : 1)}>-</button>
