@@ -1,8 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './LargeCard.css'; 
 
-const LargeCard = ({ isOpen, closeCard, product, addToCart }) => {
+const LargeCard = ({ isOpen, closeCard, product, addToCart, cartItems }) => {
   const cardRef = useRef(null);
+  //const initialQuantity = cartItems.find(item => item.id_producto === product.id_producto)?.quantity || 1;
+  //const [quantity, setQuantity] = useState(initialQuantity);
   const [quantity, setQuantity] = useState(1);
   const [sizeSelected, setSizeSelected] = useState('4\'\'');
 

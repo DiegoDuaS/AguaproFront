@@ -58,7 +58,6 @@ function App() {
   const removeCartItem = (id_producto) => {
     const updatedCartItems = cartItems.filter(item => item.id_producto !== id_producto);
     setCartItems(updatedCartItems);
-    handleCartUpdate(updatedCartItems);
   };
 
   const updateCartItem = (id_producto, newQuantity) => {
@@ -66,7 +65,6 @@ function App() {
       item.id_producto === id_producto ? { ...item, quantity: newQuantity } : item
     );
     setCartItems(updatedCartItems);
-    handleCartUpdate(updatedCartItems);
   };
 
   const closeCart = () => {
@@ -111,7 +109,9 @@ function App() {
               closeCart={closeCart}
             />
           )}
-          {activePage === 'Bombas de agua' && <BombasAgua onCartUpdate={handleCartUpdate}/>}
+          {activePage === 'Bombas de agua' && <BombasAgua 
+              cartItems={cartItems}
+              setCartItems={setCartItems}/>}
           {activePage === 'Perforación de Pozos' && <Perforacion />}
           {activePage === 'Mantenimiento de Pozos' && <Mantenimiento />}
         </>

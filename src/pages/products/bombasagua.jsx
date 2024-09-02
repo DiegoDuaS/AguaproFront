@@ -11,10 +11,9 @@ import { CircularProgress } from '@mui/material';
 import { BiError } from "react-icons/bi";
 import './products.css';
 
-const BombasAgua = ({ onCartUpdate }) => {
+const BombasAgua = ({cartItems, setCartItems }) => {
   const [isLargeCardOpen, setIsLargeCardOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const [cartItems, setCartItems] = useState([]);
   const { data: productos, errorMessage, isLoading } = useApiP('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/productos');
 
   // Función para abrir tarjeta de información
@@ -33,15 +32,14 @@ const BombasAgua = ({ onCartUpdate }) => {
   const addToCart = (product) => {
   setCartItems((prevItems) => {
     const existingItem = prevItems.find((item) => item.id_producto === product.id_producto);
+
     const updatedItems = existingItem
       ? prevItems.map((item) =>
           item.id_producto === product.id_producto
-            ? { ...item, quantity: item.quantity + product.quantity }
+            ? { ...item, quantity: item.quantity + (product.quantity || 1) }
             : item
         )
-      : [...prevItems, { ...product, quantity: product.quantity || 1 }];
-
-    onCartUpdate(updatedItems);
+      : [...prevItems, { ...product, quantity: product.quantity || 1 }]; // Use the quantity from the product
 
     return updatedItems;
   });
@@ -93,6 +91,7 @@ const BombasAgua = ({ onCartUpdate }) => {
           closeCard={closeCard}
           product={selectedProduct}
           addToCart={addToCart}
+          cartItems={cartItems}
         />
       )}
     </main>
