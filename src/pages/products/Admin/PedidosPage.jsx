@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './admin.css';
 import { CiEdit } from "react-icons/ci";
 import searchIcon from './../../../image/searchIcon.png';
@@ -7,8 +7,32 @@ import useApiP from '../../../hooks/useAPIProducts';
 import { BiError } from "react-icons/bi";
 
 const PedidosPage = () => {
-
   const { data: pedidos, errorMessage, isLoading } = useApiP('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/pedidos');
+  const [estados, setEstados] = useState({}); // Estado para manejar los estados individuales de cada pedido
+
+  const handleEstadoChange = (pedidoId, newEstado) => {
+    setEstados((prevEstados) => ({
+      ...prevEstados,
+      [pedidoId]: newEstado, // Actualiza el estado específico de este pedido
+    }));
+  };
+
+  const getClassName = (estado) => {
+    switch (estado) {
+      case 'Pendiente':
+        return 'pendiente';
+      case 'Procesando':
+        return 'procesando';
+      case 'Enviado':
+        return 'enviado';
+      case 'Entregado':
+        return 'entregado';
+      case 'Cancelado':
+        return 'cancelado';
+      default:
+        return 'state';
+    }
+  };
 
   if (isLoading) {
     return (
@@ -111,7 +135,17 @@ const PedidosPage = () => {
             >
               ...
             </button>
-
+            <select
+              value={estados[pedido.id_pedido] || pedido.estado} 
+              onChange={(e) => handleEstadoChange(pedido.id_pedido, e.target.value)}
+              className={`state ${getClassName(estados[pedido.id_pedido] || pedido.estado)}`}
+            >
+              <option value="Pendiente">Pendiente</option>
+              <option value="Procesando">Procesando</option>
+              <option value="Enviado">Enviado</option>
+              <option value="Entregado">Entregado</option>
+              <option value="Cancelado">Cancelado</option>
+            </select>
           </div>
         ))}
       </div>

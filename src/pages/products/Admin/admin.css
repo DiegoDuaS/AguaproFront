@@ -115,6 +115,11 @@
     background-color: #f5f5f5;
     border-bottom: 2px solid #ddd;
   }
+
+  .table2-header {
+    background-color: #F5F5F5;
+    border-bottom: 2px solid #ddd;
+  }
   
   .table-row {
     border-bottom: 1px solid #ddd;
@@ -153,4 +158,55 @@
     flex-wrap: nowrap;
     align-items: center;
     justify-content: space-between
+  }
+
+  .table2 {
+    width: 80%;
+    margin-top: 45px;
+    border: 1px solid #ddd;
+    align-items: center;
+  }
+
+  .table2-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 5px;
+    padding: 10px 0;
+    text-align: center;
+    align-items: center;
+  }
+
+  .state{
+    border-radius: 10px;
+    height: 2rem;
+    width: 7rem;
+    border-color: #F3F3F4;
+    text-align: center;
+  }
+
+  .state.pendiente {
+    background-color: #7d7d7d;
+  }
+
+  .state.procesando {
+    background-color: #dfc51b;
+  }
+
+  .state.enviado {
+    background-color: #db8e19;
+  }
+
+  .state.entregado {
+    background-color: #1eb10b;
+  }
+
+  .state.cancelado {
+    background-color: #990404;
+  }
+
+  .clients-tablespace{
+    width: -webkit-fill-available;
+    height: auto;
+    display: flex;
+    justify-content: center;
   }
