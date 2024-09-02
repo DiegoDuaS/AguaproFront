@@ -58,9 +58,35 @@ export const useApi = () => {
             setLoading(false);
         }
     };
+
+    const getProductType = async () => {
+        setLoading(true);
+
+        try{
+            const response = await fetch(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/tipos_producto`);
+            if (response.ok) {
+                const responseData = await response.json();
+                if (responseData.status === 'success' && Array.isArray(responseData.data)) {
+                  setData(responseData.data);
+                  setError(null);
+                } else {
+                  setError('Respuesta inesperada del servidor.');
+                }
+              } else {
+                setError(`Error al obtener datos: ${response.status}`);
+              }
+        }
+        catch (error) {
+            console.error('Error al usar Get Product:', error);
+            setError('Error al conectarse al servidor.');
+          } finally {
+            setLoading(false);
+          }
+
+    }
     
 
 
 
-    return { userLogin };
+    return { userLogin, getProductType };
 };

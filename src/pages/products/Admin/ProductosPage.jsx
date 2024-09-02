@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { CiEdit } from "react-icons/ci";
 import InfoProdCard from '../../../components/infoProdCard';
 import EditProdCard from '../../../components/EditProdCard';
+import NewProdCard from '../../../components/NewProdCard';
 import { BiError } from "react-icons/bi";
 
 
@@ -15,6 +16,7 @@ const ProductosPage = () => {
 
 
   const [isInformationCardOpen, setisInformationCardOpen] = useState(false);
+  const [isNewCardOpen, setisNewCardOpen] = useState(false);
   const [isEditCardOpen, setisEditCardOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
@@ -36,6 +38,14 @@ const ProductosPage = () => {
   const closeEditCard = () => {
     setisEditCardOpen(false);
     setSelectedProduct(null);
+  };
+
+  const openNewCard = () => {
+    setisNewCardOpen(true);
+  };
+
+  const closeNewCard = () => {
+    setisNewCardOpen(false);
   };
 
   if (isLoading) {
@@ -99,7 +109,7 @@ const ProductosPage = () => {
             <img src={searchIcon} alt="Search" />
           </button>
         </div>
-        <button className='addbutton'> Agregar Producto +</button>
+        <button className='addbutton' onClick={() => openNewCard()}> Agregar Producto +</button>
       </div>
       {/* PANTALLA PRINCIPAL SIN BUSCAR */}
       <div className="table">
@@ -147,6 +157,12 @@ const ProductosPage = () => {
           closeCard={closeEditCard}
           product={selectedProduct}
           refetchProducts={refetch}
+        />
+      )}
+      {isNewCardOpen && (
+        <NewProdCard
+          isOpen={isNewCardOpen}
+          closeCard={closeNewCard}
         />
       )}
     </div>
