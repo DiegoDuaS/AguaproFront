@@ -29,7 +29,6 @@ const NewProdCard = ({ isOpen, closeCard }) => {
   const [size, setSize] = useState('');  // Se manda paso 4
   const [precio, setPrecio] = useState(''); // Se manda paso 4
   const [disponibilidad, setDisponibilidad] = useState(''); // Se manda paso 4
-
   if (!isOpen) return null;
 
   const handleTipoChange = (e) => {
@@ -71,6 +70,7 @@ const NewProdCard = ({ isOpen, closeCard }) => {
         alert("Completa todos los campos");
         return;
       }
+
       setStep(3);
     } else if (step === 3) {
       if (!marca || !material || !profundidad || !conexionTuberia || !presionFuncional || !head || !flowRate || !aplicaciones ||  !energia || !condiciones || !temperaturaMedia) {
@@ -88,7 +88,6 @@ const NewProdCard = ({ isOpen, closeCard }) => {
         closeCard();
         console.log({precio, size, disponibilidad})
       }
-    
   };
 
   if (isLoading) {
@@ -115,7 +114,6 @@ const NewProdCard = ({ isOpen, closeCard }) => {
     <div className="large-card-newprod">
       <button className="close-button" onClick={closeCard}>X</button>
       <h2 className='text'>Nuevo Producto</h2>
-      
         {step === 1 && (
           <>
             <h4>Tipo de Producto</h4>
