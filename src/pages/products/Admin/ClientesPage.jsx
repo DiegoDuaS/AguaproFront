@@ -6,7 +6,7 @@ import useApiP from '../../../hooks/useAPIProducts';
 import { BiError } from "react-icons/bi";
 
 const ClientesPage = () => {
-  const { data: pedidos, errorMessage, isLoading } = useApiP('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/pedidos');
+  const { data: clientes, errorMessage, isLoading } = useApiP('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/clientes');
 
   if (isLoading) {
     return (
@@ -25,7 +25,7 @@ const ClientesPage = () => {
         <div className='space' />
         <div className='loadingcontainer'>
           <CircularProgress />
-          <p className='loading'>Cargando pedidos...</p>
+          <p className='loading'>Cargando Clientes...</p>
         </div>
       </div>
     );
@@ -68,28 +68,26 @@ const ClientesPage = () => {
         </button>
       </div>
 
+      <div className='clients-tablespace'> 
       {/* PANTALLA PRINCIPAL SIN BUSCAR */}
-      <div className="table">
-        <div className="table-grid table-header">
-          <h3>Cliente Id</h3>
-          <h3>Nombre</h3>
-          <h3>NIT</h3>
-        </div>
-        {pedidos.map((pedido, index) => (
-          <div className="table-grid table-row" key={index}>
-            <p className='table-text'>#{pedido.id_pedido}</p>
-            <p className='table-text'>{pedido.cliente}</p>
-            <p className='table-text'>{pedido.nit_empresa}</p>
-            <p className='table-text'>Q.{pedido.monto_total}</p>
-            <p className='table-text'>{pedido.direccion}</p>
-            <button 
-              className='more-edit' 
-            >
-              ...
-            </button>
-
+        <div className="table2">
+          <div className="table2-grid table2-header">
+            <h3>Cliente Id</h3>
+            <h3>Nombre</h3>
+            <h3>Dirección</h3>
+            <h3>Teléfono</h3>
+            <h3>NIT</h3>
           </div>
-        ))}
+          {clientes.map((cliente, index) => (
+            <div className="table2-grid table-row" key={index}>
+              <p className='table-text'>#{cliente.id_cliente}</p>
+              <p className='table-text'>{cliente.nombre}</p>
+              <p className='table-text'>{cliente.direccion}</p>
+              <p className='table-text'>{cliente.telefono}</p>
+              <p className='table-text'>{cliente.nit}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

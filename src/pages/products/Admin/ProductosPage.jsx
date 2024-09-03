@@ -163,6 +163,7 @@ const ProductosPage = () => {
         <NewProdCard
           isOpen={isNewCardOpen}
           closeCard={closeNewCard}
+          refetchProducts={refetch}
         />
       )}
     </div>

@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
+import { createProduct, addProductChars, fetchTypeId, addProductVariableChars } from '../hooks/useProductChars';
 import useApiP from '../hooks/useAPIProducts';
 import './NewProdCard.css';
 import { CircularProgress } from '@mui/material';
 
-const NewProdCard = ({ isOpen, closeCard }) => {
+const NewProdCard = ({ isOpen, closeCard, refetchProducts }) => {
   const { data: tipos, errorMessage, isLoading } = useApiP('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/tipos_producto');
   const { data: energias, errorMessageE, isLoadingE } = useApiP('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/energia');
   const { data: condicioness, errorMessageC, isLoadingC } = useApiP('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/condiciones');
@@ -52,11 +53,16 @@ const NewProdCard = ({ isOpen, closeCard }) => {
   const handlePrecioChange = (e) => setPrecio(e.target.value);
   const handleDisponibilidadChange = (e) => setDisponibilidad(e.target.value);
 
-
   const handleNextStep = async () => {
     if (step === 1) {
       if (tipoProducto === 'otro') {
         setTipoSelected(newTipo);
+        const newtipo = await fetchTypeId(newTipo);
+        if (!newtipo) {
+          alert("No se pudo crear el nuevo tipo.");
+          return;
+        }
+
       } else {
         setTipoSelected(tipoProducto);
       }
@@ -78,15 +84,61 @@ const NewProdCard = ({ isOpen, closeCard }) => {
         return;
       }
       setStep(4);
-      console.log({ material, profundidad, conexionTuberia, presionFuncional, head, flowRate, aplicaciones, energia, condiciones, temperaturaMedia });
     } else if (step === 4) {
         if (!precio || !size || !disponibilidad
         ) {
           alert("Completa todos los campos");
           return;
         }
+        const productDetails = {
+          nombre,
+          descripcion,
+          tipo_producto: tipoSelected,
+        };
+        const createdProduct = await createProduct(productDetails.nombre, productDetails.descripcion, productDetails.tipo_producto);
+        if (!createdProduct) {
+          alert("No se pudo crear el producto.");
+          return;
+        }
+        
+        // Prepare product characteristics
+        const productChars = {
+          energia:energia,
+          condiciones:condiciones,
+          marca,
+          material,
+          profundidad,
+          conexion_tuberia: conexionTuberia,
+          presion_funcional:presionFuncional,
+          head,
+          flow_rate:flowRate,
+          aplicaciones,
+          producto: createdProduct.id_producto, // Assuming createdProduct contains an ID
+          temperatura_media: temperaturaMedia
+        };
+        // Add product characteristics
+        const result = await addProductChars(productChars);
+        if (result === 'No fue posible guardar el dato de energía' || result === 'No fue posible guardar el dato de Condiciones') {
+          alert(result);
+          return;
+        }
+  
+        //caracteristicas variables
+         const productVarChars = {
+          id_caracteristicas: result.data.id_caracteristicas,
+          sizeParams: size,
+          precio,
+          disponibilidad
+        };
+        // Add product variable characteristics
+        const result2 = await addProductVariableChars(productVarChars);
+        if (result2 === 'No fue posible guardar el dato de Tamaño') {          
+         alert(result2);
+          return;
+        }
+        alert("Se agregó el producto.");
+        await refetchProducts();
         closeCard();
-        console.log({precio, size, disponibilidad})
       }
   };
 
@@ -293,7 +345,7 @@ const NewProdCard = ({ isOpen, closeCard }) => {
                         </button>
                     </div>
                 </div>
-
+                <div className='space2'></div>
             </div>
 
 
