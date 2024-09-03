@@ -98,7 +98,7 @@ const NewProdCard = ({ isOpen, closeCard, refetchProducts }) => {
           descripcion,
           tipo_producto: tipoSelected,
         };
-         console.log(productDetails.nombre, productDetails.descripcion, productDetails.tipo_producto);
+         //console.log(productDetails.nombre, productDetails.descripcion, productDetails.tipo_producto);
         // Create the product
         const createdProduct = await createProduct(productDetails.nombre, productDetails.descripcion, productDetails.tipo_producto);
         if (!createdProduct) {
@@ -106,30 +106,19 @@ const NewProdCard = ({ isOpen, closeCard, refetchProducts }) => {
           return;
         }
         console.log('API Response:', createdProduct);
-        const selectedId = condiciones;
-        const selectedCondition = condicioness.find(condicion => condicion.condiciones === Number(selectedId));
-         setCondiciones(selectedCondition);
-         //console.log(condicioness);
+        console.log(condiciones);
+        console.log(energia);
         // Prepare product characteristics
         const productChars = {
-          energiaParams: {
-            min_hp: energia.min_hp || 0,
-            max_hp: energia.max_hp || 0,
-            capacitor: energia.capacitor || 0
-          },
-          condicionesParams: {
-            temperatura_liquida_min: condiciones.temperatura_liquida_min || 0,
-            temperatura_liquida_max: condiciones.temperatura_liquida_max || 0,
-            temperatura_ambiente: condiciones.temperatura_ambiente || 0,
-            presion: presionFuncional
-          },
+          energia:Number(energia),
+          condiciones:Number(condiciones),
           marca,
           material,
           profundidad,
-          conexionTuberia: conexionTuberia,
-          presionFuncional,
+          conexion_tuberia: conexionTuberia,
+          presion_funcional:presionFuncional,
           head,
-          flowRate,
+          flow_rate:flowRate,
           aplicaciones,
           producto: createdProduct.id_producto, // Assuming createdProduct contains an ID
           temperatura_media: temperaturaMedia
@@ -141,6 +130,25 @@ const NewProdCard = ({ isOpen, closeCard, refetchProducts }) => {
           alert(result);
           return;
         }
+        console.log(result.data.id_caracteristicas);
+        console.log(size);
+        console.log(precio);
+        console.log(disponibilidad);
+        //caracteristicas variables
+         const productVarChars = {
+          id_caracteristicas: result.data.id_caracteristicas,
+          size,
+          precio,
+          disponibilidad
+        };
+         console.log(productVarChars);
+        // Add product variable characteristics
+        const result2 = await addProductVariableChars(productVarChars);
+        if (result2 === 'No fue posible guardar el dato de Tamaño') {          
+         alert(result2);
+          return;
+        }
+        console.log(result2);
         alert("Se agregó el producto.");
         await refetchProducts();
         closeCard();

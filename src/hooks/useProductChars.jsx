@@ -114,21 +114,21 @@ export async function addProductChars({
     marca, material, profundidad, conexion_tuberia, presion_funcional, head, flow_rate, aplicaciones, producto, temperatura_media
   }) {
   try {
-      let energiaId = null;
-      if (energiaParams) {
-        energiaId = await fetchEnergyId(energiaParams.min_hp, energiaParams.max_hp, energiaParams.capacitor);
-        if (!energiaId) {
-          return 'No fue posible guardar el dato de energía';
-        }
-      }
+      //let energiaId = null;
+      //if (energiaParams) {
+        //energiaId = await fetchEnergyId(energiaParams.min_hp, energiaParams.max_hp, energiaParams.capacitor);
+        //if (!energiaId) {
+          //return 'No fue posible guardar el dato de energía';
+        //}
+      //}
   
-      let condicionesId = null;
-      if (condicionesParams) {
-        condicionesId = await fetchConditionId(condicionesParams.temperatura_liquida_min, condicionesParams.temperatura_liquida_max, condicionesParams.temperatura_ambiente, condicionesParams.presion);
-        if (!condicionesId) {
-          return 'No fue posible guardar el dato de Condiciones';
-        }
-      }
+      //let condicionesId = null;
+      //if (condicionesParams) {
+        //condicionesId = await fetchConditionId(condicionesParams.temperatura_liquida_min, condicionesParams.temperatura_liquida_max, condicionesParams.temperatura_ambiente, condicionesParams.presion);
+        //if (!condicionesId) {
+          //return 'No fue posible guardar el dato de Condiciones';
+       // }
+      //}
   
       const response = await fetch('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/caracteristicas', {
         method: 'POST',
@@ -145,8 +145,8 @@ export async function addProductChars({
           flow_rate,
           aplicaciones: aplicaciones?.toLowerCase(),
           producto,
-          energia: energiaId,
-          condiciones: condicionesId,
+          energia: energiaParams,
+          condiciones: condicionesParams,
           temperatura_media
         })
       });
@@ -194,24 +194,40 @@ export async function addProductVariableChars({
     disponibilidad
   }) {
   try {
-    let sizeId = null;
-    if (sizeParams) {
-      sizeId = await fetchSizeId(sizeParams.min_gpm, sizeParams.max_gpm, sizeParams.range);
-      if (!sizeId) {
-        return 'No fue posible guardar el dato de Tamaño';
-      }
+    //let sizeId = null;
+
+    // If sizeParams is provided, fetch the corresponding size ID
+    //if (sizeParams) {
+      //sizeId = await fetchSizeId(sizeParams.min_gpm, sizeParams.max_gpm, sizeParams.range);
+      //if (!sizeId) {
+        //return 'No fue posible guardar el dato de Tamaño';
+      //}
+    //}
+
+    // Insert product characteristics
+    const response = await fetch('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/caracteristicas/variables', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        id_caracteristicas, 
+        sizeParams, 
+        precio, 
+        disponibilidad
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error: ${response.statusText}`);
     }
 
-      // Inserción de características del producto
-      const response = await request(app)
-        .post('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/caracteristicas/variables')
-        .send({
-          id_caracteristicas, sizeId, precio, disponibilidad
-        });
+    const data = await response.json();
+    return data;
 
-      return response;
   } catch (error) {
-      console.error('Error al agregar características:', error);
-      throw error;
+    console.error('Error al agregar características:', error);
+    throw error;
   }
 }
+
