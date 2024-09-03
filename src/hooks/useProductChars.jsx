@@ -203,7 +203,7 @@ export async function addProductVariableChars({
         //return 'No fue posible guardar el dato de Tamaño';
       //}
     //}
-
+   // console.log(id_caracteristicas);
     // Insert product characteristics
     const response = await fetch('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/caracteristicas/variables', {
       method: 'POST',
@@ -211,10 +211,10 @@ export async function addProductVariableChars({
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        id_caracteristicas, 
-        sizeParams, 
-        precio, 
-        disponibilidad
+        id_caracteristicas,
+        sizeParams: Number(sizeParams),
+        precio: Number(precio),
+        disponibilidad: Number(disponibilidad)
       })
     });
 
