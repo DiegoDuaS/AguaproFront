@@ -84,8 +84,6 @@ const NewProdCard = ({ isOpen, closeCard, refetchProducts }) => {
         alert("Completa todos los campos");
         return;
       }
-      console.log(energia)
-      console.log(condiciones)
       setStep(4);
     } else if (step === 4) {
         if (!precio || !size || !disponibilidad
@@ -99,7 +97,6 @@ const NewProdCard = ({ isOpen, closeCard, refetchProducts }) => {
           tipo_producto: tipoSelected,
         };
         const createdProduct = await createProduct(productDetails.nombre, productDetails.descripcion, productDetails.tipo_producto);
-        console.log(createdProduct);
         if (!createdProduct) {
           alert("No se pudo crear el producto.");
           return;
@@ -122,7 +119,6 @@ const NewProdCard = ({ isOpen, closeCard, refetchProducts }) => {
         };
         // Add product characteristics
         const result = await addProductChars(productChars);
-        console.log(result);
         if (result === 'No fue posible guardar el dato de energía' || result === 'No fue posible guardar el dato de Condiciones') {
           alert(result);
           return;
@@ -137,7 +133,6 @@ const NewProdCard = ({ isOpen, closeCard, refetchProducts }) => {
         };
         // Add product variable characteristics
         const result2 = await addProductVariableChars(productVarChars);
-        console.log(result2);
         if (result2 === 'No fue posible guardar el dato de Tamaño') {          
          alert(result2);
           return;

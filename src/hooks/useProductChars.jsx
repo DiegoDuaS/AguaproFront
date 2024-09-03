@@ -33,7 +33,6 @@ export async function createProduct(nombre, descripcion, tipo_producto) {
         return 'No fue posible guardar el dato de tipo';
       }
   }
-  console.log(typeId);
   const newProduct = {
     nombre: nombre,
     descripción: descripcion,
@@ -54,7 +53,6 @@ export async function createProduct(nombre, descripcion, tipo_producto) {
     }
 
     const result = await response.json();
-    console.log('Producto creado:', result.data);
     return result.data;
   } catch (error) {
     console.error('Error al crear el producto:', error);
@@ -186,8 +184,6 @@ async function fetchSizeId(min_gpm, max_gpm, range) {
   }
 }
 
-// 7. crear características variables
-// Puede hacerse varias veces para un mismo producto
 export async function addProductVariableChars({ 
     id_caracteristicas,
     sizeParams, // { min_gpm, max_gpm, range }
@@ -195,23 +191,9 @@ export async function addProductVariableChars({
     disponibilidad
   }) {
   try {
-    //let sizeId = null;
-
-    // If sizeParams is provided, fetch the corresponding size ID
-    //if (sizeParams) {
-      //sizeId = await fetchSizeId(sizeParams.min_gpm, sizeParams.max_gpm, sizeParams.range);
-      //if (!sizeId) {
-        //return 'No fue posible guardar el dato de Tamaño';
-      //}
-    //}
-   // console.log(id_caracteristicas);
-    // Insert product characteristics
-
     const body1 = JSON.stringify({ id_caracteristicas, size: parseInt(sizeParams, 10), 
       precio: parseInt(precio, 10), 
       disponibilidad: parseInt(disponibilidad, 10)})
-
-    console.log(body1)
 
     const response = await fetch('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/caracteristicas/variables', {
       method: 'POST',
