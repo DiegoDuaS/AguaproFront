@@ -86,7 +86,6 @@ const PedidosPage = () => {
     };
     return classes[estado] || 'state';
   };
-
   if (isLoading) {
     return (
       <div className="container">
@@ -95,7 +94,7 @@ const PedidosPage = () => {
           <input
             className="searchbar"
             type="text"
-            placeholder="Search Pedidos..."
+            placeholder="Search Productos..."
           />
           <button className="search-btn">
             <img src={searchIcon} alt="Search" />
@@ -132,8 +131,6 @@ const PedidosPage = () => {
       </div>
     );
   }
-
-  
 
   return (
     <div className="container">
