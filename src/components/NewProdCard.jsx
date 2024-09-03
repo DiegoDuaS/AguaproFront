@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
+import { createProduct, addProductChars, fetchTypeId, addProductVariableChars } from '../hooks/useProductChars';
 import useApiP from '../hooks/useAPIProducts';
 import './NewProdCard.css';
 import { CircularProgress } from '@mui/material';
 
-const NewProdCard = ({ isOpen, closeCard }) => {
+const NewProdCard = ({ isOpen, closeCard, refetchProducts }) => {
   const { data: tipos, errorMessage, isLoading } = useApiP('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/tipos_producto');
   const { data: energias, errorMessageE, isLoadingE } = useApiP('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/energia');
   const { data: condicioness, errorMessageC, isLoadingC } = useApiP('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/condiciones');
@@ -47,16 +48,23 @@ const NewProdCard = ({ isOpen, closeCard }) => {
   const handleAplicacionesChange = (e) => setAplicaciones(e.target.value);
   const handleEnergiaChange = (e) => setEnergia(e.target.value);
   const handleCondicionesChange = (e) => setCondiciones(e.target.value);
+  //console.log(condiciones);
   const handleTemperaturaMediaChange = (e) => setTemperaturaMedia(e.target.value);
   const handleSizeChange = (e) => setSize(e.target.value);
   const handlePrecioChange = (e) => setPrecio(e.target.value);
   const handleDisponibilidadChange = (e) => setDisponibilidad(e.target.value);
+  
 
 
   const handleNextStep = async () => {
     if (step === 1) {
       if (tipoProducto === 'otro') {
         setTipoSelected(newTipo);
+        const newtipo = await fetchTypeId(newTipo);
+        if (!newtipo) {
+          alert("No se pudo crear el nuevo tipo.");
+          return;
+        }
       } else {
         setTipoSelected(tipoProducto);
       }
@@ -85,8 +93,58 @@ const NewProdCard = ({ isOpen, closeCard }) => {
           alert("Completa todos los campos");
           return;
         }
+        const productDetails = {
+          nombre,
+          descripcion,
+          tipo_producto: tipoSelected,
+        };
+         console.log(productDetails.nombre, productDetails.descripcion, productDetails.tipo_producto);
+        // Create the product
+        const createdProduct = await createProduct(productDetails.nombre, productDetails.descripcion, productDetails.tipo_producto);
+        if (!createdProduct) {
+          alert("No se pudo crear el producto.");
+          return;
+        }
+        console.log('API Response:', createdProduct);
+        const selectedId = condiciones;
+        const selectedCondition = condicioness.find(condicion => condicion.condiciones === Number(selectedId));
+         setCondiciones(selectedCondition);
+         //console.log(condicioness);
+        // Prepare product characteristics
+        const productChars = {
+          energiaParams: {
+            min_hp: energia.min_hp || 0,
+            max_hp: energia.max_hp || 0,
+            capacitor: energia.capacitor || 0
+          },
+          condicionesParams: {
+            temperatura_liquida_min: condiciones.temperatura_liquida_min || 0,
+            temperatura_liquida_max: condiciones.temperatura_liquida_max || 0,
+            temperatura_ambiente: condiciones.temperatura_ambiente || 0,
+            presion: presionFuncional
+          },
+          marca,
+          material,
+          profundidad,
+          conexionTuberia: conexionTuberia,
+          presionFuncional,
+          head,
+          flowRate,
+          aplicaciones,
+          producto: createdProduct.id_producto, // Assuming createdProduct contains an ID
+          temperatura_media: temperaturaMedia
+        };
+        console.log(productChars);
+        // Add product characteristics
+        const result = await addProductChars(productChars);
+        if (result === 'No fue posible guardar el dato de energía' || result === 'No fue posible guardar el dato de Condiciones') {
+          alert(result);
+          return;
+        }
+        alert("Se agregó el producto.");
+        await refetchProducts();
         closeCard();
-        console.log({precio, size, disponibilidad})
+        //console.log({precio, size, disponibilidad})
       }
   };
 
