@@ -7,7 +7,7 @@
     transform: translate(-50%, -50%);
     width: 90%;
     max-width: 900px;
-    height:70%;
+    height:auto;
     background-color: #F5F4F1;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     border-radius: 8px;
@@ -119,3 +119,6 @@
     margin-bottom: 1rem;
   }
 
+  .space2{
+    height: 25px;
+  }

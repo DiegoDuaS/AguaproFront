@@ -346,6 +346,7 @@ const NewProdCard = ({ isOpen, closeCard, refetchProducts }) => {
                         </button>
                     </div>
                 </div>
+                <div className='space2'></div>
 
             </div>
 
