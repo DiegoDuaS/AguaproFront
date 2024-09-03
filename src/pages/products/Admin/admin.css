@@ -180,28 +180,29 @@
     border-radius: 10px;
     height: 2rem;
     width: 7rem;
-    border-color: #F3F3F4;
     text-align: center;
+    background-color: #ffffff;
+    color: #000000;
   }
 
   .state.pendiente {
-    background-color: #7d7d7d;
+    border: 4px solid #7d7d7d;
   }
 
   .state.procesando {
-    background-color: #dfc51b;
+    border: 4px solid #dfc51b;
   }
 
   .state.enviado {
-    background-color: #db8e19;
+    border: 4px solid #db8e19;
   }
 
   .state.entregado {
-    background-color: #1eb10b;
+    border: 4px solid #1eb10b;
   }
 
   .state.cancelado {
-    background-color: #990404;
+    border: 4px solid #990404;
   }
 
   .clients-tablespace{
@@ -209,4 +210,22 @@
     height: auto;
     display: flex;
     justify-content: center;
+  }
+
+  .success-message{
+    color: #000000;
+    padding-top: 2rem;
+    font-size: large;
+    text-align: center;
+  }
+
+  .error-message{
+    color: #000000;
+    padding-top: 2rem;
+    font-size: large;
+  }
+
+  .option{
+    background-color: #F3F3F4;
+    color: #000000;
   }
