@@ -1,3 +1,4 @@
+import { GiConsoleController } from "react-icons/gi";
 
 
 // 1. elegir/crear tipo producto
@@ -109,8 +110,8 @@ async function fetchConditionId(Temperatura_liquida_min, Temperatura_liquida_max
 // 5. crear características
 // Debe hacerse solo una vez para un mismo producto
 export async function addProductChars({
-    energiaParams, // { min_hp, max_hp, capacitor }
-    condicionesParams, // { temperatura_liquida_min, temperatura_liquida_max, temperatura_ambiente, presion }
+    energia, // { min_hp, max_hp, capacitor }
+    condiciones, // { temperatura_liquida_min, temperatura_liquida_max, temperatura_ambiente, presion }
     marca, material, profundidad, conexion_tuberia, presion_funcional, head, flow_rate, aplicaciones, producto, temperatura_media
   }) {
   try {
@@ -145,8 +146,8 @@ export async function addProductChars({
           flow_rate,
           aplicaciones: aplicaciones?.toLowerCase(),
           producto,
-          energia: energiaParams,
-          condiciones: condicionesParams,
+          energia: energia,
+          condiciones: condiciones,
           temperatura_media
         })
       });
@@ -157,7 +158,7 @@ export async function addProductChars({
       return data;
 
   } catch (error) {
-      console.error('Error al agregar características:', error);
+      console.error('Error al agregar características fijas:', error);
       throw error;
   }
 }
@@ -205,17 +206,19 @@ export async function addProductVariableChars({
     //}
    // console.log(id_caracteristicas);
     // Insert product characteristics
+
+    const body1 = JSON.stringify({ id_caracteristicas, size: parseInt(sizeParams, 10), 
+      precio: parseInt(precio, 10), 
+      disponibilidad: parseInt(disponibilidad, 10)})
+
+    console.log(body1)
+
     const response = await fetch('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/caracteristicas/variables', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({
-        id_caracteristicas,
-        sizeParams: Number(sizeParams),
-        precio: Number(precio),
-        disponibilidad: Number(disponibilidad)
-      })
+      body: body1
     });
 
     if (!response.ok) {
@@ -226,7 +229,7 @@ export async function addProductVariableChars({
     return data;
 
   } catch (error) {
-    console.error('Error al agregar características:', error);
+    console.error('Error al agregar características variables:', error);
     throw error;
   }
 }

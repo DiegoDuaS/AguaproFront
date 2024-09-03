@@ -48,7 +48,6 @@ const NewProdCard = ({ isOpen, closeCard, refetchProducts }) => {
   const handleAplicacionesChange = (e) => setAplicaciones(e.target.value);
   const handleEnergiaChange = (e) => setEnergia(e.target.value);
   const handleCondicionesChange = (e) => setCondiciones(e.target.value);
-  //console.log(condiciones);
   const handleTemperaturaMediaChange = (e) => setTemperaturaMedia(e.target.value);
   const handleSizeChange = (e) => setSize(e.target.value);
   const handlePrecioChange = (e) => setPrecio(e.target.value);
@@ -85,8 +84,9 @@ const NewProdCard = ({ isOpen, closeCard, refetchProducts }) => {
         alert("Completa todos los campos");
         return;
       }
+      console.log(energia)
+      console.log(condiciones)
       setStep(4);
-      console.log({ material, profundidad, conexionTuberia, presionFuncional, head, flowRate, aplicaciones, energia, condiciones, temperaturaMedia });
     } else if (step === 4) {
         if (!precio || !size || !disponibilidad
         ) {
@@ -98,20 +98,17 @@ const NewProdCard = ({ isOpen, closeCard, refetchProducts }) => {
           descripcion,
           tipo_producto: tipoSelected,
         };
-         //console.log(productDetails.nombre, productDetails.descripcion, productDetails.tipo_producto);
-        // Create the product
         const createdProduct = await createProduct(productDetails.nombre, productDetails.descripcion, productDetails.tipo_producto);
+        console.log(createdProduct);
         if (!createdProduct) {
           alert("No se pudo crear el producto.");
           return;
         }
-        console.log('API Response:', createdProduct);
-        console.log(condiciones);
-        console.log(energia);
+        
         // Prepare product characteristics
         const productChars = {
-          energia:Number(energia),
-          condiciones:Number(condiciones),
+          energia:energia,
+          condiciones:condiciones,
           marca,
           material,
           profundidad,
@@ -123,36 +120,31 @@ const NewProdCard = ({ isOpen, closeCard, refetchProducts }) => {
           producto: createdProduct.id_producto, // Assuming createdProduct contains an ID
           temperatura_media: temperaturaMedia
         };
-        console.log(productChars);
         // Add product characteristics
         const result = await addProductChars(productChars);
+        console.log(result);
         if (result === 'No fue posible guardar el dato de energía' || result === 'No fue posible guardar el dato de Condiciones') {
           alert(result);
           return;
         }
-        console.log(result.data.id_caracteristicas);
-        console.log(size);
-        console.log(precio);
-        console.log(disponibilidad);
+  
         //caracteristicas variables
          const productVarChars = {
           id_caracteristicas: result.data.id_caracteristicas,
-          size,
+          sizeParams: size,
           precio,
           disponibilidad
         };
-         console.log(productVarChars);
         // Add product variable characteristics
         const result2 = await addProductVariableChars(productVarChars);
+        console.log(result2);
         if (result2 === 'No fue posible guardar el dato de Tamaño') {          
          alert(result2);
           return;
         }
-        console.log(result2);
         alert("Se agregó el producto.");
         await refetchProducts();
         closeCard();
-        //console.log({precio, size, disponibilidad})
       }
   };
 
