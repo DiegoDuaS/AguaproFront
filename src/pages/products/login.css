@@ -98,3 +98,7 @@
 .spacelogin{
   height: 75px;
 }
+
+.errorMessage{
+  color: black;
+}

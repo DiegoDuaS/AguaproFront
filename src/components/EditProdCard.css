@@ -30,13 +30,13 @@
   }
   
   .large-card::-webkit-scrollbar-thumb {
-    background: #00668C; /* Color del pulgar */
+    background: #6c6c6c; /* Color del pulgar */
     border-radius: 10px;
     max-height: 10px;
   }
   
   .large-card::-webkit-scrollbar-thumb:hover {
-    background: #00668C; /* Color del pulgar al pasar el mouse */
+    background: #444444; /* Color del pulgar al pasar el mouse */
   }
 
 .text {
@@ -85,3 +85,20 @@
   display: flex;
   flex-direction: row;
 }
+
+.input{
+  height: 30px;
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid rgb(211, 209, 209);
+  background-color:rgb(211, 209, 209) ;
+  color: #555;
+  text-align: center;
+  font-size: 1em;
+}
+
+.save-button{
+    margin-top:15px;
+    background-color: #00668C;
+    color: #ffffff;
+  }

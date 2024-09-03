@@ -8,6 +8,8 @@ import CustomNav from "../../components/AdminNav.jsx";
 import AdminHeader from "../../components/AdminHeader.jsx";
 import PropTypes from 'prop-types';
 import { orders, products, analytics, clients } from './images.js';
+import { BsBoxSeam } from "react-icons/bs";
+
 
 const AdminPage = ({ onRouteChange }) => {
   const [selectedOption, setSelectedOption] = useState('Pedidos');
@@ -37,6 +39,11 @@ const AdminPage = ({ onRouteChange }) => {
 
   const handleLogout = () => {
     // Perform logout logic
+    localStorage.removeItem('token');
+    onRouteChange('Bombas de agua');
+  };
+
+  const handleLeave = () => {
     onRouteChange('Bombas de agua');
   };
 
@@ -50,6 +57,7 @@ const AdminPage = ({ onRouteChange }) => {
         handleLogout={handleLogout} 
         isExpanded={isExpanded} 
         toggleMenu={toggleMenu} 
+        handleLeave={handleLeave}
       />
       <div style={{ display: 'flex', flex: '1' }}>
         <CustomNav

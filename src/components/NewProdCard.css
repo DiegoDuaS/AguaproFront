@@ -1,0 +1,125 @@
+.large-card-newprod {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 900px;
+    height:auto;
+    background-color: #F5F4F1;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    z-index: 1000;
+    padding: 20px;
+    padding-top: 20px;
+    margin-top: 20px;
+    color: #000000;
+    align-items: center;
+  }
+
+  .text {
+    color:#00668C; 
+    font-size: 2.5em;
+    margin-bottom:0;
+    font-family: "Khand";
+    font-weight: bold;
+  }
+  
+  .question-section{
+    height: -webkit-fill-available;
+    width: -webkit-fill-available;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .next-button{
+    margin-top: 1rem;
+    background-color: #00668C;
+  }
+
+  .chooser{
+    width: 70%;
+    height: 3rem;
+    background-color: #F5F4F1;
+    border-radius: 4px;
+    color: #000000;
+    font-size: 15px;
+    border-color: rgb(192, 192, 192);
+    
+  }
+
+  .chooser2{
+    width: 70%;
+    height: 2rem;
+    background-color: #F5F4F1;
+    border-radius: 4px;
+    color: #000000;
+    font-size: 15px;
+    border-color: rgb(192, 192, 192);
+    
+  }
+
+  .writer{
+    width: 70%;
+    height: 3rem;
+    background-color: #F5F4F1;
+    border-radius: 4px;
+    color: #000000;
+    font-size: 15px;
+    border-color: rgb(192, 192, 192);
+  }
+
+  .writer2{
+    width: 70%;
+    height: 2rem;
+    background-color: #F5F4F1;
+    border-radius: 4px;
+    color: #000000;
+    font-size: 15px;
+    border-color: rgb(192, 192, 192);
+  }
+
+  .past-description{
+    width: -webkit-fill-available;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin-bottom: 0.5rem;
+  }
+
+  .divided{
+    height: -webkit-fill-available;
+    width: -webkit-fill-available;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+
+  .leftside{
+    width: -webkit-fill-available;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .rightside{
+    width: -webkit-fill-available;
+    display: flex;
+    flex-direction: column;
+    align-items: center
+  }
+  
+  h4{
+    color: #00668C;
+    margin-bottom: 1rem;
+  }
+
+  .space2{
+    height: 25px;
+  }
+

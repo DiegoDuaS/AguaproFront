@@ -1,17 +1,43 @@
 import './login.css';
-import { useState } from 'react';
-//import withRouting from './RouterHOC.jsx'; // Import the withRouting HOC
+import { useState, useEffect } from 'react';
+import { useAuth } from '../../hooks/authProvider';
 import PropTypes from 'prop-types';
+import { useApi } from '../../hooks/useApi';
+
 const LoginPage = ({ onRouteChange }) => {
+  const { userLogin, loading} = useApi();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const { login } = useAuth();
 
-  const handleLogin = () => {
-    // Handle login logic here
-    onRouteChange('AdminPage');
-    console.log('Logging in with', username, password);
-  };
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => {
+        setError('');
+      }, 5000); 
+
+      return () => clearTimeout(timer); 
+    }
+  }, [error]);
+
+  const handleSubmitLogin = async () => {
+    try {
+        const response = await userLogin(login, username, password);
+        
+        if (response.ok) {
+            onRouteChange('AdminPage');
+            console.log('Logging in with', username, password);                 
+            // Save token to local storage
+
+            console.log("token", localStorage.getItem('token'));
+            return;
+        }
+    } catch (error) {
+        setError(error.message); 
+    }
+};
+
 return (
     <div className="mainContainer">
       <div className="titleContainer">Aguatesa Login</div>
@@ -32,13 +58,14 @@ return (
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button className="inputButton" onClick={handleLogin}>
+        {error && <div className="errorMessage">{error}</div>}
+        <button className="inputButton" onClick={handleSubmitLogin}>
           Iniciar Sesión
         </button>
         <button className="inputButton" onClick={() => onRouteChange('Bombas de agua')}>
           Regresar
         </button>
-        {error && <div className="errorMessage">{error}</div>}
+        
         <div className="spacelogin"></div>
       </div>
     </div>
