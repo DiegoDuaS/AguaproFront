@@ -52,8 +52,6 @@ const NewProdCard = ({ isOpen, closeCard, refetchProducts }) => {
   const handleSizeChange = (e) => setSize(e.target.value);
   const handlePrecioChange = (e) => setPrecio(e.target.value);
   const handleDisponibilidadChange = (e) => setDisponibilidad(e.target.value);
-  
-
 
   const handleNextStep = async () => {
     if (step === 1) {
@@ -64,6 +62,7 @@ const NewProdCard = ({ isOpen, closeCard, refetchProducts }) => {
           alert("No se pudo crear el nuevo tipo.");
           return;
         }
+
       } else {
         setTipoSelected(tipoProducto);
       }
@@ -347,7 +346,6 @@ const NewProdCard = ({ isOpen, closeCard, refetchProducts }) => {
                     </div>
                 </div>
                 <div className='space2'></div>
-
             </div>
 
 
