@@ -27,6 +27,22 @@ const ProductosPage = () => {
     setisInformationCardOpen(false);
     setSelectedProduct(null);
   };
+  const openEditCard = (producto) => {
+    setSelectedProduct(producto);
+    setisEditCardOpen(true);
+  };
+
+  const closeEditCard = () => {
+    setisEditCardOpen(false);
+    setSelectedProduct(null);
+  };
+  const openNewCard = () => {
+    setisNewCardOpen(true);
+  };
+
+  const closeNewCard = () => {
+    setisNewCardOpen(false);
+  };
 
   const openEditCard = (producto) => {
     setSelectedProduct(producto);
