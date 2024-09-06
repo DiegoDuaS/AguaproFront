@@ -11,8 +11,8 @@ test('renders cart with items and updates total', () => {
 
   render(<Cart cartItems={cartItems} removeCartItem={jest.fn()} updateCartItem={jest.fn()} closeCart={jest.fn()} />);
   
-  expect(screen.getByText('Your Cart')).toBeInTheDocument();
+  expect(screen.getByText('Carrito')).toBeInTheDocument();
   expect(screen.getByText('Item 1')).toBeInTheDocument();
   expect(screen.getByText('Item 2')).toBeInTheDocument();
-  expect(screen.getByText('Total: $40.00')).toBeInTheDocument();
+  expect(screen.getByText('Total: Q40.00')).toBeInTheDocument();
 });
