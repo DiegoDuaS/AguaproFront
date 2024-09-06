@@ -87,6 +87,72 @@ const PedidosPage = () => {
     return classes[estado] || 'state';
   };
 
+      return () => clearTimeout(timer); 
+    }
+  }, [successMessage]);
+
+  useEffect(() => {
+    if (errorMessage) {
+      const timer = setTimeout(() => {
+        setErrorMessageState('');
+      }, 5000); 
+
+      return () => clearTimeout(timer); 
+    }
+  }, [errorMessage]);
+
+  const handleEstadoChange = async (pedidoId, newEstado) => {
+    let idEstado = 0;
+
+    if (newEstado === "Pendiente") {
+        idEstado = 1;
+    } else if (newEstado === "Procesando") {
+        idEstado = 2;
+    } else if (newEstado === "Enviado") {
+        idEstado = 3;
+    } else if (newEstado === "Entregado") {
+        idEstado = 4;
+    } else if (newEstado === "Cancelado") {
+        idEstado = 5;
+    }
+
+    try {
+      const response = await fetch(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/pedidos/${pedidoId}/status`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ pedidoId, estatus: idEstado }),
+      });
+
+      if (response.ok){
+        setEstados((prevEstados) => ({
+          ...prevEstados,
+          [pedidoId]: newEstado, 
+        }));
+        setSuccessMessage('Estado actualizado correctamente');
+        setErrorMessageState(''); // Clear any previous error messages
+        refetch(); // Reload the data
+      } else {
+        throw new Error('Error al actualizar el estado del pedido');
+      }
+    } catch (error) {
+      setErrorMessageState('Error al conectar con el servidor. Intente nuevamente.');
+      setSuccessMessage(''); // Clear any previous success messages
+      console.error(error);
+    }
+  };
+  
+  const getClassName = (estado) => {
+    const classes = {
+      'Pendiente': 'pendiente',
+      'Procesando': 'procesando',
+      'Enviado': 'enviado',
+      'Entregado': 'entregado',
+      'Cancelado': 'cancelado',
+    };
+    return classes[estado] || 'state';
+  };
   if (isLoading) {
     return (
       <div className="container">
@@ -95,7 +161,7 @@ const PedidosPage = () => {
           <input
             className="searchbar"
             type="text"
-            placeholder="Search Pedidos..."
+            placeholder="Search Productos..."
           />
           <button className="search-btn">
             <img src={searchIcon} alt="Search" />
