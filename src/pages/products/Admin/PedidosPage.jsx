@@ -133,8 +133,6 @@ const PedidosPage = () => {
     );
   }
 
-  
-
   return (
     <div className="container">
       <div className="text">Pedidos</div>

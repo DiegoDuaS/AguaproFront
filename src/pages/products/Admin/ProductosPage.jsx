@@ -13,8 +13,6 @@ import { BiError } from "react-icons/bi";
 
 const ProductosPage = () => {
   const { data: productos, errorMessage, isLoading, refetch } = useApiP('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/productos');
-
-
   const [isInformationCardOpen, setisInformationCardOpen] = useState(false);
   const [isNewCardOpen, setisNewCardOpen] = useState(false);
   const [isEditCardOpen, setisEditCardOpen] = useState(false);
@@ -29,7 +27,6 @@ const ProductosPage = () => {
     setisInformationCardOpen(false);
     setSelectedProduct(null);
   };
-
   const openEditCard = (producto) => {
     setSelectedProduct(producto);
     setisEditCardOpen(true);
@@ -39,7 +36,6 @@ const ProductosPage = () => {
     setisEditCardOpen(false);
     setSelectedProduct(null);
   };
-
   const openNewCard = () => {
     setisNewCardOpen(true);
   };
