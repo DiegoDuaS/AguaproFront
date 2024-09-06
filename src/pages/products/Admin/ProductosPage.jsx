@@ -44,24 +44,6 @@ const ProductosPage = () => {
     setisNewCardOpen(false);
   };
 
-  const openEditCard = (producto) => {
-    setSelectedProduct(producto);
-    setisEditCardOpen(true);
-  };
-
-  const closeEditCard = () => {
-    setisEditCardOpen(false);
-    setSelectedProduct(null);
-  };
-
-  const openNewCard = () => {
-    setisNewCardOpen(true);
-  };
-
-  const closeNewCard = () => {
-    setisNewCardOpen(false);
-  };
-
   if (isLoading) {
     return (
       <div className="container">

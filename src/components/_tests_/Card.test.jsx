@@ -12,4 +12,6 @@ test('renders Card component and triggers callback on button click', () => {
   
   fireEvent.click(screen.getByText('Más Información'));
   expect(onMoreInfoClick).toHaveBeenCalled();
+
+  //Cambiarlo para que funcione
 });
