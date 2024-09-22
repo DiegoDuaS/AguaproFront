@@ -37,6 +37,10 @@ const LoginPage = ({ onRouteChange }) => {
         setError(error.message); 
     }
 };
+  
+  const handleRegister = () => {
+     onRouteChange('RegisterPage');
+  };
 
 return (
     <div className="mainContainer">
@@ -65,7 +69,12 @@ return (
         <button className="inputButton" onClick={() => onRouteChange('Bombas de agua')}>
           Regresar
         </button>
-        
+        <div className="registerContainer">
+          ¿No tienes cuenta?{' '}
+          <span className="registerLink" onClick={handleRegister}>
+            regístrate ahora
+          </span>
+        </div>
         <div className="spacelogin"></div>
       </div>
     </div>
