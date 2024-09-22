@@ -8,6 +8,7 @@ import Perforacion from './pages/services/perforacion';
 import CustomNav from './components/CustomNav.jsx';
 import Cart from './components/cart';
 import LoginPage from './pages/products/login';
+import CheckoutPage from './pages/products/checkout';
 import AdminPage from './pages/products/AdminPage';
 import { AuthProvider } from './hooks/authProvider.jsx'; // Importa el AuthProvider
 import validateToken from './hooks/Auth';
@@ -45,6 +46,10 @@ function App() {
     }
   }
 };
+  
+  const handleCheckout = ()=> {
+    setActivePage('CheckoutPage');
+  }; 
 
   const handleOptionSelect = (option) => {
     setActivePage(option);
@@ -79,7 +84,10 @@ function App() {
       {activePage === 'AdminPage' && (
         <AdminPage onRouteChange={setActivePage} />
       )}
-      {activePage !== 'Login' && activePage !== 'AdminPage' && (
+      {activePage === 'CheckoutPage' && (
+        <CheckoutPage onRouteChange={setActivePage} />
+      )}
+      {activePage !== 'CheckoutPage' && activePage !== 'Login' && activePage !== 'AdminPage' && (
         <>
           <Header toggleCart={toggleCart} navigateToLogin={navigateToLogin} />
           <div className="fixed-section">
@@ -107,6 +115,7 @@ function App() {
               updateCartItem={updateCartItem}
               removeCartItem={removeCartItem}
               closeCart={closeCart}
+              checkout={handleCheckout}
             />
           )}
           {activePage === 'Bombas de agua' && <BombasAgua 

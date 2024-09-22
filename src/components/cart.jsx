@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import './cart.css'; // Import your CSS file
 import { IoCartOutline } from "react-icons/io5";
 
-const Cart = ({ cartItems, updateCartItem, removeCartItem, closeCart }) => {
+const Cart = ({ cartItems, updateCartItem, removeCartItem, closeCart, checkout }) => {
  console.log('Cart items:', cartItems);
  const [total, setTotal] = useState(0);
  const cartRef = useRef(null);
@@ -57,7 +57,7 @@ const Cart = ({ cartItems, updateCartItem, removeCartItem, closeCart }) => {
           </div>
           <div className="cart-footer">
             <div className="total-amount">Total: Q{total}</div>
-            <button className="checkout-button">Checkout</button>
+            <button onClick={checkout} className="checkout-button">Checkout</button>
           </div>
         </>
       )}
