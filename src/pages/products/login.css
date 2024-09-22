@@ -102,3 +102,9 @@
 .errorMessage{
   color: black;
 }
+
+.registerLink {
+  color: blue;
+  cursor: pointer;
+  text-decoration: underline;
+}

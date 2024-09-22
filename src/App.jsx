@@ -8,6 +8,7 @@ import Perforacion from './pages/services/perforacion';
 import CustomNav from './components/CustomNav.jsx';
 import Cart from './components/cart';
 import LoginPage from './pages/products/login';
+import RegisterPage from './pages/products/register';
 import CheckoutPage from './pages/products/checkout';
 import AdminPage from './pages/products/AdminPage';
 import { AuthProvider } from './hooks/authProvider.jsx'; // Importa el AuthProvider
@@ -81,13 +82,16 @@ function App() {
       {activePage === 'Login' && (
         <LoginPage onRouteChange={setActivePage} />
       )}
+      {activePage === 'RegisterPage' && (
+        <RegisterPage onRouteChange={setActivePage} />
+      )}
       {activePage === 'AdminPage' && (
         <AdminPage onRouteChange={setActivePage} />
       )}
       {activePage === 'CheckoutPage' && (
         <CheckoutPage onRouteChange={setActivePage} />
       )}
-      {activePage !== 'CheckoutPage' && activePage !== 'Login' && activePage !== 'AdminPage' && (
+      {activePage !== 'RegisterPage' && activePage !== 'CheckoutPage' && activePage !== 'Login' && activePage !== 'AdminPage' && (
         <>
           <Header toggleCart={toggleCart} navigateToLogin={navigateToLogin} />
           <div className="fixed-section">
