@@ -85,7 +85,7 @@
   border: none;
   background:#00668C;;
   color: white;
-  padding: 12px 24px;
+  padding-bottom: 16px;
   margin: 8px;
   font-size: 20px;
   border-radius: 8px;
@@ -111,4 +111,41 @@
 
 .registerContainer{
   color: black;
+}
+
+.toggleButton {
+  position: relative;
+  background: none; 
+  border: none; 
+  cursor: pointer; 
+  font-size: 20px; 
+  color: #555; 
+  top: 12px;
+  right: 15px;
+}
+
+.passwordInputBox {
+  display: flex;
+  flex-direction: row;
+  width: 400px;
+  align-items: flex-start;
+  background-color:rgb(211, 209, 209) ;
+  border-radius: 8px;
+  border: 1px solid rgb(211, 209, 209);
+  height: 48px;
+  margin-bottom: 8px;
+}
+
+.passinputBox {
+  height: 48px;
+  width: 100%;
+  font-size: large;
+  border-radius: 8px;
+  border: 1px solid rgb(211, 209, 209);
+  background-color:rgb(211, 209, 209) ;
+  padding-left: 8px;
+  font-size: 15px;
+  color: black;
+  border: 0;
+  outline: 0;
 }
