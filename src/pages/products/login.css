@@ -108,3 +108,7 @@
   cursor: pointer;
   text-decoration: underline;
 }
+
+.registerContainer{
+  color: black;
+}

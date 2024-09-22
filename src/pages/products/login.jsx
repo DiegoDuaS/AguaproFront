@@ -72,7 +72,7 @@ return (
         <div className="registerContainer">
           ¿No tienes cuenta?{' '}
           <span className="registerLink" onClick={handleRegister}>
-            regístrate ahora
+            Regístrate Ahora
           </span>
         </div>
         <div className="spacelogin"></div>
