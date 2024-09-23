@@ -104,3 +104,4 @@ RegisterPage.propTypes = {
 };
 
 export default RegisterPage;
+
