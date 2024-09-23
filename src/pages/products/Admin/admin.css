@@ -229,3 +229,14 @@
     background-color: #F3F3F4;
     color: #000000;
   }
+
+  .direccionChange{
+    background-color: #F3F3F4;
+    height: 30px;
+    border-color: #000000;
+    border-width: 1px;
+    border-radius: 10px;
+    color: #000000;
+    text-align: center;
+    width: auto;
+  }

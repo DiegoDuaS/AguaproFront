@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import './admin.css';
 import { CiEdit } from "react-icons/ci";
 import searchIcon from './../../../image/searchIcon.png';
@@ -11,9 +11,22 @@ import { MdOutlineErrorOutline } from "react-icons/md";
 const PedidosPage = () => {
   const { data: pedidos, errorMessage, isLoading, refetch } = useApiP('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/pedidos');
   const [estados, setEstados] = useState({});
+  const [direcciones, setDirecciones] = useState({});
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessageState, setErrorMessageState] = useState('');
 
+  // Inicializar las direcciones cuando se cargan los pedidos
+  useEffect(() => {
+    if (pedidos) {
+      const initialDirecciones = {};
+      pedidos.forEach((pedido) => {
+        initialDirecciones[pedido.id_pedido] = pedido.direccion;
+      });
+      setDirecciones(initialDirecciones);
+    }
+  }, [pedidos]);
+
+  // Manejo de mensajes de éxito
   useEffect(() => {
     if (successMessage) {
       const timer = setTimeout(() => {
@@ -24,6 +37,7 @@ const PedidosPage = () => {
     }
   }, [successMessage]);
 
+  // Manejo de mensajes de error
   useEffect(() => {
     if (errorMessage) {
       const timer = setTimeout(() => {
@@ -34,31 +48,27 @@ const PedidosPage = () => {
     }
   }, [errorMessage]);
 
+  // Manejar el cambio de estado de un pedido
   const handleEstadoChange = async (pedidoId, newEstado) => {
     let idEstado = 0;
 
-    if (newEstado === "Pendiente") {
-        idEstado = 1;
-    } else if (newEstado === "Procesando") {
-        idEstado = 2;
-    } else if (newEstado === "Enviado") {
-        idEstado = 3;
-    } else if (newEstado === "Entregado") {
-        idEstado = 4;
-    } else if (newEstado === "Cancelado") {
-        idEstado = 5;
+    switch (newEstado) {
+      case "Pendiente": idEstado = 1; break;
+      case "Procesando": idEstado = 2; break;
+      case "Enviado": idEstado = 3; break;
+      case "Entregado": idEstado = 4; break;
+      case "Cancelado": idEstado = 5; break;
+      default: idEstado = 0;
     }
 
     try {
       const response = await fetch(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/pedidos/${pedidoId}/status`, {
         method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ pedidoId, estatus: idEstado }),
       });
 
-      if (response.ok){
+      if (response.ok) {
         setEstados((prevEstados) => ({
           ...prevEstados,
           [pedidoId]: newEstado, 
@@ -75,7 +85,16 @@ const PedidosPage = () => {
       console.error(error);
     }
   };
-  
+
+  // Manejar el cambio de dirección en el input
+  const handleDireccionChange = (pedidoId, newDireccion) => {
+    setDirecciones((prevDirecciones) => ({
+      ...prevDirecciones,
+      [pedidoId]: newDireccion,
+    }));
+  };
+
+  // Clase para el estado del pedido
   const getClassName = (estado) => {
     const classes = {
       'Pendiente': 'pendiente',
@@ -86,6 +105,29 @@ const PedidosPage = () => {
     };
     return classes[estado] || 'state';
   };
+
+  const updateDireccion = async (pedidoId, newDireccion) => {
+    try {
+      const response = await fetch(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/pedidos/${pedidoId}/direccion`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ pedidoId, direccion: newDireccion }),
+      });
+
+      if (response.ok) {
+        setSuccessMessage('Dirección actualizada correctamente');
+        setErrorMessageState(''); // Clear any previous error messages
+        refetch(); // Reload the data
+      } else {
+        throw new Error('Error al actualizar la dirección del pedido');
+      }
+    } catch (error) {
+      setErrorMessageState('Error al conectar con el servidor. Intente nuevamente.');
+      setSuccessMessage(''); // Clear any previous success messages
+      console.error(error);
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="container">
@@ -167,7 +209,22 @@ const PedidosPage = () => {
             <p className='table-text'>{pedido.cliente}</p>
             <p className='table-text'>{pedido.nit_empresa}</p>
             <p className='table-text'>Q.{pedido.monto_total}</p>
-            <p className='table-text'>{pedido.direccion}</p>
+            {pedido.estatus >= 3 ? (
+              <p className='table-text'>{pedido.direccion}</p>
+            ) : (
+              <input
+                className="direccionChange"
+                type='text'
+                value={direcciones[pedido.id_pedido] || ''}
+                onChange={(e) => handleDireccionChange(pedido.id_pedido, e.target.value)}
+                onBlur={() => updateDireccion(pedido.id_pedido, direcciones[pedido.id_pedido])} // Llamar a la función al perder el foco
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    updateDireccion(pedido.id_pedido, direcciones[pedido.id_pedido]); // Llama a la función si se presiona Enter
+                  }
+                }}
+              />
+            )}
             <p className='table-text'>
               {pedido.id_descuento === 0 ? (
                 'N/A'
