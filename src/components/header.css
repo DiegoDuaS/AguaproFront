@@ -89,13 +89,7 @@
     height:40px;
   }
   
-  .icons img {
-    margin-left: 10px;
-    width:30px;
-    height:30px;
-    margin-right:20px;
-    cursor: pointer;
-  }
+  
   
   .fixed-section {
     background-color: #ECEBEB;
@@ -148,4 +142,13 @@
   
   }
 
+  .icon{
+    cursor: pointer;
+    padding-right:20px;
+  }
+
+  .icons{
+    display: flex;
+    align-items: center
+  }
  

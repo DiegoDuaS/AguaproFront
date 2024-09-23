@@ -7,6 +7,7 @@ import useApiP from '../../../hooks/useAPIProducts';
 import { BiError } from "react-icons/bi";
 import { FaRegCircleCheck } from "react-icons/fa6";
 import { MdOutlineErrorOutline } from "react-icons/md";
+import SuccessCard from '../../../components/sucessCards';
 
 const PedidosPage = () => {
   const { data: pedidos, errorMessage, isLoading, refetch } = useApiP('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/pedidos');
@@ -176,6 +177,7 @@ const PedidosPage = () => {
 
   return (
     <div className="container">
+      
       <div className="text">Pedidos</div>
       <div className="search-bar">
         <input 
@@ -188,10 +190,11 @@ const PedidosPage = () => {
         </button>
       </div>
 
-      {successMessage && <p className="success-message">{successMessage}  <FaRegCircleCheck size={17}/> </p>}
+      <SuccessCard message={successMessage} isOpen={!!successMessage} />
       {errorMessageState && <p className="error-message">{errorMessageState} <MdOutlineErrorOutline size={17}/></p>}
 
       {/* PANTALLA PRINCIPAL SIN BUSCAR */}
+      <SuccessCard successMessage={"Pruebas"}></SuccessCard>
       <div className="table">
         <div className="table-grid table-header">
           <h3>Pedido Id</h3>
