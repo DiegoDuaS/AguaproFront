@@ -2,17 +2,20 @@ import './header.css'
 import userIcon from '../image/userIcon.png';
 import notificationIcon from '../image/notificationIcon.png';
 import cartIcon from '../image/cartIcon.png';
+import { IoCartOutline } from "react-icons/io5";
+import { FaUser } from "react-icons/fa";
+import { IoIosNotifications } from "react-icons/io";
 
-function Header({ nombre, precio, imagen, toggleCart, navigateToLogin }) {
+function Header({toggleCart, navigateToLogin }) {
 
     return (
         <header className="fixed-header">
         <div className="brand">AGUATESA</div>
         <div style={{marginRight: '20px'}} className="icons">
           {/* Cart, User, and Notification icons */}
-          <img src={cartIcon} alt="Cart" onClick={toggleCart}/>
-          <img src={userIcon} alt="User" onClick={navigateToLogin}/>
-          <img src={notificationIcon} alt="Notifications" />
+          <IoCartOutline size={40} onClick={toggleCart} color='black' className='icon'></IoCartOutline>
+          <FaUser size={32} onClick={navigateToLogin} color='black' className='icon'></FaUser>
+          <IoIosNotifications size={38} color='black' className='icon'></IoIosNotifications>
         </div>
       </header>
     );

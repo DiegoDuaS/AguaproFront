@@ -43,7 +43,7 @@ const Cart = ({ cartItems, updateCartItem, removeCartItem, closeCart, checkout }
                 <img src={item.imagen} alt={item.nombre} className="cart-item-image" />
                 <div className="cart-item-details">
                   <p>{item.nombre}</p>
-                  <p>${item.precio !== undefined ? parseFloat(item.precio* item.quantity).toFixed(2) : '0.00'}</p>
+                  <p>Q.{item.precio !== undefined ? parseFloat(item.precio* item.quantity).toFixed(2) : '0.00'}</p>
                   <div className="quantity-controls">
                     <button onClick={() => updateCartItem(item.id_producto, item.quantity > 1 ? item.quantity - 1 : 1)}>-</button>
                     <span>{item.quantity}</span>
