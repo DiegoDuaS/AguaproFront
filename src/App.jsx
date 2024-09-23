@@ -93,6 +93,7 @@ function App() {
     setIsCartOpen(false);
   };
 
+ 
   return (
     <AuthProvider> 
       {activePage === 'Login' && (
@@ -105,7 +106,7 @@ function App() {
         <AdminPage onRouteChange={setActivePage} />
       )}
       {activePage === 'CheckoutPage' && (
-        <CheckoutPage onRouteChange={setActivePage} />
+        <CheckoutPage onRouteChange={setActivePage} cartItems={cartItems} />
       )}
       {activePage !== 'RegisterPage' && activePage !== 'CheckoutPage' && activePage !== 'Login' && activePage !== 'AdminPage' && (
         <>

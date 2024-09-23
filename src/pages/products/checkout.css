@@ -1,0 +1,98 @@
+.containerch {
+    display: flex;
+    flex-direction: column;
+    padding: 20px; /* Optional padding */
+    margin-left:40px;
+    margin-right: 40px;
+    width: -webkit-fill-available;
+    height: -webkit-fill-available;
+    justify-content: center;
+    align-items: center;
+  }  
+
+  .order-container {
+    display: flex;
+    width: 90%;
+    height: 35em;
+    border: 1px solid #333; /* Borde negro */
+    background-color: #f2f2f2; /* Color de fondo gris claro */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra */
+  }
+  
+  /* Sección izquierda para detalles adicionales */
+  .order-details {
+    flex: 2;
+    padding: 20px;
+  }
+  
+  /* Sección derecha para el resumen de la orden */
+  .order-summary {
+    flex: 1;
+    padding: 20px;
+    border-left: 1px solid #333; /* Borde izquierdo */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  /* Título */
+  h2 {
+    margin-bottom: 20px;
+  }
+  
+  /* Resumen de orden */
+  .order-summary h3 {
+    color: #006080; /* Color del título */
+    margin-bottom: 10px;
+  }
+  
+  .order-summary table {
+    width: 100%;
+  }
+  
+  .order-summary th, .order-summary td {
+    text-align: center;
+    padding: 8px 0;
+  }
+  
+  /* Subtotal y botón */
+  .subtotal {
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px 0;
+    font-weight: bold;
+    color: black;
+  }
+  
+  .confirm-btn {
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .confirm-btn button {
+    padding: 10px 20px;
+    background-color: #006080; /* Color del botón */
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .confirm-btn button:hover {
+    background-color: #004d66; /* Color más oscuro al pasar el ratón */
+  }
+
+  tr {
+    color: black;
+    text-align: center;
+  }
+
+  table {
+    text-align: center;
+  }
+
+  .summary{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
