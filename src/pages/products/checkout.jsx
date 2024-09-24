@@ -19,7 +19,7 @@ const Checkout = ({ onRouteChange, cartItems }) => {
             <h2>Orden #ENEZ025AAA</h2>
             {/* Información de entrega section */}
             <div className="section">
-              <h3>Información de entrega</h3>
+              <h3 className='checkout'>Información de entrega</h3>
               <div className="form-group">
                 <label>Nombre:</label>
                 <input type="text" placeholder="Nombre completo" />
@@ -40,7 +40,7 @@ const Checkout = ({ onRouteChange, cartItems }) => {
 
             {/* Información de pago section */}
             <div className="section">
-              <h3>Información de pago</h3>
+              <h3 className='checkout'>Información de pago</h3>
               <div className="forma-group">
                 <label>
                   <input type="radio" name="payment" value="tarjeta" onChange={() => setPaymentMethod('tarjeta')} /> Tarjeta

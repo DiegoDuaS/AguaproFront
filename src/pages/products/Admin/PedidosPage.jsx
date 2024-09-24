@@ -195,7 +195,6 @@ const PedidosPage = () => {
       <StateCard message={errorMessageState} isOpen={!!errorMessageState} type={2}/>
 
       {/* PANTALLA PRINCIPAL SIN BUSCAR */}
-      <SuccessCard successMessage={"Pruebas"}></SuccessCard>
       <div className="table">
         <div className="table-grid table-header">
           <h3>Pedido Id</h3>
