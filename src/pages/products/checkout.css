@@ -8,6 +8,7 @@
     height: -webkit-fill-available;
     justify-content: center;
     align-items: center;
+    margin-top: 60px; 
   }  
 
   .order-container {
@@ -23,6 +24,7 @@
   .order-details {
     flex: 2;
     padding: 20px;
+    overflow-y: auto;
   }
   
   /* Sección derecha para el resumen de la orden */
@@ -33,6 +35,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    overflow-y: auto;
   }
   
   /* Título */
@@ -96,3 +99,61 @@
     flex-direction: column;
     align-items: center;
   }
+  
+  .center-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centers content horizontally */
+    justify-content: center; /* Centers content vertically */
+  }
+
+
+.section {
+  margin-top: 10px;
+  padding: 10px;
+  margin-left: 0px;
+  width: 100%;
+  text-align:left;
+}
+
+.form-group {
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.forma-group {
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.forma-group label {
+  display: block;
+  margin-right: 15px;
+  text-align: center;
+  margin-left:5px; 
+}
+
+.form-group label {
+  display: block;
+  margin-right: 5px;
+  text-align: center;
+  width: 350px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 8px;
+  border-radius: 4px;
+  text-align: left;
+}
+
+.tarjeta-info {
+  margin-top: 15px;
+}
+
+h3 {
+  color: #4F4E4E;
+  text-align:left;
+}

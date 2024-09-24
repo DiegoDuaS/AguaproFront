@@ -20,7 +20,7 @@ function App() {
   const [isCartOpen, setIsCartOpen] = useState(false); // Estado para el carrito
   const [cartItems, setCartItems] = useState([]); // Estado para los elementos del carrito
   
-  
+  console.log("Cart: "+cartItems);
   useEffect(() => {
     const storedPage = localStorage.getItem('activePage'); // Obtener la página almacenada
     if (storedPage) {

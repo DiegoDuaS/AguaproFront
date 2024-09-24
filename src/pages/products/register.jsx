@@ -82,7 +82,7 @@ return (
         {loading && (<div> <CircularProgress /> </div>)}
         {error && <div className="errorMessage">{error}</div>}
         <button className="inputButton" onClick={handleSubmitLogin}>
-          Iniciar Sesión
+          registrar
         </button>
         <button className="inputButton" onClick={() => onRouteChange('Bombas de agua')}>
           Regresar
