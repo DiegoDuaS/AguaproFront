@@ -9,6 +9,7 @@ import { FaRegCircleCheck } from "react-icons/fa6";
 import { MdOutlineErrorOutline } from "react-icons/md";
 import StateCard from '../../../components/stateCard';
 
+
 const PedidosPage = () => {
   const { data: pedidos, errorMessage, isLoading, refetch } = useApiP('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/pedidos');
   const [estados, setEstados] = useState({});
@@ -194,6 +195,7 @@ const PedidosPage = () => {
       <StateCard message={errorMessageState} isOpen={!!errorMessageState} type={2}/>
 
       {/* PANTALLA PRINCIPAL SIN BUSCAR */}
+      <SuccessCard successMessage={"Pruebas"}></SuccessCard>
       <div className="table">
         <div className="table-grid table-header">
           <h3>Pedido Id</h3>

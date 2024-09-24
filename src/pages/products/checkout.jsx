@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import CheckoutHeader from '../../components/checkoutHeader';
 import './checkout.css';
 
+
 const Checkout = ({ onRouteChange, cartItems }) => {
   const subtotal = cartItems.reduce((acc, item) => acc + item.precio * item.quantity, 0);
   console.log(cartItems);
