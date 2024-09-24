@@ -20,7 +20,7 @@ function App() {
   const [isCartOpen, setIsCartOpen] = useState(false); // Estado para el carrito
   const [cartItems, setCartItems] = useState([]); // Estado para los elementos del carrito
   
-  
+  console.log("Cart: "+cartItems);
   useEffect(() => {
     const storedPage = localStorage.getItem('activePage'); // Obtener la página almacenada
     if (storedPage) {
@@ -93,6 +93,7 @@ function App() {
     setIsCartOpen(false);
   };
 
+ 
   return (
     <AuthProvider> 
       {activePage === 'Login' && (
@@ -105,7 +106,7 @@ function App() {
         <AdminPage onRouteChange={setActivePage} />
       )}
       {activePage === 'CheckoutPage' && (
-        <CheckoutPage onRouteChange={setActivePage} />
+        <CheckoutPage onRouteChange={setActivePage} cartItems={cartItems} />
       )}
       {activePage !== 'RegisterPage' && activePage !== 'CheckoutPage' && activePage !== 'Login' && activePage !== 'AdminPage' && (
         <>

@@ -7,7 +7,8 @@ import useApiP from '../../../hooks/useAPIProducts';
 import { BiError } from "react-icons/bi";
 import { FaRegCircleCheck } from "react-icons/fa6";
 import { MdOutlineErrorOutline } from "react-icons/md";
-import SuccessCard from '../../../components/sucessCards';
+import StateCard from '../../../components/stateCard';
+
 
 const PedidosPage = () => {
   const { data: pedidos, errorMessage, isLoading, refetch } = useApiP('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/pedidos');
@@ -190,8 +191,8 @@ const PedidosPage = () => {
         </button>
       </div>
 
-      <SuccessCard message={successMessage} isOpen={!!successMessage} />
-      {errorMessageState && <p className="error-message">{errorMessageState} <MdOutlineErrorOutline size={17}/></p>}
+      <StateCard message={successMessage} isOpen={!!successMessage} type={1}/>
+      <StateCard message={errorMessageState} isOpen={!!errorMessageState} type={2}/>
 
       {/* PANTALLA PRINCIPAL SIN BUSCAR */}
       <SuccessCard successMessage={"Pruebas"}></SuccessCard>

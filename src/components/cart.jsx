@@ -16,6 +16,7 @@ const Cart = ({ cartItems, updateCartItem, removeCartItem, closeCart, checkout }
     if (cartRef.current && !cartRef.current.contains(event.target)) {
       closeCart();
     }
+    console.log(cartItems)
   };
 
   useEffect(() => {
