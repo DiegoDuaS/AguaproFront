@@ -9,6 +9,7 @@ import CustomNav from './components/CustomNav.jsx';
 import Cart from './components/cart';
 import LoginPage from './pages/products/login';
 import RegisterPage from './pages/products/register';
+import ClientInfoPage from './pages/products/ClientInfo';
 import CheckoutPage from './pages/products/checkout';
 import AdminPage from './pages/products/AdminPage';
 import { AuthProvider } from './hooks/authProvider.jsx'; 
@@ -144,6 +145,7 @@ function App() {
               setCartItems={setCartItems}/>}
           {activePage === 'Perforación de Pozos' && <Perforacion />}
           {activePage === 'Mantenimiento de Pozos' && <Mantenimiento />}
+          {activePage === 'ClientInfoPage' && (<ClientInfoPage onRouteChange={setActivePage}/>)}
         </>
       )}
     </AuthProvider>
