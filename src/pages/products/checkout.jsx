@@ -16,6 +16,10 @@ const Checkout = ({ onRouteChange, cartItems }) => {
     }
   };
 
+  const handleLeave = () => {
+    onRouteChange('Bombas de agua');
+  };
+
   // Estado para los datos del formulario de entrega y pago
   const [formData, setFormData] = useState({
     nombre: '',
@@ -130,7 +134,7 @@ const Checkout = ({ onRouteChange, cartItems }) => {
                     </label>
                   </div>
 
-                  {paymentMethod === 'tarjeta' && (
+                  {formData.paymentMethod === 'tarjeta' && (
                     <div className="tarjeta-info">
                       <div className="form-group">
                         <label>Número de tarjeta</label>
@@ -168,7 +172,7 @@ const Checkout = ({ onRouteChange, cartItems }) => {
                     </div>
                   )}
 
-                  {paymentMethod === 'contra_entrega' && (
+                  {formData.paymentMethod === 'contra_entrega' && (
                     <div className="tarjeta-info">
                       <div className="form-group">
                         <label>Cantidad Pago</label>
@@ -211,8 +215,14 @@ const Checkout = ({ onRouteChange, cartItems }) => {
                       <td>Q.{item.precio}</td>
                     </tr>
                   ))}
+                  <tr>
+                    <td><strong>Envio</strong></td>
+                    <td><strong>-</strong></td>
+                    <td><strong>Q. PH</strong></td>
+                  </tr>
                 </tbody>
               </table>
+              
             </div>
 
             <div className="center-container">
@@ -222,6 +232,10 @@ const Checkout = ({ onRouteChange, cartItems }) => {
                   <button onClick={handleNextStep}>Confirmar Orden</button>
                 </div>
               )}
+              <p className='info_extra'>¿Te hizo falta algún producto?</p> 
+              <span className="registerLink" onClick={handleLeave}>
+                Regresa a la pagina principal
+              </span>
             </div>
           </div>
         </div>

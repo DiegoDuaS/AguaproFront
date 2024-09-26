@@ -26,7 +26,7 @@ const ClientInfo = () => {
 
   return (
     <div className="client-info-container">
-      <h2>Modificar Información del Cliente</h2>
+      <h2>Bienvenido "Username"</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group-cf">
           <label>Nombre:</label>

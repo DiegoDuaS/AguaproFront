@@ -240,3 +240,16 @@
     text-align: center;
     width: auto;
   }
+
+  .table3-grid {
+    display: grid;
+    grid-template-columns: 0.4fr repeat(8, 1fr);
+    grid-gap: 5px;
+    padding: 10px 0;
+    text-align: center;
+    align-items: center;
+  }
+
+  .trash_icon{
+    cursor: pointer;
+  }

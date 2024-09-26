@@ -41,14 +41,14 @@ const PedidosPage = () => {
 
   // Manejo de mensajes de error
   useEffect(() => {
-    if (errorMessage) {
+    if (errorMessageState) {
       const timer = setTimeout(() => {
         setErrorMessageState('');
       }, 5000); 
 
       return () => clearTimeout(timer); 
     }
-  }, [errorMessage]);
+  }, [errorMessageState]);
 
   // Manejar el cambio de estado de un pedido
   const handleEstadoChange = async (pedidoId, newEstado) => {

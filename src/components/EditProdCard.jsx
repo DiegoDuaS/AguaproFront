@@ -5,7 +5,7 @@ import ProductosPage from '../pages/products/Admin/ProductosPage';
 import useUpdateProduct from '../hooks/useUpdateProduct';
 import { getSizeIndex, getEnergiaIndex, getCondicionesIndex, getTipoIndex } from '../hooks/useFetchs';
 
-const EditProdCard = ({ isOpen, closeCard, product, refetchProducts}) => {
+const EditProdCard = ({ isOpen, closeCard, product, refetchProducts, setSuccsessMessage, setErrorMessage}) => {
     
     const cardRef = useRef(null);
 
@@ -90,10 +90,10 @@ const EditProdCard = ({ isOpen, closeCard, product, refetchProducts}) => {
     const handleSave = async () => {
         try {
             if (sizeIndex === null || energiaIndex === null || condicionesIndex === null || tipoIndex === null) {
-                alert('Error: No se pudieron obtener todos los índices necesarios.');
+                setErrorMessage('Error: No se pudieron obtener todos los índices necesarios.');
                 return;
             }
-
+    
             // Actualizar el producto principal
             const response = await fetch(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/productos/${product.id_producto}`, {
                 method: 'PUT',
@@ -105,7 +105,7 @@ const EditProdCard = ({ isOpen, closeCard, product, refetchProducts}) => {
             if (!response.ok) {
                 throw new Error('Error al actualizar el producto');
             }
-
+    
             // Actualizar las características fijas
             const responseCaracteristicas = await fetch(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/caracteristicas/${product.id_caracteristicas}`, {
                 method: 'PUT',
@@ -130,7 +130,7 @@ const EditProdCard = ({ isOpen, closeCard, product, refetchProducts}) => {
             if (!responseCaracteristicas.ok) {
                 throw new Error('Error al actualizar las características fijas');
             }
-
+    
             // Actualizar las características variables
             const responseCaracteristicasVariables = await fetch(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/caracteristicas/variables/${product.id_caracteristicas}`, {
                 method: 'PUT',
@@ -155,19 +155,20 @@ const EditProdCard = ({ isOpen, closeCard, product, refetchProducts}) => {
                     presion,
                 }),
             });
-
+    
             if (!responseCaracteristicasVariables.ok) {
                 throw new Error('Error al actualizar las características variables');
             }
+    
             await refetchProducts();
-
-            alert('Cambios guardados exitosamente');
+            setSuccsessMessage('Cambios guardados exitosamente.');
             closeCard();
         } catch (error) {
             console.error('Error al guardar los cambios:', error);
-            alert('Hubo un error al guardar los cambios. Inténtalo de nuevo.');
+            setErrorMessage('Hubo un error al guardar los cambios. Inténtalo de nuevo.');
         }
-    };             
+    };
+            
 
     return (
         <div className="large-card-prod" ref={cardRef}>

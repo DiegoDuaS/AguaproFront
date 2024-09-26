@@ -1,14 +1,17 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './admin.css';
 import searchIcon from './../../../image/searchIcon.png';
 import { CircularProgress } from '@mui/material';
 import useApiP from '../../../hooks/useAPIProducts';
-import { useState } from 'react';
 import { CiEdit } from "react-icons/ci";
 import InfoProdCard from '../../../components/infoProdCard';
 import EditProdCard from '../../../components/EditProdCard';
 import NewProdCard from '../../../components/NewProdCard';
 import { BiError } from "react-icons/bi";
+import StateCard from '../../../components/stateCard';
+import { GoTrash } from "react-icons/go";
+import { FaTrash } from "react-icons/fa6";
+import DeleteCard from '../../../components/deleteCard';
 
 
 const ProductosPage = () => {
@@ -17,6 +20,29 @@ const ProductosPage = () => {
   const [isNewCardOpen, setisNewCardOpen] = useState(false);
   const [isEditCardOpen, setisEditCardOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessageState, setErrorMessageState] = useState('');
+  const [isDeleteCardOpen, setisDeleteCardOpen] = useState(false);
+
+  useEffect(() => {
+    if (successMessage) {
+      const timer = setTimeout(() => {
+        setSuccessMessage('');
+      }, 5000); 
+
+      return () => clearTimeout(timer); 
+    }
+  }, [successMessage]);
+
+  useEffect(() => {
+    if (errorMessageState) {
+      const timer = setTimeout(() => {
+        setErrorMessageState('');
+      }, 5000); 
+
+      return () => clearTimeout(timer); 
+    }
+  }, [errorMessageState]);
 
   const openCard = (producto) => {
     setSelectedProduct(producto);
@@ -42,6 +68,16 @@ const ProductosPage = () => {
 
   const closeNewCard = () => {
     setisNewCardOpen(false);
+  };
+
+  const openDeleteCard = (producto) => {
+    setSelectedProduct(producto);
+    setisDeleteCardOpen(true);
+  };
+
+  const closeDeleteCard = () => {
+    setisDeleteCardOpen(false);
+    setSelectedProduct(null);
   };
 
   if (isLoading) {
@@ -109,7 +145,8 @@ const ProductosPage = () => {
       </div>
       {/* PANTALLA PRINCIPAL SIN BUSCAR */}
       <div className="table">
-        <div className="table-grid table-header">
+        <div className="table3-grid table-header">
+          <h3></h3>
           <h3>Id</h3>
           <h3>Nombre</h3>
           <h3>Descripción</h3>
@@ -120,7 +157,8 @@ const ProductosPage = () => {
           <h3>Editar</h3>
         </div>
         {productos.map((producto, index) => (
-          <div className="table-grid table-row" key={index}>
+          <div className="table3-grid table-row" key={index}>
+            <FaTrash color='#00668C' className='trash_icon' onClick={() => openDeleteCard(producto)}></FaTrash>
             <p className='table-text'>#{producto.id_producto}</p>
             <p className='table-text'>{producto.nombre}</p>
             <p className='table-text'>{producto.descripción}</p>
@@ -153,6 +191,8 @@ const ProductosPage = () => {
           closeCard={closeEditCard}
           product={selectedProduct}
           refetchProducts={refetch}
+          setSuccsessMessage={setSuccessMessage}
+          setErrorMessage={setErrorMessageState}
         />
       )}
       {isNewCardOpen && (
@@ -160,9 +200,24 @@ const ProductosPage = () => {
           isOpen={isNewCardOpen}
           closeCard={closeNewCard}
           refetchProducts={refetch}
+          setSuccsessMessage={setSuccessMessage}
+          setErrorMessage={setErrorMessageState}
         />
       )}
+      {isDeleteCardOpen && (
+        <DeleteCard
+          isOpen={isDeleteCardOpen}
+          closeCard={closeDeleteCard}
+          product={selectedProduct}
+          setSuccsessMessage={setSuccessMessage}
+          setErrorMessage={setErrorMessageState}
+          refetchProducts={refetch}
+        />
+      )}
+      <StateCard message={successMessage} isOpen={!!successMessage} type={1}/>
+      <StateCard message={errorMessageState} isOpen={!!errorMessageState} type={2}/>
     </div>
+    
   );
 };
 
