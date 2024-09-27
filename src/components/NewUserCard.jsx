@@ -4,24 +4,32 @@ import './NewUserCard.css'; // Import the CSS
 
 const NewUserCard = ({ isOpen, closeCard, onRegister }) => {
     const cardRef = useRef(null);
-    const {  registerUser, response, error, loading} = useRegisterUser();
-
+   // const {  registerUser, response, error, loading} = useRegisterUser();
+    const { registerUser,loading,error } = useRegisterUser();
   //  const { data: usuarios, errorMessage, isLoading, refetch } = useApiP('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/users');
 
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [role, setRole] = useState('');
+    const [successMessage, setSuccessMessage] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
 
     const handleRegister = async () => {
-        const userData = {
-            username,
-            password,
-            email,
-            role,
-        };
-        await registerUser(userData); // Call the registerUser function with userData
-        
+        const userData = { username, password, email, role };
+        const result = await registerUser(userData); // Wait for the result
+
+        console.log('Register User Result:', result); // Log the result
+
+        // Check if result contains data or error
+        if (result.data) {
+            onRegister(userData); // Notify the parent to refetch users
+            setSuccessMessage(result.data.message); // Set success message
+            setErrorMessage(''); // Clear error message
+        } else if (result.error) {
+            setErrorMessage(result.error); // Set error message if exists
+            setSuccessMessage(''); // Clear success message
+        }
     };
 
     const handleClickOutside = (event) => {
@@ -97,8 +105,8 @@ const NewUserCard = ({ isOpen, closeCard, onRegister }) => {
             <button className="save-button-nu" onClick={handleRegister} disabled={loading}>
                 {loading ? 'Guardando...' : 'Guardar'}
             </button>
-            {error && <p className="error-message">{error}</p>}
-            {response && response.message && <p className="success-message">{response.message}</p>} {/* Show success message */}
+            {errorMessage && <p className="error-message">{errorMessage}</p>}
+            {successMessage && <p className="success-message">{successMessage}</p>}
         </div>
     );
 };

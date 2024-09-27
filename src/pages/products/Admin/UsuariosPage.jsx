@@ -24,15 +24,8 @@ const UsuariosPage = () => {
   };
   
   const handleUserRegistration = async (userData) => {
-    // Call the registerUser function and handle the response here
-    const { response, error } = await registerUser(userData); // Assuming registerUser is defined in the context
-
-    if (response) {
       refetch(); // Refresh user list
       closeNewCard(); // Close the card
-    } else if (error) {
-      // Handle the error if necessary
-    }
   };
 
   if (isLoading) {
