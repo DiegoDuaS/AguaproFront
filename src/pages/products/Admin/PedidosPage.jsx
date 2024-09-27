@@ -8,15 +8,36 @@ import { BiError } from "react-icons/bi";
 import { FaRegCircleCheck } from "react-icons/fa6";
 import { MdOutlineErrorOutline } from "react-icons/md";
 import StateCard from '../../../components/stateCard';
+import InfoProdPedidoCard from '../../../components/InfoProdPedidoCard';
 
 
 const PedidosPage = () => {
   const { data: pedidos, errorMessage, isLoading, refetch } = useApiP('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/pedidos');
   const [estados, setEstados] = useState({});
+  const [selectedPedido, setSelectedPedido] = useState(null);
   const [direcciones, setDirecciones] = useState({});
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessageState, setErrorMessageState] = useState('');
+  const [isCardOpen, setIsCardOpen] = useState(false);
+  const [productos, setProductos] = useState([]);
 
+  const fetchProductos = async (pedidoId) => {
+        try {
+            const response = await fetch(`https://aguapro-back.vercel.app/pedidos/${pedidoId}/productos`);
+            if (!response.ok) throw new Error('Failed to fetch productos');
+            const data = await response.json();
+            setProductos(data);
+            setIsCardOpen(true);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const handlePedidoClick = (pedidoId) => {
+        setSelectedPedido(pedidoId);
+        fetchProductos(pedidoId);
+        setIsCardOpen(true);
+    };
   // Inicializar las direcciones cuando se cargan los pedidos
   useEffect(() => {
     if (pedidos) {
@@ -246,10 +267,14 @@ const PedidosPage = () => {
               )}
             </p>
             <button 
-              className='more-edit' 
+              className='more-edit'
+              onClick={() => handlePedidoClick(pedido.id_pedido)} 
             >
               ...
             </button>
+            {isCardOpen && selectedPedido === pedido.id_pedido && (
+              <InfoProdPedidoCard pedidoId={pedido.id_pedido} /> // Pass the selected pedido.id to ProductCard
+            )}
             <select
               value={pedido.estado} 
               onChange={(e) => handleEstadoChange(pedido.id_pedido, e.target.value)}
