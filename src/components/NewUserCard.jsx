@@ -1,29 +1,27 @@
 import React, { useEffect, useRef, useState } from 'react';
 import useRegisterUser from '../hooks/useRegisterUser'; // Import your hook
-//import './EditProdCard.css'; // Import the CSS
 import './NewUserCard.css'; // Import the CSS
 
-const NewUserCard = ({ isOpen, closeCard }) => {
+const NewUserCard = ({ isOpen, closeCard, onRegister }) => {
     const cardRef = useRef(null);
-    const { registerUser, isLoading, errorMessage, successMessage } = useRegisterUser();
+    const {  registerUser, response, error, loading} = useRegisterUser();
 
-    const [nombre, setNombre] = useState('');
-    const [correo, setCorreo] = useState('');
-    const [contraseña, setContraseña] = useState('');
-    const [rol, setRol] = useState('');
+  //  const { data: usuarios, errorMessage, isLoading, refetch } = useApiP('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/users');
+
+    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [role, setRole] = useState('');
 
     const handleRegister = async () => {
         const userData = {
-            nombre,
-            correo,
-            contraseña,
-            rol,
+            username,
+            password,
+            email,
+            role,
         };
-        
         await registerUser(userData); // Call the registerUser function with userData
-        if (successMessage) {
-            closeCard(); // Close the card if registration is successful
-        }
+        
     };
 
     const handleClickOutside = (event) => {
@@ -58,46 +56,52 @@ const NewUserCard = ({ isOpen, closeCard }) => {
                             <input
                                 type="text"
                                 className="input"
-                                value={nombre}
+                                value={username}
                                 placeholder="nombre de usuario"
-                                onChange={(e) => setNombre(e.target.value)}
+                                onChange={(e) => setUsername(e.target.value)}
                             />
+                        </div>
+                        <div className="table-row-nu">
                             <div className="title">Contraseña</div>
                             <input
                                 type="password" // Change to password for better security
                                 className="input"
-                                value={contraseña}
+                                value={password}
                                 placeholder="contraseña"
-                                onChange={(e) => setContraseña(e.target.value)}
+                                onChange={(e) => setPassword(e.target.value)}
                             />
+                        </div>
+                        <div className="table-row-nu">
                             <div className="title">Correo</div>
                             <input
                                 type="email" // Change to email for better validation
                                 className="input"
-                                value={correo}
+                                value={email}
                                 placeholder="correo"
-                                onChange={(e) => setCorreo(e.target.value)}
+                                onChange={(e) => setEmail(e.target.value)}
                             />
+                        </div>
+                        <div className="table-row-nu">
                             <div className="title">Rol</div>
                             <input
                                 type="text"
                                 className="input"
-                                value={rol}
+                                value={role}
                                 placeholder="rol del usuario"
-                                onChange={(e) => setRol(e.target.value)}
+                                onChange={(e) => setRole(e.target.value)}
                             />
                         </div>
                     </div>
                 </div>
             </div>
-            <button className="save-button-nu" onClick={handleRegister} disabled={isLoading}>
-                {isLoading ? 'Guardando...' : 'Guardar'}
+            <button className="save-button-nu" onClick={handleRegister} disabled={loading}>
+                {loading ? 'Guardando...' : 'Guardar'}
             </button>
-            {errorMessage && <p className="error-message">{errorMessage}</p>}
-            {successMessage && <p className="success-message">{successMessage}</p>} {/* Show success message */}
+            {error && <p className="error-message">{error}</p>}
+            {response && response.message && <p className="success-message">{response.message}</p>} {/* Show success message */}
         </div>
     );
 };
-
+  
 export default NewUserCard;
 

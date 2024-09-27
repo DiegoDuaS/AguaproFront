@@ -23,6 +23,7 @@ const useRegisterUser = () => {
       }
 
       setResponse(result);
+      console.log(response);
     } catch (err) {
       setError(err.message);
     } finally {

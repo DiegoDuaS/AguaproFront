@@ -9,7 +9,7 @@ import { FaTrash } from "react-icons/fa6";
 import { CiEdit } from "react-icons/ci";
 
 const UsuariosPage = () => {
-  const { data: usuarios, errorMessage, isLoading } = useApiP('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/users');
+  const { data: usuarios, errorMessage, isLoading, refetch } = useApiP('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/users');
   const storedUser = JSON.parse(localStorage.getItem('user'));
   const [isNewCardOpen, setisNewCardOpen] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
@@ -21,6 +21,18 @@ const UsuariosPage = () => {
 
   const closeNewCard = () => {
     setisNewCardOpen(false);
+  };
+  
+  const handleUserRegistration = async (userData) => {
+    // Call the registerUser function and handle the response here
+    const { response, error } = await registerUser(userData); // Assuming registerUser is defined in the context
+
+    if (response) {
+      refetch(); // Refresh user list
+      closeNewCard(); // Close the card
+    } else if (error) {
+      // Handle the error if necessary
+    }
   };
 
   if (isLoading) {
@@ -122,6 +134,8 @@ const UsuariosPage = () => {
         <NewUserCard
           isOpen={isNewCardOpen}
           closeCard={closeNewCard}
+          onRegister={handleUserRegistration} // Pass the registration handler
+          refetch={refetch}
         />
       )}
     </div>
