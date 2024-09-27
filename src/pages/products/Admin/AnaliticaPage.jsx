@@ -15,7 +15,6 @@ import {
   Legend,
   Decimation,
 } from 'chart.js';
-import DatePicker from 'react-datepicker';
 
 ChartJS.register(
   CategoryScale,
