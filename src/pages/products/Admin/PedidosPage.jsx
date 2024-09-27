@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import './admin.css';
 import { CiEdit } from "react-icons/ci";
 import searchIcon from './../../../image/searchIcon.png';
@@ -13,6 +13,9 @@ const PedidosPage = () => {
   const [estados, setEstados] = useState({});
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessageState, setErrorMessageState] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const [isSearchActive, setIsSearchActive] = useState(false);
 
   useEffect(() => {
     if (successMessage) {
@@ -64,14 +67,14 @@ const PedidosPage = () => {
           [pedidoId]: newEstado, 
         }));
         setSuccessMessage('Estado actualizado correctamente');
-        setErrorMessageState(''); // Clear any previous error messages
-        refetch(); // Reload the data
+        setErrorMessageState('');
+        refetch();
       } else {
         throw new Error('Error al actualizar el estado del pedido');
       }
     } catch (error) {
       setErrorMessageState('Error al conectar con el servidor. Intente nuevamente.');
-      setSuccessMessage(''); // Clear any previous success messages
+      setSuccessMessage('');
       console.error(error);
     }
   };
@@ -86,6 +89,76 @@ const PedidosPage = () => {
     };
     return classes[estado] || 'state';
   };
+
+  const handleSearch = () => {
+    if (!searchTerm.trim()) {
+      setSearchResults([]);
+      setIsSearchActive(false);
+      return;
+    }
+
+    const filteredResults = pedidos.filter(pedido =>
+      pedido.cliente.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      pedido.nit_empresa.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      pedido.direccion.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (pedido.productos && pedido.productos.toLowerCase().includes(searchTerm.toLowerCase()))
+    );
+
+    setSearchResults(filteredResults);
+    setIsSearchActive(true);
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
+  };
+
+  const renderPedidosTable = (pedidosToShow) => (
+    <div className="table">
+      <div className="table-grid table-header">
+        <h3>Pedido Id</h3>
+        <h3>Cliente</h3>
+        <h3>NIT</h3>
+        <h3>Total</h3>
+        <h3>Dirección</h3>
+        <h3>Descuento</h3>
+        <h3>Productos</h3>
+        <h3>Estado</h3>
+      </div>
+      {pedidosToShow.map((pedido, index) => (
+        <div className="table-grid table-row" key={index}>
+          <p className='table-text'>#{pedido.id_pedido}</p>
+          <p className='table-text'>{pedido.cliente}</p>
+          <p className='table-text'>{pedido.nit_empresa}</p>
+          <p className='table-text'>Q.{pedido.monto_total}</p>
+          <p className='table-text'>{pedido.direccion}</p>
+          <p className='table-text'>
+            {pedido.id_descuento === 0 ? 'N/A' :
+             pedido.id_descuento === 1 ? '5%' :
+             pedido.id_descuento === 2 ? '10%' :
+             pedido.id_descuento === 3 ? '15%' :
+             pedido.id_descuento === 4 ? '20%' :
+             pedido.id_descuento === 5 ? '25%' :
+             'Otro tipo de descuento'}
+          </p>
+          <button className='more-edit'>...</button>
+          <select
+            value={pedido.estado} 
+            onChange={(e) => handleEstadoChange(pedido.id_pedido, e.target.value)}
+            className={`state ${getClassName(pedido.estado)}`}
+          >
+            <option className="option" value="Pendiente">Pendiente</option>
+            <option className="option" value="Procesando">Procesando</option>
+            <option className="option" value="Enviado">Enviado</option>
+            <option className="option" value="Entregado">Entregado</option>
+            <option className="option" value="Cancelado">Cancelado</option>
+          </select>
+        </div>
+      ))}
+    </div>
+  );
+
   if (isLoading) {
     return (
       <div className="container">
@@ -94,9 +167,12 @@ const PedidosPage = () => {
           <input
             className="searchbar"
             type="text"
-            placeholder="Search Productos..."
+            placeholder="Buscar Pedidos..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyPress={handleKeyPress}
           />
-          <button className="search-btn">
+          <button className="search-btn" onClick={handleSearch}>
             <img src={searchIcon} alt="Search" />
           </button>
         </div>
@@ -117,9 +193,12 @@ const PedidosPage = () => {
           <input
             className="searchbar"
             type="text"
-            placeholder="Search Pedidos..."
+            placeholder="Buscar Pedidos..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyPress={handleKeyPress}
           />
-          <button className="search-btn">
+          <button className="search-btn" onClick={handleSearch}>
             <img src={searchIcon} alt="Search" />
           </button>
         </div>
@@ -139,9 +218,12 @@ const PedidosPage = () => {
         <input 
           className="searchbar" 
           type="text" 
-          placeholder="Search Pedidos..." 
+          placeholder="Buscar Clientes, NIT, Dirección o Productos..." 
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          onKeyPress={handleKeyPress}
         />
-        <button className="search-btn">
+        <button className="search-btn" onClick={handleSearch}>
           <img src={searchIcon} alt="Search" />
         </button>
       </div>
@@ -149,61 +231,17 @@ const PedidosPage = () => {
       {successMessage && <p className="success-message">{successMessage}  <FaRegCircleCheck size={17}/> </p>}
       {errorMessageState && <p className="error-message">{errorMessageState} <MdOutlineErrorOutline size={17}/></p>}
 
-      {/* PANTALLA PRINCIPAL SIN BUSCAR */}
-      <div className="table">
-        <div className="table-grid table-header">
-          <h3>Pedido Id</h3>
-          <h3>Cliente</h3>
-          <h3>NIT</h3>
-          <h3>Total</h3>
-          <h3>Dirección</h3>
-          <h3>Descuento</h3>
-          <h3>Productos</h3>
-          <h3>Estado</h3>
-        </div>
-        {pedidos.map((pedido, index) => (
-          <div className="table-grid table-row" key={index}>
-            <p className='table-text'>#{pedido.id_pedido}</p>
-            <p className='table-text'>{pedido.cliente}</p>
-            <p className='table-text'>{pedido.nit_empresa}</p>
-            <p className='table-text'>Q.{pedido.monto_total}</p>
-            <p className='table-text'>{pedido.direccion}</p>
-            <p className='table-text'>
-              {pedido.id_descuento === 0 ? (
-                'N/A'
-              ) : pedido.id_descuento === 1 ? (
-                '5%'
-              ) : pedido.id_descuento === 2 ? (
-                '10%'
-              ) : pedido.id_descuento === 3 ? (
-                '15%'
-              ) : pedido.id_descuento === 4 ? (
-                '20%'
-              ) : pedido.id_descuento === 5 ? (
-                '25%'
-              ) : (
-                'Otro tipo de descuento'
-              )}
-            </p>
-            <button 
-              className='more-edit' 
-            >
-              ...
-            </button>
-            <select
-              value={pedido.estado} 
-              onChange={(e) => handleEstadoChange(pedido.id_pedido, e.target.value)}
-              className={`state ${getClassName(pedido.estado)}`}
-            >
-              <option className="option" value="Pendiente" key= '1'>Pendiente</option>
-              <option className="option" value="Procesando" key= '2'>Procesando</option>
-              <option className="option" value="Enviado" key= '3'>Enviado</option>
-              <option className="option" value="Entregado" key= '4'>Entregado</option>
-              <option className="option" value="Cancelado" key= '5'>Cancelado</option>
-            </select>
+      {isSearchActive ? (
+        searchResults.length > 0 ? (
+          renderPedidosTable(searchResults)
+        ) : (
+          <div className="no-results">
+            <p>No se encontraron resultados para tu búsqueda.</p>
           </div>
-        ))}
-      </div>
+        )
+      ) : (
+        renderPedidosTable(pedidos)
+      )}
     </div>
   );
 };
