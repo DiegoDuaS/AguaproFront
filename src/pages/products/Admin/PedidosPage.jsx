@@ -129,6 +129,11 @@ const PedidosPage = () => {
     return classes[estado] || 'state';
   };
 
+  const closeCard = () => {
+    setIsCardOpen(false);
+    setSelectedPedido(null); // Optionally clear the selected pedido
+  };
+
   const updateDireccion = async (pedidoId, newDireccion) => {
     try {
       const response = await fetch(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/pedidos/${pedidoId}/direccion`, {
@@ -273,7 +278,11 @@ const PedidosPage = () => {
               ...
             </button>
             {isCardOpen && selectedPedido === pedido.id_pedido && (
-              <InfoProdPedidoCard pedidoId={pedido.id_pedido} /> // Pass the selected pedido.id to ProductCard
+              <InfoProdPedidoCard 
+                isOpen={isCardOpen} 
+                closeCard={closeCard} 
+                productos={productos} // Pass productos as a prop
+              />
             )}
             <select
               value={pedido.estado} 
