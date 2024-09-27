@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import './admin.css';
-import { Chart } from 'react-charts';
 import { BiError } from "react-icons/bi";
 import { CircularProgress } from '@mui/material';
 
@@ -22,11 +21,7 @@ const AnaliticaPage = () => {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-        }, 
-        body: JSON.stringify({
-          fechaInicio,  
-          fechaFin     
-        }),
+        }
       });
 
       if (!response.ok) {
@@ -48,17 +43,17 @@ const AnaliticaPage = () => {
     const fetchAllData = async () => {
       setIsLoading(true);
       try {
-        const salesData = await fetchData('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/sales');
-        const productsData = await fetchData('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/sales/products');
-        const clientsData = await fetchData('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/sales/clients');
-        const dailySalesData = await fetchData('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/sales/daily');
-        const totalSalesData = await fetchData('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/sales/sum');
+        const salesData = await fetchData(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/sales?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`);
+        const productsData = await fetchData(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/sales/products?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`);
+        const clientsData = await fetchData(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/sales/clients?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`);
+        const dailySalesData = await fetchData(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/sales/daily?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`);
+        const totalSalesData = await fetchData(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/sales/sum?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`);
 
-        setSales(salesData);
-        setProducts(productsData);
-        setClients(clientsData);
-        setDailySales(dailySalesData);
-        setTotalSales(totalSalesData);
+        setSales(salesData || []);
+        setProducts(productsData || []);
+        setClients(clientsData || []);
+        setDailySales(dailySalesData || []);
+        setTotalSales(totalSalesData || 0);
       } catch (error) {
         setError(error.message);
       } finally {
@@ -69,80 +64,38 @@ const AnaliticaPage = () => {
     fetchAllData();
   }, []);
 
+
   if (isLoading) {
     return (
       <div className="container">
         <div className="text">Analítica</div>
         <div className='loadingcontainer'>
           <CircularProgress />
-          <p className='loading'>Cargando Analítca...</p>
+          <p className='loading'>Cargando Analítica...</p>
         </div>
       </div>
     );
   }
-  
+
   if (error) {
     return (
       <div className="container">
         <div className="text">Analítica</div>
         <div className='error-container'>
           <BiError color='black' size={80}/>
-          <p className='loading'>Error Cargando Analitica</p>
+          <p className='loading'>Error Cargando Analítica</p>
         </div>
       </div>
     );
   }
 
-  // Preparing data for charts
-  const dailySalesChartData = useMemo(() => {
-    return dailySales.map(sale => ({
-      primary: new Date(sale.fecha).toLocaleDateString(), // Format the date
-      secondary: sale.total_ventas,
-    }));
-  }, [dailySales]);
-
-  const productsChartData = useMemo(() => {
-    return products.map(product => ({
-      primary: product.nombre,
-      secondary: parseFloat(product.avg), // Convert average to float
-    }));
-  }, [products]);
-
   return (
     <div className="container">
       <div className="text">Analítica</div>
-      
+
       <h2>Ventas Diarias</h2>
-      <div style={{ width: '100%', height: '300px' }}>
-        <Chart
-          data={[
-            {
-              label: 'Total Ventas',
-              data: dailySalesChartData,
-            },
-          ]}
-          axes={[
-            { primary: true, type: 'ordinal', position: 'bottom' },
-            { primary: false, type: 'linear', position: 'left' },
-          ]}
-        />
-      </div>
 
       <h2>Productos Vendidos</h2>
-      <div style={{ width: '100%', height: '300px' }}>
-        <Chart
-          data={[
-            {
-              label: 'Promedio de Ventas por Producto',
-              data: productsChartData,
-            },
-          ]}
-          axes={[
-            { primary: true, type: 'ordinal', position: 'bottom' },
-            { primary: false, type: 'linear', position: 'left' },
-          ]}
-        />
-      </div>
 
       <h2>Total Ventas</h2>
       <p>Total: {totalSales}</p>
