@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './admin.css';
 import { CircularProgress } from '@mui/material';
 import searchIcon from './../../../image/searchIcon.png';
 import useApiP from '../../../hooks/useAPIProducts';
+import NewUserCard from '../../../components/NewUserCard';
 import { BiError } from "react-icons/bi";
 import { FaTrash } from "react-icons/fa6";
 import { CiEdit } from "react-icons/ci";
@@ -10,7 +11,17 @@ import { CiEdit } from "react-icons/ci";
 const UsuariosPage = () => {
   const { data: usuarios, errorMessage, isLoading } = useApiP('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/users');
   const storedUser = JSON.parse(localStorage.getItem('user'));
-  
+  const [isNewCardOpen, setisNewCardOpen] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessageState, setErrorMessageState] = useState('');
+
+  const openNewCard = () => {
+    setisNewCardOpen(true);
+  };
+
+  const closeNewCard = () => {
+    setisNewCardOpen(false);
+  };
 
   if (isLoading) {
     return (
@@ -72,7 +83,7 @@ const UsuariosPage = () => {
             <img src={searchIcon} alt="Search" />
           </button>
         </div>
-        <button className='addbutton'> Agregar Usuario +</button>
+        <button className='addbutton' onClick={() => openNewCard()}> Agregar Usuario +</button>
       </div>
 
       <div className='clients-tablespace'> 
@@ -107,6 +118,12 @@ const UsuariosPage = () => {
           })}
         </div>
       </div>
+      {isNewCardOpen && (
+        <NewUserCard
+          isOpen={isNewCardOpen}
+          closeCard={closeNewCard}
+        />
+      )}
     </div>
   );
 };
