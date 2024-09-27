@@ -16,21 +16,29 @@ const RegisterPage = ({ onRouteChange }) => {
   const [errorMessage, setErrorMessage] = useState('');
 
   const handleSubmitRegister = async () => {
+    if (password !== passwordConfirm) {
+        setErrorMessage('Las contraseñas no coinciden');
+        setSuccessMessage(''); // Clear success message
+        console.log(errorMessage);
+        return;
+    }
+
     const userData = { username, password, email, role };
-        const result = await registerUser(userData); // Wait for the result
+    const result = await registerUser(userData); // Wait for the result
 
-        console.log('Register User Result:', result); // Log the result
+    console.log('Register User Result:', result); // Log the result
 
-        // Check if result contains data or error
-        if (result.data) {
-            onRouteChange('Login');
-            setSuccessMessage(result.data.message); // Set success message
-            setErrorMessage(''); // Clear error message
-        } else if (result.error) {
-            setErrorMessage(result.error); // Set error message if exists
-            setSuccessMessage(''); // Clear success message
-        }
+    // Check if result contains data or error
+    if (result.data) {
+        onRouteChange('Login');
+        setSuccessMessage(result.data.message); // Set success message
+        setErrorMessage(''); // Clear error message
+    } else if (result.error) {
+        setErrorMessage(result.error); // Set error message if exists
+        setSuccessMessage(''); // Clear success message
+    }
 };
+
   
   const handleLogin = () => {
      onRouteChange('Login');
