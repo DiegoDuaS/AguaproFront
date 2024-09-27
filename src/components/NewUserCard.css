@@ -1,0 +1,105 @@
+.large-card-prod-nu {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 900px;
+    height: 60%;
+    background-color: #F5F4F1;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    z-index: 1000;
+    padding: 20px;
+    margin-top: 20px;
+    color: #000000;
+    align-items: center;
+    overflow-y: scroll;
+}
+
+.large-card-prod-nu::-webkit-scrollbar {
+    width: 12px; /* Ancho de la scrollbar vertical */
+}
+
+.large-card-prod-nu::-webkit-scrollbar-track {
+    background: #D9D9D9; /* Color del fondo de la pista */
+    border-radius: 10px;
+}
+
+.large-card-prod-nu::-webkit-scrollbar-thumb {
+    background: #6c6c6c; /* Color del pulgar */
+    border-radius: 10px;
+    max-height: 10px;
+}
+
+.large-card-prod-nu::-webkit-scrollbar-thumb:hover {
+    background: #444444; /* Color del pulgar al pasar el mouse */
+}
+
+.text-nu {
+    color: #00668C; 
+    font-size: 2.5em;
+    margin-bottom: 0;
+    font-family: "Khand";
+    font-weight: bold;
+}
+
+.tables-section-nu {
+    display: flex;
+    flex-direction: column;
+    width: 100%; /* Ensure it uses full width */
+    align-items: center
+}
+
+.vertical-table-nu {
+    display: flex;
+    flex-direction: column; /* Arrange inputs vertically */
+    width: 100%;
+}
+
+.table-row-nu {
+    display: flex;
+    flex-direction: column; /* Align title and input vertically */
+    margin-bottom: 15px; /* Space between rows */
+    width: 100%;
+    align-items: center;
+}
+
+.table-row-nu .title {
+    font-weight: bold;
+    margin-bottom: 5px; /* Space between title and input */
+}
+
+.table-cell-nu input {
+    width: 70%;
+    height: 3rem;
+    background-color: #F5F4F1;
+    border-radius: 4px;
+    color: #000000;
+    font-size: 15px;
+    border-color: rgb(192, 192, 192);
+}
+
+.save-button-nu {
+    margin-top: 15px;
+    background-color: #00668C;
+    color: #ffffff;
+}
+
+.input2{
+    width: 70%;
+    height: 3rem;
+    background-color: #F5F4F1;
+    border-radius: 4px;
+    color: #000000;
+    font-size: 15px;
+    border-color: rgb(192, 192, 192);
+}
+
+.section-nu{
+    width: 100%;
+    display: flex;
+    
+}

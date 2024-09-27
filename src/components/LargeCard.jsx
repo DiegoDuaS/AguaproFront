@@ -1,12 +1,26 @@
 import React, { useEffect, useRef, useState } from 'react';
-import './LargeCard.css'; 
+import './LargeCard.css';
 
 const LargeCard = ({ isOpen, closeCard, product, addToCart, cartItems }) => {
   const cardRef = useRef(null);
-  //const initialQuantity = cartItems.find(item => item.id_producto === product.id_producto)?.quantity || 1;
-  //const [quantity, setQuantity] = useState(initialQuantity);
   const [quantity, setQuantity] = useState(1);
   const [sizeSelected, setSizeSelected] = useState('4\'\'');
+  const [animateClass, setAnimateClass] = useState('');
+
+  useEffect(() => {
+    if (isOpen) {
+      setAnimateClass('slide-in'); // Añade la clase para mostrar la tarjeta
+      document.addEventListener('mousedown', handleClickOutside);
+    } else {
+      setAnimateClass('slide-out'); // Añade la clase para ocultar la tarjeta
+      setTimeout(() => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      }, 500); // Remueve el listener después de la animación
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isOpen]);
 
   const handleClickOutside = (event) => {
     if (cardRef.current && !cardRef.current.contains(event.target)) {
@@ -14,19 +28,7 @@ const LargeCard = ({ isOpen, closeCard, product, addToCart, cartItems }) => {
     }
   };
 
-  useEffect(() => {
-    if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-    } else {
-      document.removeEventListener('mousedown', handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [isOpen]);
-
-  if (!isOpen) return null;
+  if (!isOpen && animateClass === '') return null;
 
   const handleAddToCart = () => {
     const productToAdd = {
@@ -38,7 +40,7 @@ const LargeCard = ({ isOpen, closeCard, product, addToCart, cartItems }) => {
   };
 
   return (
-    <div className="large-card" ref={cardRef}>
+    <div className={`large-card ${animateClass}`} ref={cardRef}>
       <button className="close-button" onClick={closeCard}>X</button>
       <div className="left-section">
         <div className='photo-title'>
@@ -69,9 +71,9 @@ const LargeCard = ({ isOpen, closeCard, product, addToCart, cartItems }) => {
         </div>
         <div className="add-to-cart">
           <div className='cuantity-box'>
-            <button class='addq' onClick={() => setQuantity(quantity > 1 ? quantity - 1 : 1)}>-</button>
-            <span class="quantity">{quantity}</span>
-            <button class='remove' onClick={() => setQuantity(quantity + 1)}>+</button>
+            <button className='addq' onClick={() => setQuantity(quantity > 1 ? quantity - 1 : 1)}>-</button>
+            <span className="quantity">{quantity}</span>
+            <button className='remove' onClick={() => setQuantity(quantity + 1)}>+</button>
           </div>
           <button className='add' onClick={handleAddToCart}>Agregar al Carrito</button>
         </div>

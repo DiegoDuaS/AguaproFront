@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import './admin.css';
 import searchIcon from './../../../image/searchIcon.png';
 import { CircularProgress } from '@mui/material';
@@ -231,6 +232,8 @@ const ProductosPage = () => {
           closeCard={closeEditCard}
           product={selectedProduct}
           refetchProducts={refetch}
+          setSuccsessMessage={setSuccessMessage}
+          setErrorMessage={setErrorMessageState}
         />
       )}
       {isNewCardOpen && (
@@ -238,9 +241,24 @@ const ProductosPage = () => {
           isOpen={isNewCardOpen}
           closeCard={closeNewCard}
           refetchProducts={refetch}
+          setSuccsessMessage={setSuccessMessage}
+          setErrorMessage={setErrorMessageState}
         />
       )}
+      {isDeleteCardOpen && (
+        <DeleteCard
+          isOpen={isDeleteCardOpen}
+          closeCard={closeDeleteCard}
+          product={selectedProduct}
+          setSuccsessMessage={setSuccessMessage}
+          setErrorMessage={setErrorMessageState}
+          refetchProducts={refetch}
+        />
+      )}
+      <StateCard message={successMessage} isOpen={!!successMessage} type={1}/>
+      <StateCard message={errorMessageState} isOpen={!!errorMessageState} type={2}/>
     </div>
+    
   );
 };
 

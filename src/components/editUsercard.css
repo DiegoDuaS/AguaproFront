@@ -1,0 +1,21 @@
+.edituser-card {
+    position: fixed;
+    display: flex;
+    flex-direction: row;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 900px;
+    height: 60%;
+    background-color: #f5f4f1;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    z-index: 1000;
+    padding: 20px;
+    margin-top: 20px;
+    color: #000000;
+    transition: opacity 0.5s ease, transform 0.5s ease; /* Animación de opacidad y posición */
+    opacity: 0; /* Oculto por defecto */
+    transform: translate(-50%, -50%) scale(0.95); /* Empieza más pequeño */
+  }

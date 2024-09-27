@@ -4,7 +4,7 @@ import useApiP from '../hooks/useAPIProducts';
 import './NewProdCard.css';
 import { CircularProgress } from '@mui/material';
 
-const NewProdCard = ({ isOpen, closeCard, refetchProducts }) => {
+const NewProdCard = ({ isOpen, closeCard, refetchProducts, setSuccsessMessage, setErrorMessage }) => {
   const { data: tipos, errorMessage, isLoading } = useApiP('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/tipos_producto');
   const { data: energias, errorMessageE, isLoadingE } = useApiP('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/energia');
   const { data: condicioness, errorMessageC, isLoadingC } = useApiP('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/condiciones');
@@ -97,7 +97,7 @@ const NewProdCard = ({ isOpen, closeCard, refetchProducts }) => {
         };
         const createdProduct = await createProduct(productDetails.nombre, productDetails.descripcion, productDetails.tipo_producto);
         if (!createdProduct) {
-          alert("No se pudo crear el producto.");
+          setErrorMessage("No se pudo crear el producto.")
           return;
         }
         
@@ -119,6 +119,7 @@ const NewProdCard = ({ isOpen, closeCard, refetchProducts }) => {
         // Add product characteristics
         const result = await addProductChars(productChars);
         if (result === 'No fue posible guardar el dato de energía' || result === 'No fue posible guardar el dato de Condiciones') {
+          setErrorMessage(result)
           alert(result);
           return;
         }
@@ -132,11 +133,11 @@ const NewProdCard = ({ isOpen, closeCard, refetchProducts }) => {
         };
         // Add product variable characteristics
         const result2 = await addProductVariableChars(productVarChars);
-        if (result2 === 'No fue posible guardar el dato de Tamaño') {          
-         alert(result2);
+        if (result2 === 'No fue posible guardar el dato de Tamaño') {  
+          setErrorMessage(result2)        
           return;
         }
-        alert("Se agregó el producto.");
+        setSuccsessMessage("Se agregó el producto correctamente.")
         await refetchProducts();
         closeCard();
       }

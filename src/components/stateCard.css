@@ -1,0 +1,55 @@
+.success-card {
+    position: fixed;
+    top: 100px;
+    right: -300px; /* Inicia fuera de la pantalla */
+    width: auto;
+    padding: 15px;
+    background-color: #eeeeee; /* Color de fondo verde para éxito */
+    color: rgba(255, 255, 255, 0.874);
+    border-radius: 5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    transition: right 0.7s ease-in-out;
+    z-index: 1000; /* Asegura que esté sobre otros elementos */
+    justify-content: center;
+  }
+  
+  .success-message2 {
+    font-size: large;
+    color: #000000;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+  
+  /* Clase para mostrar la tarjeta con animación de entrada */
+  .slide-in {
+    right: 20px; /* Muestra la tarjeta al lado derecho */
+  }
+  
+  /* Clase para ocultar la tarjeta con animación de salida */
+  .slide-out {
+    right: -550px; /* Oculta la tarjeta fuera de la pantalla */
+  }
+
+  .cart-card {
+    position: fixed;
+    top: -20px;
+    right: -800px; /* Inicia fuera de la pantalla */
+    width: auto;
+    padding: 15px;
+    background-color: #eeeeee; /* Color de fondo verde para éxito */
+    color: rgba(255, 255, 255, 0.874);
+    border-radius: 5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    transition: right 0.7s ease-in-out;
+    z-index: 1000; /* Asegura que esté sobre otros elementos */
+    justify-content: center;
+  }

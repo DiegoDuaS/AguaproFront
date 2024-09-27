@@ -23,7 +23,6 @@ const useApiP = (url) => {
         setErrorMessage(`Error al obtener datos: ${response.status}`);
       }
     } catch (error) {
-      console.error('Error al usar Get Products:', error);
       setErrorMessage('Error al conectarse al servidor.');
     } finally {
       setIsLoading(false);

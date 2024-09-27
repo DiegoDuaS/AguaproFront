@@ -8,6 +8,7 @@ import CustomNav from "../../components/AdminNav.jsx";
 import AdminHeader from "../../components/AdminHeader.jsx";
 import PropTypes from 'prop-types';
 import { orders, products, analytics, clients } from './images.js';
+import UsuariosPage from './Admin/UsuariosPage.jsx';
 import { BsBoxSeam } from "react-icons/bs";
 
 
@@ -32,6 +33,8 @@ const AdminPage = ({ onRouteChange }) => {
         return <AnaliticaPage />;
       case 'Clientes':
         return <ClientesPage />;
+      case 'Usuarios':
+        return <UsuariosPage />;
       default:
         return <PedidosPage />; // Default to PedidosPage
     }
@@ -65,7 +68,8 @@ const AdminPage = ({ onRouteChange }) => {
             ["Pedidos", orders],
             ["Productos", products],
             ["Analítica", analytics],
-            ["Clientes", clients]
+            ["Clientes", clients],
+            ["Usuarios", clients]
           ]}
           onOptionSelect={handleOptionSelect}
           isExpanded={isExpanded}

@@ -1,7 +1,6 @@
 import './adminheader.css';
 import PropTypes from 'prop-types';
 import menuIcon from '../image/menuIcon.png';
-import userIcon from '../image/userIcon.png';
 import { CiLogout } from "react-icons/ci";
 import { FaUser } from "react-icons/fa";
 
