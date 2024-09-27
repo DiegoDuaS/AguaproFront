@@ -2,44 +2,43 @@ import './login.css';
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../hooks/authProvider';
 import PropTypes from 'prop-types';
-import { useApi } from '../../hooks/useApi';
+import useRegisterUser from '../../hooks/useRegisterUser';
 import { CircularProgress } from '@mui/material';
 
 const RegisterPage = ({ onRouteChange }) => {
-  const { userLogin, loading} = useApi();
+  const { registerUser,loading,error } = useRegisterUser();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
-  const [correo, setCorreo] = useState('');
-  const [error, setError] = useState('');
-  const { login } = useAuth();
+  const [email, setEmail] = useState('');
+  const [role, setRole] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
-  useEffect(() => {
-    if (error) {
-      const timer = setTimeout(() => {
-        setError('');
-      }, 5000); 
-
-      return () => clearTimeout(timer); 
+  const handleSubmitRegister = async () => {
+    if (password !== passwordConfirm) {
+        setErrorMessage('Las contraseñas no coinciden');
+        setSuccessMessage(''); // Clear success message
+        console.log(errorMessage);
+        return;
     }
-  }, [error]);
 
-  const handleSubmitLogin = async () => {
-    try {
-        const response = await userLogin(login, username, password);
-        
-        if (response.ok) {
-            onRouteChange('AdminPage');
-            console.log('Logging in with', username, password);                 
-            // Save token to local storage
+    const userData = { username, password, email, role };
+    const result = await registerUser(userData); // Wait for the result
 
-            console.log("token", localStorage.getItem('token'));
-            return;
-        }
-    } catch (error) {
-        setError(error.message); 
+    console.log('Register User Result:', result); // Log the result
+
+    // Check if result contains data or error
+    if (result.data) {
+        onRouteChange('Login');
+        setSuccessMessage(result.data.message); // Set success message
+        setErrorMessage(''); // Clear error message
+    } else if (result.error) {
+        setErrorMessage(result.error); // Set error message if exists
+        setSuccessMessage(''); // Clear success message
     }
 };
+
   
   const handleLogin = () => {
      onRouteChange('Login');
@@ -76,12 +75,12 @@ return (
           className="inputBox"
           type="email"
           placeholder="Ingrese su correo electrónico"
-          value={correo}
-          onChange={(e) => setCorreo(e.target.value)}
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
         />
         {loading && (<div> <CircularProgress /> </div>)}
         {error && <div className="errorMessage">{error}</div>}
-        <button className="inputButton" onClick={handleSubmitLogin}>
+        <button className="inputButton" onClick={handleSubmitRegister}>
           registrar
         </button>
         <button className="inputButton" onClick={() => onRouteChange('Bombas de agua')}>

@@ -8,15 +8,41 @@ import { BiError } from "react-icons/bi";
 import { FaRegCircleCheck } from "react-icons/fa6";
 import { MdOutlineErrorOutline } from "react-icons/md";
 import StateCard from '../../../components/stateCard';
+import InfoProdPedidoCard from '../../../components/InfoProdPedidoCard';
+
 
 
 const PedidosPage = () => {
   const { data: pedidos, errorMessage, isLoading, refetch } = useApiP('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/pedidos');
   const [estados, setEstados] = useState({});
+  const [selectedPedido, setSelectedPedido] = useState(null);
   const [direcciones, setDirecciones] = useState({});
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessageState, setErrorMessageState] = useState('');
+  const [isCardOpen, setIsCardOpen] = useState(false);
+  const [productos, setProductos] = useState([]);
+  const [isLoadingProductos, setIsLoadingProductos] = useState(false);
 
+  const fetchProductos = async (pedidoId) => {
+    setIsLoadingProductos(true); // Comienza a cargar productos
+    try {
+        const response = await fetch(`https://aguapro-back.vercel.app/pedidos/${pedidoId}/productos`);
+        if (!response.ok) throw new Error('Failed to fetch productos');
+        const data = await response.json();
+        setProductos(data);
+        setIsCardOpen(true);
+    } catch (error) {
+        console.error(error);
+    } finally {
+        setIsLoadingProductos(false); // Finaliza la carga (éxito o error)
+    }
+};
+
+    const handlePedidoClick = (pedidoId) => {
+        setSelectedPedido(pedidoId);
+        fetchProductos(pedidoId);
+        setIsCardOpen(true);
+    };
   // Inicializar las direcciones cuando se cargan los pedidos
   useEffect(() => {
     if (pedidos) {
@@ -41,14 +67,14 @@ const PedidosPage = () => {
 
   // Manejo de mensajes de error
   useEffect(() => {
-    if (errorMessage) {
+    if (errorMessageState) {
       const timer = setTimeout(() => {
         setErrorMessageState('');
       }, 5000); 
 
       return () => clearTimeout(timer); 
     }
-  }, [errorMessage]);
+  }, [errorMessageState]);
 
   // Manejar el cambio de estado de un pedido
   const handleEstadoChange = async (pedidoId, newEstado) => {
@@ -106,6 +132,11 @@ const PedidosPage = () => {
       'Cancelado': 'cancelado',
     };
     return classes[estado] || 'state';
+  };
+
+  const closeCard = () => {
+    setIsCardOpen(false);
+    setSelectedPedido(null); // Optionally clear the selected pedido
   };
 
   const updateDireccion = async (pedidoId, newDireccion) => {
@@ -195,7 +226,6 @@ const PedidosPage = () => {
       <StateCard message={errorMessageState} isOpen={!!errorMessageState} type={2}/>
 
       {/* PANTALLA PRINCIPAL SIN BUSCAR */}
-      <SuccessCard successMessage={"Pruebas"}></SuccessCard>
       <div className="table">
         <div className="table-grid table-header">
           <h3>Pedido Id</h3>
@@ -247,10 +277,19 @@ const PedidosPage = () => {
               )}
             </p>
             <button 
-              className='more-edit' 
+              className='more-edit'
+              onClick={() => handlePedidoClick(pedido.id_pedido)} 
             >
               ...
             </button>
+            {isCardOpen && selectedPedido === pedido.id_pedido && (
+              <InfoProdPedidoCard 
+                isOpen={isCardOpen} 
+                closeCard={closeCard} 
+                productos={productos}
+                isLoadingProductos={isLoadingProductos} // Pass productos as a prop
+              />
+            )}
             <select
               value={pedido.estado} 
               onChange={(e) => handleEstadoChange(pedido.id_pedido, e.target.value)}
