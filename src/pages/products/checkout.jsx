@@ -41,7 +41,6 @@ const Checkout = ({ onRouteChange, cartItems }) => {
       [name]: value
     }));
   };
-
   return (
     <div>
       <CheckoutHeader />
