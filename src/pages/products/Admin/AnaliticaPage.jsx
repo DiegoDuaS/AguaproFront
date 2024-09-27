@@ -13,7 +13,9 @@ import {
   Title,
   Tooltip,
   Legend,
+  Decimation,
 } from 'chart.js';
+import DatePicker from 'react-datepicker';
 
 ChartJS.register(
   CategoryScale,
@@ -34,9 +36,8 @@ const AnaliticaPage = () => {
   const [totalSales, setTotalSales] = useState(0);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-
-  const fechaInicio = '2023-12-03';
-  const fechaFin = '2024-09-26';
+  const [fechaInicio, setFechaInicio] = useState('2024-08-28');
+  const [fechaFin, setFechaFin] = useState('2024-09-26');
 
   const fetchData = async (endpoint) => {
     try {
@@ -71,12 +72,6 @@ const AnaliticaPage = () => {
         const clientsData = await fetchData(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/sales/clients?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`);
         const dailySalesData = await fetchData(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/sales/daily?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`);
         const totalSalesData = await fetchData(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/sales/sum?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`);
-        
-        console.log('Sales Data:', salesData); // Log sales data
-        console.log('Products Data:', productsData); // Log products data
-        console.log('Clients Data:', clientsData); // Log clients data
-        console.log('Daily Sales Data:', dailySalesData); // Log daily sales data
-        console.log('Total Sales Data:', totalSalesData); // Log total sales data
 
         setSales(salesData || []);
         setProducts(productsData || []);
@@ -93,15 +88,54 @@ const AnaliticaPage = () => {
     fetchAllData();
   }, []);
 
+  useEffect(() => {
+    const fetchAllData = async () => {
+      setIsLoading(true);
+      try {
+        const salesData = await fetchData(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/sales?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`);
+        const productsData = await fetchData(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/sales/products?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`);
+        const clientsData = await fetchData(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/sales/clients?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`);
+        const dailySalesData = await fetchData(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/sales/daily?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`);
+        const totalSalesData = await fetchData(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/sales/sum?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`);
 
-  const dailySalesChartData = {
-    labels: dailySales.map(sale => sale.fecha),
+        setSales(salesData || []);
+        setProducts(productsData || []);
+        setClients(clientsData || []);
+        setDailySales(dailySalesData || []);
+        setTotalSales(totalSalesData || 0);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchAllData();
+  }, [fechaInicio, fechaFin]);
+
+
+  const dailySalesChartData  = {
+    labels: dailySales.map(sale => sale.fecha.slice(0, 10)),
     datasets: [{
       label: 'Ventas Diarias',
       data: dailySales.map(sale => sale.total_ventas),
-      borderColor: 'rgba(75,192,192,1)',
+      borderColor: 'rgba(0, 102, 140, 1)',
+      backgroundColor: 'rgba(0, 102, 140, 0.8)',
       fill: false,
     }]
+  };
+
+  const optionsDailySales = {
+    scales: {
+      y: {
+        beginAtZero: true, // Esto asegura que el eje Y comience desde cero
+        ticks: {
+          callback: function(value) {
+            return `Q. ${value}`; // Formato "Q. {numero}"
+          }
+        }
+      }
+    }
   };
 
   const productsChartData = {
@@ -109,14 +143,29 @@ const AnaliticaPage = () => {
     datasets: [{
       label: 'Productos Vendidos',
       data: products.map(product => product.avg),
-      backgroundColor: 'rgba(153, 102, 255, 0.6)',
+      backgroundColor: 'rgba(0, 102, 140, 0.8)',
     }]
+  };
+
+  const optionsProducts = {
+    scales: {
+      y: {
+        beginAtZero: true, // Esto asegura que el eje Y comience desde cero
+        ticks: {
+          stepSize: 1, // Esto asegura que los ticks en el eje Y sean solo enteros
+          callback: function(value) {
+            return `${value} Unidades`; // Formato "X Unidades"
+          }
+        },
+      }
+    }
   };
   
   if (isLoading) {
     return (
       <div className="container">
         <div className="text">Analítica</div>
+        <div className='space' />
         <div className='loadingcontainer'>
           <CircularProgress />
           <p className='loading'>Cargando Analítica...</p>
@@ -129,6 +178,7 @@ const AnaliticaPage = () => {
     return (
       <div className="container">
         <div className="text">Analítica</div>
+        <div className='space' />
         <div className='error-container'>
           <BiError color='black' size={80}/>
           <p className='loading'>Error Cargando Analítica</p>
@@ -141,14 +191,73 @@ const AnaliticaPage = () => {
     <div className="container">
       <div className="text">Analítica</div>
 
-      <h2>Ventas Diarias</h2>
-      <Line data={dailySalesChartData} />
-  
-      <h2>Productos Vendidos</h2>
-      <Bar data={productsChartData} />
+      <div className='date-filters'>
+        <label>
+          Fecha de Inicio:
+          <input
+            type="date"
+            value={fechaInicio}
+            onChange={(e) => setFechaInicio(e.target.value)}
+          />
+        </label>
+        <label>
+          Fecha de Fin:
+          <input
+            type="date"
+            value={fechaFin}
+            onChange={(e) => setFechaFin(e.target.value)}
+          />
+        </label>
+      </div>
 
-      <h2>Total Ventas</h2>
-      <p>Total: {totalSales}</p>
+
+      <div className='analysis_section'>
+        <h2>Ventas Diarias</h2>
+        <Line data={dailySalesChartData} options={optionsDailySales}/>
+      </div>
+      
+      <div className='analysis_section'>
+        <h2>Productos Vendidos</h2>
+        <Bar data={productsChartData} options={optionsProducts}/>
+      </div>
+
+      <div className='horizontal_info_analysis'>
+        <div className='analysis_section_nongraph'>
+          <h2>Total Ventas</h2>
+            <div className='info_section_ventas'>
+              <p className='loading'>De {fechaInicio} a {fechaFin}: </p>
+              <p className='loading'><strong>{sales.length} Ventas</strong></p>
+              <p className='loading'><strong>Q.{totalSales}</strong></p>
+            </div>
+        </div>
+
+        <div className='analysis_section_nongraph'>
+          <h2>Mejores Clientes</h2>
+          <div className="table4">
+            <div className="table4-grid table-header">
+              <h3>Cliente</h3>
+              <h3>Pedidos</h3>
+            </div>
+            {clients.map((cliente, index) => (
+            <div className="table4-grid table-row" key={index}>
+              <p className='table-text'>{cliente.nombre}</p>
+              <p className='table-text'>{cliente.total_pedidos}</p>
+            </div>
+            ))}
+            <div className="table4-grid table-row">
+              <p className='table-text'>test</p>
+              <p className='table-text'>test</p>
+            </div>
+            <div className="table4-grid table-row">
+              <p className='table-text'>test</p>
+              <p className='table-text'>test</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      
+      
     </div>
   );
 };
