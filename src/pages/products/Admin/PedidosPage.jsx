@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import './admin.css';
 import { CiEdit } from "react-icons/ci";
 import searchIcon from './../../../image/searchIcon.png';
@@ -7,13 +7,54 @@ import useApiP from '../../../hooks/useAPIProducts';
 import { BiError } from "react-icons/bi";
 import { FaRegCircleCheck } from "react-icons/fa6";
 import { MdOutlineErrorOutline } from "react-icons/md";
+import StateCard from '../../../components/stateCard';
+import InfoProdPedidoCard from '../../../components/InfoProdPedidoCard';
+
+
 
 const PedidosPage = () => {
   const { data: pedidos, errorMessage, isLoading, refetch } = useApiP('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/pedidos');
   const [estados, setEstados] = useState({});
+  const [selectedPedido, setSelectedPedido] = useState(null);
+  const [direcciones, setDirecciones] = useState({});
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessageState, setErrorMessageState] = useState('');
+  const [isCardOpen, setIsCardOpen] = useState(false);
+  const [productos, setProductos] = useState([]);
+  const [isLoadingProductos, setIsLoadingProductos] = useState(false);
 
+  const fetchProductos = async (pedidoId) => {
+    setIsLoadingProductos(true); // Comienza a cargar productos
+    try {
+        const response = await fetch(`https://aguapro-back.vercel.app/pedidos/${pedidoId}/productos`);
+        if (!response.ok) throw new Error('Failed to fetch productos');
+        const data = await response.json();
+        setProductos(data);
+        setIsCardOpen(true);
+    } catch (error) {
+        console.error(error);
+    } finally {
+        setIsLoadingProductos(false); // Finaliza la carga (éxito o error)
+    }
+};
+
+    const handlePedidoClick = (pedidoId) => {
+        setSelectedPedido(pedidoId);
+        fetchProductos(pedidoId);
+        setIsCardOpen(true);
+    };
+  // Inicializar las direcciones cuando se cargan los pedidos
+  useEffect(() => {
+    if (pedidos) {
+      const initialDirecciones = {};
+      pedidos.forEach((pedido) => {
+        initialDirecciones[pedido.id_pedido] = pedido.direccion;
+      });
+      setDirecciones(initialDirecciones);
+    }
+  }, [pedidos]);
+
+  // Manejo de mensajes de éxito
   useEffect(() => {
     if (successMessage) {
       const timer = setTimeout(() => {
@@ -24,41 +65,38 @@ const PedidosPage = () => {
     }
   }, [successMessage]);
 
+  // Manejo de mensajes de error
   useEffect(() => {
-    if (errorMessage) {
+    if (errorMessageState) {
       const timer = setTimeout(() => {
         setErrorMessageState('');
       }, 5000); 
 
       return () => clearTimeout(timer); 
     }
-  }, [errorMessage]);
+  }, [errorMessageState]);
 
+  // Manejar el cambio de estado de un pedido
   const handleEstadoChange = async (pedidoId, newEstado) => {
     let idEstado = 0;
 
-    if (newEstado === "Pendiente") {
-        idEstado = 1;
-    } else if (newEstado === "Procesando") {
-        idEstado = 2;
-    } else if (newEstado === "Enviado") {
-        idEstado = 3;
-    } else if (newEstado === "Entregado") {
-        idEstado = 4;
-    } else if (newEstado === "Cancelado") {
-        idEstado = 5;
+    switch (newEstado) {
+      case "Pendiente": idEstado = 1; break;
+      case "Procesando": idEstado = 2; break;
+      case "Enviado": idEstado = 3; break;
+      case "Entregado": idEstado = 4; break;
+      case "Cancelado": idEstado = 5; break;
+      default: idEstado = 0;
     }
 
     try {
       const response = await fetch(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/pedidos/${pedidoId}/status`, {
         method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ pedidoId, estatus: idEstado }),
       });
 
-      if (response.ok){
+      if (response.ok) {
         setEstados((prevEstados) => ({
           ...prevEstados,
           [pedidoId]: newEstado, 
@@ -75,7 +113,16 @@ const PedidosPage = () => {
       console.error(error);
     }
   };
-  
+
+  // Manejar el cambio de dirección en el input
+  const handleDireccionChange = (pedidoId, newDireccion) => {
+    setDirecciones((prevDirecciones) => ({
+      ...prevDirecciones,
+      [pedidoId]: newDireccion,
+    }));
+  };
+
+  // Clase para el estado del pedido
   const getClassName = (estado) => {
     const classes = {
       'Pendiente': 'pendiente',
@@ -86,6 +133,34 @@ const PedidosPage = () => {
     };
     return classes[estado] || 'state';
   };
+
+  const closeCard = () => {
+    setIsCardOpen(false);
+    setSelectedPedido(null); // Optionally clear the selected pedido
+  };
+
+  const updateDireccion = async (pedidoId, newDireccion) => {
+    try {
+      const response = await fetch(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/pedidos/${pedidoId}/direccion`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ pedidoId, direccion: newDireccion }),
+      });
+
+      if (response.ok) {
+        setSuccessMessage('Dirección actualizada correctamente');
+        setErrorMessageState(''); // Clear any previous error messages
+        refetch(); // Reload the data
+      } else {
+        throw new Error('Error al actualizar la dirección del pedido');
+      }
+    } catch (error) {
+      setErrorMessageState('Error al conectar con el servidor. Intente nuevamente.');
+      setSuccessMessage(''); // Clear any previous success messages
+      console.error(error);
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="container">
@@ -134,6 +209,7 @@ const PedidosPage = () => {
 
   return (
     <div className="container">
+      
       <div className="text">Pedidos</div>
       <div className="search-bar">
         <input 
@@ -146,8 +222,8 @@ const PedidosPage = () => {
         </button>
       </div>
 
-      {successMessage && <p className="success-message">{successMessage}  <FaRegCircleCheck size={17}/> </p>}
-      {errorMessageState && <p className="error-message">{errorMessageState} <MdOutlineErrorOutline size={17}/></p>}
+      <StateCard message={successMessage} isOpen={!!successMessage} type={1}/>
+      <StateCard message={errorMessageState} isOpen={!!errorMessageState} type={2}/>
 
       {/* PANTALLA PRINCIPAL SIN BUSCAR */}
       <div className="table">
@@ -167,7 +243,22 @@ const PedidosPage = () => {
             <p className='table-text'>{pedido.cliente}</p>
             <p className='table-text'>{pedido.nit_empresa}</p>
             <p className='table-text'>Q.{pedido.monto_total}</p>
-            <p className='table-text'>{pedido.direccion}</p>
+            {pedido.estatus >= 3 ? (
+              <p className='table-text'>{pedido.direccion}</p>
+            ) : (
+              <input
+                className="direccionChange"
+                type='text'
+                value={direcciones[pedido.id_pedido] || ''}
+                onChange={(e) => handleDireccionChange(pedido.id_pedido, e.target.value)}
+                onBlur={() => updateDireccion(pedido.id_pedido, direcciones[pedido.id_pedido])} // Llamar a la función al perder el foco
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    updateDireccion(pedido.id_pedido, direcciones[pedido.id_pedido]); // Llama a la función si se presiona Enter
+                  }
+                }}
+              />
+            )}
             <p className='table-text'>
               {pedido.id_descuento === 0 ? (
                 'N/A'
@@ -186,10 +277,19 @@ const PedidosPage = () => {
               )}
             </p>
             <button 
-              className='more-edit' 
+              className='more-edit'
+              onClick={() => handlePedidoClick(pedido.id_pedido)} 
             >
               ...
             </button>
+            {isCardOpen && selectedPedido === pedido.id_pedido && (
+              <InfoProdPedidoCard 
+                isOpen={isCardOpen} 
+                closeCard={closeCard} 
+                productos={productos}
+                isLoadingProductos={isLoadingProductos} // Pass productos as a prop
+              />
+            )}
             <select
               value={pedido.estado} 
               onChange={(e) => handleEstadoChange(pedido.id_pedido, e.target.value)}

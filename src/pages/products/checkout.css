@@ -1,0 +1,201 @@
+.containerch {
+    display: flex;
+    flex-direction: column;
+    padding: 20px; /* Optional padding */
+    margin-left:40px;
+    margin-right: 40px;
+    width: -webkit-fill-available;
+    height: -webkit-fill-available;
+    justify-content: center;
+    align-items: center;
+    margin-top: 60px; 
+  }  
+
+  .order-container {
+    display: flex;
+    width: 90%;
+    height: 35em;
+    border: 1px solid #333; /* Borde negro */
+    background-color: #f2f2f2; /* Color de fondo gris claro */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra */
+  }
+  
+  /* Sección izquierda para detalles adicionales */
+  .order-details {
+    flex: 2;
+    padding: 20px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  
+  /* Sección derecha para el resumen de la orden */
+  .order-summary {
+    flex: 1;
+    padding: 20px;
+    border-left: 1px solid #333; /* Borde izquierdo */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow-y: auto;
+  }
+  
+  /* Título */
+  h2 {
+    margin-bottom: 20px;
+  }
+  
+  /* Resumen de orden */
+  .order-summary h3 {
+    color: #006080; /* Color del título */
+    margin-bottom: 10px;
+  }
+  
+  .order-summary table {
+    width: 100%;
+  }
+  
+  .order-summary th, .order-summary td {
+    text-align: center;
+    padding: 8px 0;
+  }
+  
+  /* Subtotal y botón */
+  .subtotal {
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px 0;
+    font-weight: bold;
+    color: black;
+  }
+  
+  .confirm-btn {
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .confirm-btn button {
+    padding: 10px 20px;
+    background-color: #006080; /* Color del botón */
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .confirm-btn button:hover {
+    background-color: #004d66; /* Color más oscuro al pasar el ratón */
+  }
+
+  tr {
+    color: black;
+    text-align: center;
+  }
+
+  table {
+    text-align: center;
+  }
+
+  .summary{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .center-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centers content horizontally */
+    justify-content: center; /* Centers content vertically */
+  }
+
+.section_checkout {
+  margin-top: 10px;
+  padding: 10px;
+  margin-left: 0px;
+  width: 95%;
+  text-align:left;
+}
+
+.form-group {
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  height: 40px;
+}
+
+.forma-group {
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.forma-group label {
+  display: block;
+  margin-right: 15px;
+  text-align: center;
+  margin-left:5px; 
+  color: black;
+}
+
+.form-group label {
+  display: flex;
+  justify-content: center; /* Centra horizontalmente */
+  align-items: center; /* Centra verticalmente */
+  text-align: center;
+  width: 33%;
+  height: 100%;
+  background-color: #006080;
+  font-weight: bold;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+
+.form-group input {
+  width: 67%;
+  padding: 8px;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  text-align: left;
+  background-color: #FFFFFF;
+  border-width: 0px;
+  color: black;
+  height: 25px;
+}
+
+.tarjeta-info {
+  margin-top: 15px;
+}
+
+h3.checkout {
+  color: #4F4E4E;
+  text-align:left;
+  margin-right: 15px;
+}
+
+.circle {
+  border-radius: 50%; 
+  height: 25px;
+  width: 25px;
+  border: 0;
+  background-color: #A6A3A3; 
+}
+
+.title_check_side {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  cursor: pointer;
+}
+
+.info_extra_contra {
+  color: black;
+  padding-bottom: 20px;
+  padding-top: 10px;
+}
+
+.info_extra{
+  color: black;
+  padding-top: 10px;
+}
+
