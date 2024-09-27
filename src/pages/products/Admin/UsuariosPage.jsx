@@ -4,6 +4,9 @@ import { CircularProgress } from '@mui/material';
 import searchIcon from './../../../image/searchIcon.png';
 import useApiP from '../../../hooks/useAPIProducts';
 import NewUserCard from '../../../components/NewUserCard';
+import DeleteUserCard from '../../../components/deleteUserCard';
+import StateCard from '../../../components/stateCard';
+import EditUserCard from '../../../components/editUsercard';
 import { BiError } from "react-icons/bi";
 import { FaTrash } from "react-icons/fa6";
 import { CiEdit } from "react-icons/ci";
@@ -12,6 +15,9 @@ const UsuariosPage = () => {
   const { data: usuarios, errorMessage, isLoading, refetch } = useApiP('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/users');
   const storedUser = JSON.parse(localStorage.getItem('user'));
   const [isNewCardOpen, setisNewCardOpen] = useState(false);
+  const [isDeleteCardOpen, setisDeleteCardOpen] = useState(false);
+  const [isEditCardOpen, setisEditCardOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessageState, setErrorMessageState] = useState('');
 
@@ -22,11 +28,51 @@ const UsuariosPage = () => {
   const closeNewCard = () => {
     setisNewCardOpen(false);
   };
+
+  const openDeleteCard = (user) => {
+    setisDeleteCardOpen(true);
+    setSelectedUser(user);
+  };
+
+  const closeDeleteCard = () => {
+    setisDeleteCardOpen(false);
+    setSelectedUser(null);
+  };
+
+  const openEditCard = (user) => {
+    setisEditCardOpen(true);
+    setSelectedUser(user);
+  };
+
+  const closeEditCard = () => {
+    setisEditCardOpen(false);
+    setSelectedUser(null);
+  };
   
   const handleUserRegistration = async (userData) => {
       refetch(); // Refresh user list
       closeNewCard(); // Close the card
   };
+
+  useEffect(() => {
+    if (successMessage) {
+      const timer = setTimeout(() => {
+        setSuccessMessage('');
+      }, 5000); 
+
+      return () => clearTimeout(timer); 
+    }
+  }, [successMessage]);
+
+  useEffect(() => {
+    if (errorMessageState) {
+      const timer = setTimeout(() => {
+        setErrorMessageState('');
+      }, 5000); 
+
+      return () => clearTimeout(timer); 
+    }
+  }, [errorMessageState]);
 
   if (isLoading) {
     return (
@@ -104,18 +150,25 @@ const UsuariosPage = () => {
             <h3>Editar</h3>
           </div>
           {usuarios.map((usuario, index) => {
-            
             const iconColor = storedUser.id !== usuario.id ? '#00668C' : '#FF0000';
             const iconClass = storedUser.id !== usuario.id ? 'trash_icon' : 'trash_icon_undelteable';
+
+            // Define click handler only if deletable
+            const handleClick = storedUser.id !== usuario.id ? () => openDeleteCard(usuario) : null;
+
             return (
               <div className="table5-grid table-row" key={index}>
-                <FaTrash color={iconColor} className={iconClass} />
+                <FaTrash 
+                  color={iconColor} 
+                  className={iconClass} 
+                  onClick={handleClick}  // Attach click handler conditionally
+                />
                 <p className='table-text'>#{usuario.id}</p>
                 <p className='table-text'>{usuario.username}</p>
                 <p className='table-text'>{usuario.email}</p>
                 <p className='table-text'>{usuario.role}</p>
                 <p className='table-text'>{usuario.created_at.slice(0, 10)}</p>
-                <button className='more-edit'>
+                <button className='more-edit' onClick={() => openEditCard(usuario)}>
                   <CiEdit size={25}/>
                 </button>
               </div>
@@ -129,8 +182,31 @@ const UsuariosPage = () => {
           closeCard={closeNewCard}
           onRegister={handleUserRegistration} // Pass the registration handler
           refetch={refetch}
+          setSuccessMessage={setSuccessMessage}
+          setErrorMessage={setErrorMessageState}
         />
       )}
+
+      {isDeleteCardOpen && (
+        <DeleteUserCard
+          isOpen={isDeleteCardOpen}
+          closeCard={closeDeleteCard}
+          user={selectedUser}
+          setSuccsessMessage={setSuccessMessage}
+          setErrorMessage={setErrorMessageState}
+          refetchUsers={refetch}
+        />
+      )}
+
+      {isEditCardOpen && (
+        <EditUserCard
+          isOpen={isEditCardOpen}
+          closeCard={closeEditCard}
+          user={selectedUser}
+        />
+      )}
+      <StateCard message={successMessage} isOpen={!!successMessage} type={1}/>
+      <StateCard message={errorMessageState} isOpen={!!errorMessageState} type={2}/>
     </div>
   );
 };

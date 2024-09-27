@@ -20,18 +20,22 @@ const PedidosPage = () => {
   const [errorMessageState, setErrorMessageState] = useState('');
   const [isCardOpen, setIsCardOpen] = useState(false);
   const [productos, setProductos] = useState([]);
+  const [isLoadingProductos, setIsLoadingProductos] = useState(false);
 
   const fetchProductos = async (pedidoId) => {
-        try {
-            const response = await fetch(`https://aguapro-back.vercel.app/pedidos/${pedidoId}/productos`);
-            if (!response.ok) throw new Error('Failed to fetch productos');
-            const data = await response.json();
-            setProductos(data);
-            setIsCardOpen(true);
-        } catch (error) {
-            console.error(error);
-        }
-    };
+    setIsLoadingProductos(true); // Comienza a cargar productos
+    try {
+        const response = await fetch(`https://aguapro-back.vercel.app/pedidos/${pedidoId}/productos`);
+        if (!response.ok) throw new Error('Failed to fetch productos');
+        const data = await response.json();
+        setProductos(data);
+        setIsCardOpen(true);
+    } catch (error) {
+        console.error(error);
+    } finally {
+        setIsLoadingProductos(false); // Finaliza la carga (éxito o error)
+    }
+};
 
     const handlePedidoClick = (pedidoId) => {
         setSelectedPedido(pedidoId);
@@ -281,7 +285,8 @@ const PedidosPage = () => {
               <InfoProdPedidoCard 
                 isOpen={isCardOpen} 
                 closeCard={closeCard} 
-                productos={productos} // Pass productos as a prop
+                productos={productos}
+                isLoadingProductos={isLoadingProductos} // Pass productos as a prop
               />
             )}
             <select

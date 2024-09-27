@@ -50,6 +50,7 @@
     display: flex;
     flex-direction: column;
     width: 100%; /* Ensure it uses full width */
+    align-items: center
 }
 
 .vertical-table-nu {
@@ -63,6 +64,7 @@
     flex-direction: column; /* Align title and input vertically */
     margin-bottom: 15px; /* Space between rows */
     width: 100%;
+    align-items: center;
 }
 
 .table-row-nu .title {
@@ -71,14 +73,13 @@
 }
 
 .table-cell-nu input {
-    height: 30px;
-    width: 100%;
-    border-radius: 8px;
-    border: 1px solid rgb(211, 209, 209);
-    background-color: rgb(211, 209, 209);
-    color: #555;
-    text-align: center;
-    font-size: 1em;
+    width: 70%;
+    height: 3rem;
+    background-color: #F5F4F1;
+    border-radius: 4px;
+    color: #000000;
+    font-size: 15px;
+    border-color: rgb(192, 192, 192);
 }
 
 .save-button-nu {
@@ -87,3 +88,18 @@
     color: #ffffff;
 }
 
+.input2{
+    width: 70%;
+    height: 3rem;
+    background-color: #F5F4F1;
+    border-radius: 4px;
+    color: #000000;
+    font-size: 15px;
+    border-color: rgb(192, 192, 192);
+}
+
+.section-nu{
+    width: 100%;
+    display: flex;
+    
+}

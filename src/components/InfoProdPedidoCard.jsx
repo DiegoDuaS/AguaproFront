@@ -1,9 +1,9 @@
 import React, { useEffect, useRef } from 'react';
+import { CircularProgress } from '@mui/material';
 import './InfoProdCard.css';
 
-const InfoProdPedidoCard = ({ isOpen, closeCard, productos }) => {
+const InfoProdPedidoCard = ({ isOpen, closeCard, productos, isLoadingProductos }) => {
     const cardRef = useRef(null);
-    console.log('Productos:', productos);
     const handleClickOutside = (event) => {
         if (cardRef.current && !cardRef.current.contains(event.target)) {
             closeCard();
@@ -24,12 +24,21 @@ const InfoProdPedidoCard = ({ isOpen, closeCard, productos }) => {
 
     if (!isOpen) return null;
     const productList = productos.data || [];
-    console.log(productList);
+
+    if(isLoadingProductos){
+        return(
+            <div className="large-card-prod2" ref={cardRef}>
+                <button className="close-button" onClick={closeCard}>X</button>
+                <h2 className='text'>Productos en el Pedido</h2>
+                <CircularProgress/>
+            </div>
+        )
+    }
+
     return (
-        <div className="large-card-prod" ref={cardRef}>
+        <div className="large-card-prod2" ref={cardRef}>
             <button className="close-button" onClick={closeCard}>X</button>
             <h2 className='text'>Productos en el Pedido</h2>
-            <div className='tables-section'>
                 {Array.isArray(productList) && productList.length > 0 ? (
                     productList.map(producto => (
                         <div key={producto.id_producto} className="product-item">
@@ -45,7 +54,6 @@ const InfoProdPedidoCard = ({ isOpen, closeCard, productos }) => {
                 ) : (
                     <p>No hay productos para mostrar.</p> // Message when productos is not an array or empty
                 )}
-            </div>
         </div>
     );
 };

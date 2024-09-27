@@ -26,20 +26,20 @@ const DeleteUserCard = ({ isOpen, closeCard, user, setSuccsessMessage, setErrorM
   }, [notMatch]);
 
   const handleDelete = async () => {
-    if(writtenName === user.nombre){
+    if(writtenName === user.username){
         try {
-            const response = await fetch(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/productos/hide/${product.id_producto}`, {
-              method: 'PUT',
+            const response = await fetch(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/user/${user.id}`, {
+              method: 'DELETE',
               headers: { 'Content-Type': 'application/json' }
             });
       
             if (response.ok) {
               setSuccsessMessage('Usuario eliminado correctamente.');
               setErrorMessage(''); // Clear any previous error messages
-              await refetchProducts(); 
+              await refetchUsers(); 
               closeCard();
             } else {
-              throw new Error('Error al eliminar el producto');
+              throw new Error('Error al eliminar el usuario');
             }
           } catch (error) {
             setErrorMessage('Error al conectar con el servidor. Intente nuevamente.');
@@ -54,7 +54,7 @@ const DeleteUserCard = ({ isOpen, closeCard, user, setSuccsessMessage, setErrorM
   if (state === 1){
     return (
         <div className={`large-card-delete`} ref={cardRef}>
-          <p className='delete_text'>¿Seguro que quieres borrar al usuario '{user.nombre}'?</p>
+          <p className='delete_text'>¿Seguro que quieres borrar al usuario '{user.username}'?</p>
           <div className='select_delete'>
             <button className='delete_button' onClick={() => handleStateChange()}>Si</button>
             <button className='delete_button' onClick={closeCard}>No</button>
@@ -67,7 +67,7 @@ const DeleteUserCard = ({ isOpen, closeCard, user, setSuccsessMessage, setErrorM
     return(
         <div className={`large-card-delete`} ref={cardRef}>
             <p className='delete_text'> Escribe el nombre del usuario para eliminarlo:</p>
-            <p className='delete_text'> <strong>{product.nombre}</strong></p>
+            <p className='delete_text'> <strong>{user.username}</strong></p>
             <input
                     type="text"
                     placeholder="Nombre"
