@@ -223,7 +223,6 @@ const PedidosPage = () => {
       
       <StateCard message={successMessage} isOpen={!!successMessage} type={1}/>
       <StateCard message={errorMessageState} isOpen={!!errorMessageState} type={2}/>
-
       <div className="table">
         <div className="table-grid table-header">
           <h3>Pedido Id</h3>
