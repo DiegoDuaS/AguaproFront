@@ -45,7 +45,7 @@ const InfoProdPedidoCard = ({ isOpen, closeCard, productos, isLoadingProductos }
                             <h3>{producto.nombre} - #{producto.id_producto}</h3>
                             <div className='product-details'>
                                 <p><strong>Descripción:</strong> {producto.descripción}</p>
-                                <p><strong>Precio:</strong> ${producto.precio}</p>
+                                <p><strong>Precio:</strong> Q.{producto.precio}</p>
                                 <p><strong>Cantidad:</strong> {producto.cantidad}</p>
                                 {/* Add more fields as necessary */}
                             </div>

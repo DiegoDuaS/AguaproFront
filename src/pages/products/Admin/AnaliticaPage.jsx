@@ -15,6 +15,7 @@ import {
   Legend,
   Decimation,
 } from 'chart.js';
+import { GiConsoleController } from 'react-icons/gi';
 
 ChartJS.register(
   CategoryScale,
@@ -35,8 +36,23 @@ const AnaliticaPage = () => {
   const [totalSales, setTotalSales] = useState(0);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [fechaInicio, setFechaInicio] = useState('2024-08-28');
-  const [fechaFin, setFechaFin] = useState('2024-09-26');
+  const [fechaInicio, setFechaInicio] = useState('');
+  const [fechaFin, setFechaFin] = useState('');
+  const today = new Date();
+  const oneMonthAgo = new Date();
+  oneMonthAgo.setMonth(today.getMonth() - 1);
+
+  const formatDate = (date) => {
+    let year = date.getFullYear();
+    let month = String(date.getMonth() + 1).padStart(2, '0'); 
+    let day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
+  useEffect(() => {
+    setFechaFin(formatDate(today));
+    setFechaInicio(formatDate(oneMonthAgo));
+  }, []);
 
   const fetchData = async (endpoint) => {
     try {
@@ -63,53 +79,30 @@ const AnaliticaPage = () => {
   };
 
   useEffect(() => {
-    const fetchAllData = async () => {
-      setIsLoading(true);
-      try {
-        const salesData = await fetchData(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/sales?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`);
-        const productsData = await fetchData(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/sales/products?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`);
-        const clientsData = await fetchData(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/sales/clients?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`);
-        const dailySalesData = await fetchData(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/sales/daily?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`);
-        const totalSalesData = await fetchData(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/sales/sum?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`);
+    if (fechaInicio && fechaFin) { 
+      const fetchAllData = async () => {
+        setIsLoading(true);
+        try {
+          const salesData = await fetchData(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/sales?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`);
+          const productsData = await fetchData(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/sales/products?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`);
+          const clientsData = await fetchData(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/sales/clients?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`);
+          const dailySalesData = await fetchData(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/sales/daily?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`);
+          const totalSalesData = await fetchData(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/sales/sum?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`);
 
-        setSales(salesData || []);
-        setProducts(productsData || []);
-        setClients(clientsData || []);
-        setDailySales(dailySalesData || []);
-        setTotalSales(totalSalesData || 0);
-      } catch (error) {
-        setError(error.message);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+          setSales(salesData || []);
+          setProducts(productsData || []);
+          setClients(clientsData || []);
+          setDailySales(dailySalesData || []);
+          setTotalSales(totalSalesData || 0);
+        } catch (error) {
+          setError(error.message);
+        } finally {
+          setIsLoading(false);
+        }
+      };
 
-    fetchAllData();
-  }, []);
-
-  useEffect(() => {
-    const fetchAllData = async () => {
-      setIsLoading(true);
-      try {
-        const salesData = await fetchData(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/sales?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`);
-        const productsData = await fetchData(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/sales/products?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`);
-        const clientsData = await fetchData(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/sales/clients?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`);
-        const dailySalesData = await fetchData(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/sales/daily?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`);
-        const totalSalesData = await fetchData(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/sales/sum?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`);
-
-        setSales(salesData || []);
-        setProducts(productsData || []);
-        setClients(clientsData || []);
-        setDailySales(dailySalesData || []);
-        setTotalSales(totalSalesData || 0);
-      } catch (error) {
-        setError(error.message);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchAllData();
+      fetchAllData();
+    }
   }, [fechaInicio, fechaFin]);
 
 
@@ -149,11 +142,11 @@ const AnaliticaPage = () => {
   const optionsProducts = {
     scales: {
       y: {
-        beginAtZero: true, // Esto asegura que el eje Y comience desde cero
+        beginAtZero: true, 
         ticks: {
-          stepSize: 1, // Esto asegura que los ticks en el eje Y sean solo enteros
+          stepSize: 1, 
           callback: function(value) {
-            return `${value} Unidades`; // Formato "X Unidades"
+            return `${value} Unidades`; 
           }
         },
       }
@@ -189,7 +182,7 @@ const AnaliticaPage = () => {
   return (
     <div className="container">
       <div className="text">Analítica</div>
-
+      
       <div className='date-filters'>
         <label>
           Fecha de Inicio:
@@ -226,7 +219,7 @@ const AnaliticaPage = () => {
             <div className='info_section_ventas'>
               <p className='loading'>De {fechaInicio} a {fechaFin}: </p>
               <p className='loading'><strong>{sales.length} Ventas</strong></p>
-              <p className='loading'><strong>Q.{totalSales}</strong></p>
+              <p className='loading'><strong>Q.{parseFloat(totalSales).toFixed(2)}</strong></p>
             </div>
         </div>
 

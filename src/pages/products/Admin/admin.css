@@ -349,3 +349,16 @@
     text-align: center;
     align-items: center;
   }
+
+  .add_more_prod_icon{
+    cursor: pointer;
+    padding-left: 5px;
+  }
+
+  .units_sec{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+  }

@@ -6,11 +6,13 @@ import useApiP from '../../../hooks/useAPIProducts';
 import { CiEdit } from "react-icons/ci";
 import { BiError } from "react-icons/bi";
 import { FaTrash } from "react-icons/fa6";
-import InfoProdCard from '../../../components/infoProdCard';
-import EditProdCard from '../../../components/EditProdCard';
-import NewProdCard from '../../../components/NewProdCard';
-import StateCard from '../../../components/stateCard';
-import DeleteCard from '../../../components/deleteCard';
+import { IoMdAdd } from "react-icons/io";
+import InfoProdCard from '../../../components/cards/infoProdCard';
+import EditProdCard from '../../../components/cards/EditProdCard';
+import NewProdCard from '../../../components/cards/NewProdCard';
+import StateCard from '../../../components/cards/stateCard';
+import DeleteCard from '../../../components/cards/deleteCard';
+import MoreCard from '../../../components/cards/moreCard';
 
 const ProductosPage = () => {
   const { data: productos, errorMessage, isLoading, refetch } = useApiP('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/productos');
@@ -18,6 +20,7 @@ const ProductosPage = () => {
   const [isNewCardOpen, setIsNewCardOpen] = useState(false);
   const [isEditCardOpen, setIsEditCardOpen] = useState(false);
   const [isDeleteCardOpen, setIsDeleteCardOpen] = useState(false);
+  const [isMoreCardOpen, setIsMoreCardOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessageState, setErrorMessageState] = useState('');
@@ -73,6 +76,8 @@ const ProductosPage = () => {
       case 'delete':
         setIsDeleteCardOpen(true);
         break;
+      case 'more':
+        setIsMoreCardOpen(true);
       default:
         break;
     }
@@ -92,19 +97,12 @@ const ProductosPage = () => {
       case 'delete':
         setIsDeleteCardOpen(false);
         break;
+      case 'more':
+        setIsMoreCardOpen(false);
+        break;
       default:
         break;
     }
-    setSelectedProduct(null);
-  };
-
-  const openDeleteCard = (producto) => {
-    setSelectedProduct(producto);
-    setisDeleteCardOpen(true);
-  };
-
-  const closeDeleteCard = () => {
-    setisDeleteCardOpen(false);
     setSelectedProduct(null);
   };
 
@@ -200,7 +198,10 @@ const ProductosPage = () => {
             <p className='table-text'>{producto.nombre}</p>
             <p className='table-text'>{producto.descripción}</p>
             <p className='table-text'>Q.{producto.precio}</p>
-            <p className='table-text'>{producto.disponibilidad} Unidades</p>
+            <div className='units_sec'>
+              <p className='table-text'>{producto.disponibilidad} Unidades</p>
+              <IoMdAdd color='#00668C'className='add_more_prod_icon'onClick={() => openCard('more', producto)}/>
+            </div>
             <p className='table-text'>{producto.marca}</p>
             <button className='more-edit' onClick={() => openCard('info', producto)}>...</button>
             <button className='more-edit' onClick={() => openCard('edit', producto)}><CiEdit size={25}/></button>
@@ -241,24 +242,18 @@ const ProductosPage = () => {
           setSuccsessMessage={setSuccessMessage}
           setErrorMessage={setErrorMessageState}
           refetchProducts={refetch}
-          setSuccsessMessage={setSuccessMessage}
-          setErrorMessage={setErrorMessageState}
         />
       )}
-      {isDeleteCardOpen && (
-        <DeleteCard
-          isOpen={isDeleteCardOpen}
-          closeCard={closeDeleteCard}
+      {isMoreCardOpen && (
+        <MoreCard
+          isOpen={isMoreCardOpen}
+          closeCard={() => closeCard('more')}
           product={selectedProduct}
-          setSuccsessMessage={setSuccessMessage}
-          setErrorMessage={setErrorMessageState}
-          refetchProducts={refetch}
         />
       )}
       <StateCard message={successMessage} isOpen={!!successMessage} type={1}/>
       <StateCard message={errorMessageState} isOpen={!!errorMessageState} type={2}/>
     </div>
-    
   );
 };
 

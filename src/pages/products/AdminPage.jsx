@@ -5,7 +5,7 @@ import ClientesPage from './Admin/ClientesPage';
 import { useState, useEffect } from "react";
 import "./admin.scss";
 import CustomNav from "../../components/AdminNav.jsx";
-import AdminHeader from "../../components/AdminHeader.jsx";
+import AdminHeader from "../../components/headers/AdminHeader.jsx";
 import PropTypes from 'prop-types';
 import { orders, products, analytics, clients } from './images.js';
 import UsuariosPage from './Admin/UsuariosPage.jsx';
