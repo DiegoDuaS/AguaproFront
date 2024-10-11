@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import Card from '../card';
+import Card from '../cards/card';
 import '@testing-library/jest-dom'
 
 test('renders Card component and triggers callback on button click', () => {

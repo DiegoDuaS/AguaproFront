@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import LargeCard from '../LargeCard';
+import LargeCard from '../cards/LargeCard';
 import '@testing-library/jest-dom'
 
 test('renders LargeCard component and handles add to cart', () => {

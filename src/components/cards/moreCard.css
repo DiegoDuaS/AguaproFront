@@ -1,0 +1,52 @@
+.large-card-more {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 500px;
+    height:auto;
+    background-color: #F5F4F1;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    z-index: 1000;
+    padding: 20px;
+    padding-top: 20px;
+    margin-top: 20px;
+    color: #000000;
+    align-items: center;
+  }
+
+  .newUnits{
+    background-color: #F5F4F1;
+    color: black;
+    margin-top: 20px;
+    border-radius: 10px;
+    width: 40%;
+    height: 40px;
+    padding-left: 20px;
+    padding-right: 10px;
+  }
+
+  .espacio{
+    height: 20px;
+  }
+
+  .add_remove_cant{
+    display: flex;
+    width: 90%;
+    justify-content: space-around
+  }
+
+  .moremore-button{
+    margin-top: 20px;
+    background-color: #00668C;
+    width: 200px;
+    height: 40px;
+  }
+
+  .more_title{
+    text-align: center;
+  }

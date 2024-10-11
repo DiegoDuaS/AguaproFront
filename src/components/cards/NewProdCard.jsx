@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { createProduct, addProductChars, fetchTypeId, addProductVariableChars } from '../hooks/useProductChars';
-import useApiP from '../hooks/useAPIProducts';
+import { createProduct, addProductChars, fetchTypeId, addProductVariableChars } from '../../hooks/useProductChars';
+import useApiP from '../../hooks/useAPIProducts';
 import './NewProdCard.css';
 import { CircularProgress } from '@mui/material';
 
@@ -371,12 +371,13 @@ const NewProdCard = ({ isOpen, closeCard, refetchProducts, setSuccsessMessage, s
                 <label>Precio:</label>
                 <input
                 type="number"
-                step="any"
-                placeholder="Precio"
+                step="0.05"
+                min="0"
+                placeholder="0.00"
                 value={precio}
                 onChange={handlePrecioChange}
-                className='writer'
-                />
+                className="writer"
+              />
 
                 <label>Disponibilidad:</label>
                 <input

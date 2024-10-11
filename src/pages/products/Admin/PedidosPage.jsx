@@ -1,165 +1,154 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import './admin.css';
 import { CiEdit } from "react-icons/ci";
 import searchIcon from './../../../image/searchIcon.png';
 import { CircularProgress } from '@mui/material';
 import useApiP from '../../../hooks/useAPIProducts';
 import { BiError } from "react-icons/bi";
-import { FaRegCircleCheck } from "react-icons/fa6";
-import { MdOutlineErrorOutline } from "react-icons/md";
-import StateCard from '../../../components/stateCard';
-import InfoProdPedidoCard from '../../../components/InfoProdPedidoCard';
+import StateCard from '../../../components/cards/stateCard';
+import InfoProdPedidoCard from '../../../components/cards/InfoProdPedidoCard';
 
-
+const API_BASE_URL = 'https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app';
 
 const PedidosPage = () => {
-  const { data: pedidos, errorMessage, isLoading, refetch } = useApiP('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/pedidos');
-  const [estados, setEstados] = useState({});
-  const [selectedPedido, setSelectedPedido] = useState(null);
+  const { data: pedidos, errorMessage, isLoading, refetch } = useApiP(`${API_BASE_URL}/pedidos`);
   const [direcciones, setDirecciones] = useState({});
+  const [selectedPedido, setSelectedPedido] = useState(null);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessageState, setErrorMessageState] = useState('');
   const [isCardOpen, setIsCardOpen] = useState(false);
   const [productos, setProductos] = useState([]);
   const [isLoadingProductos, setIsLoadingProductos] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const [isSearchActive, setIsSearchActive] = useState(false);
 
-  const fetchProductos = async (pedidoId) => {
-    setIsLoadingProductos(true); // Comienza a cargar productos
-    try {
-        const response = await fetch(`https://aguapro-back.vercel.app/pedidos/${pedidoId}/productos`);
-        if (!response.ok) throw new Error('Failed to fetch productos');
-        const data = await response.json();
-        setProductos(data);
-        setIsCardOpen(true);
-    } catch (error) {
-        console.error(error);
-    } finally {
-        setIsLoadingProductos(false); // Finaliza la carga (éxito o error)
-    }
-};
-
-    const handlePedidoClick = (pedidoId) => {
-        setSelectedPedido(pedidoId);
-        fetchProductos(pedidoId);
-        setIsCardOpen(true);
-    };
-  // Inicializar las direcciones cuando se cargan los pedidos
   useEffect(() => {
     if (pedidos) {
-      const initialDirecciones = {};
-      pedidos.forEach((pedido) => {
-        initialDirecciones[pedido.id_pedido] = pedido.direccion;
-      });
+      const initialDirecciones = pedidos.reduce((acc, pedido) => {
+        acc[pedido.id_pedido] = pedido.direccion;
+        return acc;
+      }, {});
       setDirecciones(initialDirecciones);
     }
   }, [pedidos]);
 
-  // Manejo de mensajes de éxito
-  useEffect(() => {
-    if (successMessage) {
-      const timer = setTimeout(() => {
-        setSuccessMessage('');
-      }, 5000); 
-
-      return () => clearTimeout(timer); 
+  const showMessage = useCallback((message, isError = false) => {
+    if (isError) {
+      setErrorMessageState(message);
+      setSuccessMessage('');
+    } else {
+      setSuccessMessage(message);
+      setErrorMessageState('');
     }
-  }, [successMessage]);
+    setTimeout(() => {
+      setSuccessMessage('');
+      setErrorMessageState('');
+    }, 5000);
+  }, []);
 
-  // Manejo de mensajes de error
-  useEffect(() => {
-    if (errorMessageState) {
-      const timer = setTimeout(() => {
-        setErrorMessageState('');
-      }, 5000); 
-
-      return () => clearTimeout(timer); 
+  const fetchProductos = useCallback(async (pedidoId) => {
+    setIsLoadingProductos(true);
+    try {
+      const response = await fetch(`${API_BASE_URL}/pedidos/${pedidoId}/productos`);
+      if (!response.ok) throw new Error('Failed to fetch productos');
+      const data = await response.json();
+      setProductos(data);
+      setIsCardOpen(true);
+    } catch (error) {
+      console.error(error);
+      showMessage('Error al cargar productos', true);
+    } finally {
+      setIsLoadingProductos(false);
     }
-  }, [errorMessageState]);
+  }, [showMessage]);
 
-  // Manejar el cambio de estado de un pedido
-  const handleEstadoChange = async (pedidoId, newEstado) => {
-    let idEstado = 0;
+  const handlePedidoClick = useCallback((pedidoId) => {
+    setSelectedPedido(pedidoId);
+    fetchProductos(pedidoId);
+  }, [fetchProductos]);
 
-    switch (newEstado) {
-      case "Pendiente": idEstado = 1; break;
-      case "Procesando": idEstado = 2; break;
-      case "Enviado": idEstado = 3; break;
-      case "Entregado": idEstado = 4; break;
-      case "Cancelado": idEstado = 5; break;
-      default: idEstado = 0;
-    }
+  const handleEstadoChange = useCallback(async (pedidoId, newEstado) => {
+    const estadoMap = { "Pendiente": 1, "Procesando": 2, "Enviado": 3, "Entregado": 4, "Cancelado": 5 };
+    const idEstado = estadoMap[newEstado] || 0;
 
     try {
-      const response = await fetch(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/pedidos/${pedidoId}/status`, {
+      const response = await fetch(`${API_BASE_URL}/pedidos/${pedidoId}/status`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ pedidoId, estatus: idEstado }),
       });
 
       if (response.ok) {
-        setEstados((prevEstados) => ({
-          ...prevEstados,
-          [pedidoId]: newEstado, 
-        }));
-        setSuccessMessage('Estado actualizado correctamente');
-        setErrorMessageState(''); // Clear any previous error messages
-        refetch(); // Reload the data
+        showMessage('Estado actualizado correctamente');
+        refetch();
       } else {
         throw new Error('Error al actualizar el estado del pedido');
       }
     } catch (error) {
-      setErrorMessageState('Error al conectar con el servidor. Intente nuevamente.');
-      setSuccessMessage(''); // Clear any previous success messages
+      showMessage('Error al conectar con el servidor. Intente nuevamente.', true);
       console.error(error);
     }
-  };
+  }, [refetch, showMessage]);
 
-  // Manejar el cambio de dirección en el input
-  const handleDireccionChange = (pedidoId, newDireccion) => {
-    setDirecciones((prevDirecciones) => ({
-      ...prevDirecciones,
-      [pedidoId]: newDireccion,
-    }));
-  };
+  const handleDireccionChange = useCallback((pedidoId, newDireccion) => {
+    setDirecciones(prev => ({ ...prev, [pedidoId]: newDireccion }));
+  }, []);
 
-  // Clase para el estado del pedido
-  const getClassName = (estado) => {
-    const classes = {
-      'Pendiente': 'pendiente',
-      'Procesando': 'procesando',
-      'Enviado': 'enviado',
-      'Entregado': 'entregado',
-      'Cancelado': 'cancelado',
-    };
-    return classes[estado] || 'state';
-  };
-
-  const closeCard = () => {
-    setIsCardOpen(false);
-    setSelectedPedido(null); // Optionally clear the selected pedido
-  };
-
-  const updateDireccion = async (pedidoId, newDireccion) => {
+  const updateDireccion = useCallback(async (pedidoId, newDireccion) => {
     try {
-      const response = await fetch(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/pedidos/${pedidoId}/direccion`, {
+      const response = await fetch(`${API_BASE_URL}/pedidos/${pedidoId}/direccion`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ pedidoId, direccion: newDireccion }),
       });
 
       if (response.ok) {
-        setSuccessMessage('Dirección actualizada correctamente');
-        setErrorMessageState(''); // Clear any previous error messages
-        refetch(); // Reload the data
+        showMessage('Dirección actualizada correctamente');
+        refetch();
       } else {
         throw new Error('Error al actualizar la dirección del pedido');
       }
     } catch (error) {
-      setErrorMessageState('Error al conectar con el servidor. Intente nuevamente.');
-      setSuccessMessage(''); // Clear any previous success messages
+      showMessage('Error al conectar con el servidor. Intente nuevamente.', true);
       console.error(error);
     }
-  };
+  }, [refetch, showMessage]);
+
+/*
+ pedido.cliente.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      pedido.nit_empresa.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      pedido.direccion.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (pedido.productos && pedido.productos.toLowerCase().includes(searchTerm.toLowerCase()))
+    );
+
+    setSearchResults(filteredResults);
+    setIsSearchActive(true);
+     */
+
+  const handleSearch = useCallback(() => {
+    if (!searchTerm.trim()) {
+      setSearchResults([]);
+      setIsSearchActive(false);
+      return;
+    }
+
+    const filteredResults = pedidos.filter(pedido =>
+      pedido.cliente.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      pedido.nit_empresa.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      pedido.direccion.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (pedido.productos && pedido.productos.toLowerCase().includes(searchTerm.toLowerCase()))
+    );
+
+    setSearchResults(filteredResults);
+    setIsSearchActive(true);
+  }, [searchTerm, pedidos]);
+
+  const handleKeyPress = useCallback((e) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
+  }, [handleSearch]);
 
   if (isLoading) {
     return (
@@ -170,9 +159,10 @@ const PedidosPage = () => {
             className="searchbar"
             type="text"
             placeholder="Search Productos..."
+            aria-label="Search Productos"
           />
-          <button className="search-btn">
-            <img src={searchIcon} alt="Search" />
+          <button className="search-btn" aria-label="Search">
+            <img src={searchIcon} alt="" />
           </button>
         </div>
         <div className='space' />
@@ -192,10 +182,14 @@ const PedidosPage = () => {
           <input
             className="searchbar"
             type="text"
-            placeholder="Search Pedidos..."
+            placeholder="Buscar Pedidos..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyPress={handleKeyPress}
+            aria-label="Buscar Pedidos"
           />
-          <button className="search-btn">
-            <img src={searchIcon} alt="Search" />
+          <button className="search-btn" onClick={handleSearch} aria-label="Search">
+            <img src={searchIcon} alt="" />
           </button>
         </div>
         <div className='space' />
@@ -207,25 +201,28 @@ const PedidosPage = () => {
     );
   }
 
+  const pedidosToDisplay = isSearchActive ? searchResults : pedidos;
+
   return (
     <div className="container">
-      
       <div className="text">Pedidos</div>
       <div className="search-bar">
         <input 
           className="searchbar" 
           type="text" 
-          placeholder="Search Pedidos..." 
+          placeholder="Buscar Clientes, NIT, Dirección o Productos..." 
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          onKeyPress={handleKeyPress}
+          aria-label="Buscar Clientes, NIT, Dirección o Productos"
         />
-        <button className="search-btn">
-          <img src={searchIcon} alt="Search" />
+        <button className="search-btn" onClick={handleSearch} aria-label="Search">
+          <img src={searchIcon} alt="" />
         </button>
       </div>
-
+      
       <StateCard message={successMessage} isOpen={!!successMessage} type={1}/>
       <StateCard message={errorMessageState} isOpen={!!errorMessageState} type={2}/>
-
-      {/* PANTALLA PRINCIPAL SIN BUSCAR */}
       <div className="table">
         <div className="table-grid table-header">
           <h3>Pedido Id</h3>
@@ -237,8 +234,8 @@ const PedidosPage = () => {
           <h3>Productos</h3>
           <h3>Estado</h3>
         </div>
-        {pedidos.map((pedido, index) => (
-          <div className="table-grid table-row" key={index}>
+        {pedidosToDisplay.map((pedido) => (
+          <div className="table-grid table-row" key={pedido.id_pedido}>
             <p className='table-text'>#{pedido.id_pedido}</p>
             <p className='table-text'>{pedido.cliente}</p>
             <p className='table-text'>{pedido.nit_empresa}</p>
@@ -251,55 +248,42 @@ const PedidosPage = () => {
                 type='text'
                 value={direcciones[pedido.id_pedido] || ''}
                 onChange={(e) => handleDireccionChange(pedido.id_pedido, e.target.value)}
-                onBlur={() => updateDireccion(pedido.id_pedido, direcciones[pedido.id_pedido])} // Llamar a la función al perder el foco
+                onBlur={() => updateDireccion(pedido.id_pedido, direcciones[pedido.id_pedido])}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') {
-                    updateDireccion(pedido.id_pedido, direcciones[pedido.id_pedido]); // Llama a la función si se presiona Enter
+                    updateDireccion(pedido.id_pedido, direcciones[pedido.id_pedido]);
                   }
                 }}
+                aria-label={`Dirección para pedido ${pedido.id_pedido}`}
               />
             )}
             <p className='table-text'>
-              {pedido.id_descuento === 0 ? (
-                'N/A'
-              ) : pedido.id_descuento === 1 ? (
-                '5%'
-              ) : pedido.id_descuento === 2 ? (
-                '10%'
-              ) : pedido.id_descuento === 3 ? (
-                '15%'
-              ) : pedido.id_descuento === 4 ? (
-                '20%'
-              ) : pedido.id_descuento === 5 ? (
-                '25%'
-              ) : (
-                'Otro tipo de descuento'
-              )}
+              {['N/A', '5%', '10%', '15%', '20%', '25%'][pedido.id_descuento] || 'Otro tipo de descuento'}
             </p>
             <button 
               className='more-edit'
-              onClick={() => handlePedidoClick(pedido.id_pedido)} 
+              onClick={() => handlePedidoClick(pedido.id_pedido)}
+              aria-label={`Ver productos para pedido ${pedido.id_pedido}`}
             >
               ...
             </button>
             {isCardOpen && selectedPedido === pedido.id_pedido && (
               <InfoProdPedidoCard 
                 isOpen={isCardOpen} 
-                closeCard={closeCard} 
+                closeCard={() => setIsCardOpen(false)} 
                 productos={productos}
-                isLoadingProductos={isLoadingProductos} // Pass productos as a prop
+                isLoadingProductos={isLoadingProductos}
               />
             )}
             <select
               value={pedido.estado} 
               onChange={(e) => handleEstadoChange(pedido.id_pedido, e.target.value)}
-              className={`state ${getClassName(pedido.estado)}`}
+              className={`state ${pedido.estado.toLowerCase()}`}
+              aria-label={`Estado para pedido ${pedido.id_pedido}`}
             >
-              <option className="option" value="Pendiente" key= '1'>Pendiente</option>
-              <option className="option" value="Procesando" key= '2'>Procesando</option>
-              <option className="option" value="Enviado" key= '3'>Enviado</option>
-              <option className="option" value="Entregado" key= '4'>Entregado</option>
-              <option className="option" value="Cancelado" key= '5'>Cancelado</option>
+              {['Pendiente', 'Procesando', 'Enviado', 'Entregado', 'Cancelado'].map((estado, index) => (
+                <option className="option" value={estado} key={index + 1}>{estado}</option>
+              ))}
             </select>
           </div>
         ))}

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import useRegisterUser from '../hooks/useRegisterUser'; // Import your hook
+import useRegisterUser from '../../hooks/useRegisterUser'; // Import your hook
 import './NewUserCard.css'; // Import the CSS
 
 const NewUserCard = ({ isOpen, closeCard, onRegister,  setSuccessMessage, setErrorMessage }) => {

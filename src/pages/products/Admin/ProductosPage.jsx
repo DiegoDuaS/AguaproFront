@@ -1,82 +1,108 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import './admin.css';
 import searchIcon from './../../../image/searchIcon.png';
 import { CircularProgress } from '@mui/material';
 import useApiP from '../../../hooks/useAPIProducts';
 import { CiEdit } from "react-icons/ci";
-import InfoProdCard from '../../../components/infoProdCard';
-import EditProdCard from '../../../components/EditProdCard';
-import NewProdCard from '../../../components/NewProdCard';
 import { BiError } from "react-icons/bi";
-import StateCard from '../../../components/stateCard';
-import { GoTrash } from "react-icons/go";
 import { FaTrash } from "react-icons/fa6";
-import DeleteCard from '../../../components/deleteCard';
-
+import { IoMdAdd } from "react-icons/io";
+import InfoProdCard from '../../../components/cards/infoProdCard';
+import EditProdCard from '../../../components/cards/EditProdCard';
+import NewProdCard from '../../../components/cards/NewProdCard';
+import StateCard from '../../../components/cards/stateCard';
+import DeleteCard from '../../../components/cards/deleteCard';
+import MoreCard from '../../../components/cards/moreCard';
 
 const ProductosPage = () => {
   const { data: productos, errorMessage, isLoading, refetch } = useApiP('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/productos');
-  const [isInformationCardOpen, setisInformationCardOpen] = useState(false);
-  const [isNewCardOpen, setisNewCardOpen] = useState(false);
-  const [isEditCardOpen, setisEditCardOpen] = useState(false);
+  const [isInformationCardOpen, setIsInformationCardOpen] = useState(false);
+  const [isNewCardOpen, setIsNewCardOpen] = useState(false);
+  const [isEditCardOpen, setIsEditCardOpen] = useState(false);
+  const [isDeleteCardOpen, setIsDeleteCardOpen] = useState(false);
+  const [isMoreCardOpen, setIsMoreCardOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessageState, setErrorMessageState] = useState('');
-  const [isDeleteCardOpen, setisDeleteCardOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const [isSearchActive, setIsSearchActive] = useState(false);
 
   useEffect(() => {
-    if (successMessage) {
-      const timer = setTimeout(() => {
-        setSuccessMessage('');
-      }, 5000); 
+    const timer = setTimeout(() => {
+      setSuccessMessage('');
+      setErrorMessageState('');
+    }, 5000);
 
-      return () => clearTimeout(timer); 
+    return () => clearTimeout(timer);
+  }, [successMessage, errorMessageState]);
+
+  const handleSearch = useCallback(() => {
+    const trimmedSearchTerm = searchTerm.trim().toLowerCase();
+    if (!trimmedSearchTerm) {
+      setSearchResults([]);
+      setIsSearchActive(false);
+      return;
     }
-  }, [successMessage]);
 
-  useEffect(() => {
-    if (errorMessageState) {
-      const timer = setTimeout(() => {
-        setErrorMessageState('');
-      }, 5000); 
+    const filteredResults = productos.filter(producto =>
+      Object.values(producto).some(value => 
+        String(value).toLowerCase().includes(trimmedSearchTerm)
+      )
+    );
 
-      return () => clearTimeout(timer); 
+    setSearchResults(filteredResults);
+    setIsSearchActive(true);
+  }, [searchTerm, productos]);
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleSearch();
     }
-  }, [errorMessageState]);
+  };
 
-  const openCard = (producto) => {
+  const openCard = (cardType, producto = null) => {
     setSelectedProduct(producto);
-    setisInformationCardOpen(true);
+    switch (cardType) {
+      case 'info':
+        setIsInformationCardOpen(true);
+        break;
+      case 'edit':
+        setIsEditCardOpen(true);
+        break;
+      case 'new':
+        setIsNewCardOpen(true);
+        break;
+      case 'delete':
+        setIsDeleteCardOpen(true);
+        break;
+      case 'more':
+        setIsMoreCardOpen(true);
+      default:
+        break;
+    }
   };
 
-  const closeCard = () => {
-    setisInformationCardOpen(false);
-    setSelectedProduct(null);
-  };
-  const openEditCard = (producto) => {
-    setSelectedProduct(producto);
-    setisEditCardOpen(true);
-  };
-
-  const closeEditCard = () => {
-    setisEditCardOpen(false);
-    setSelectedProduct(null);
-  };
-  const openNewCard = () => {
-    setisNewCardOpen(true);
-  };
-
-  const closeNewCard = () => {
-    setisNewCardOpen(false);
-  };
-
-  const openDeleteCard = (producto) => {
-    setSelectedProduct(producto);
-    setisDeleteCardOpen(true);
-  };
-
-  const closeDeleteCard = () => {
-    setisDeleteCardOpen(false);
+  const closeCard = (cardType) => {
+    switch (cardType) {
+      case 'info':
+        setIsInformationCardOpen(false);
+        break;
+      case 'edit':
+        setIsEditCardOpen(false);
+        break;
+      case 'new':
+        setIsNewCardOpen(false);
+        break;
+      case 'delete':
+        setIsDeleteCardOpen(false);
+        break;
+      case 'more':
+        setIsMoreCardOpen(false);
+        break;
+      default:
+        break;
+    }
     setSelectedProduct(null);
   };
 
@@ -88,9 +114,12 @@ const ProductosPage = () => {
           <input
             className="searchbar"
             type="text"
-            placeholder="Search Productos..."
+            placeholder="Buscar Productos..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyPress={handleKeyPress}
           />
-          <button className="search-btn">
+          <button className="search-btn" onClick={handleSearch}>
             <img src={searchIcon} alt="Search" />
           </button>
         </div>
@@ -103,7 +132,6 @@ const ProductosPage = () => {
     );
   }
 
-  // Pantalla de Error
   if (errorMessage) {
     return (
       <div className="container">
@@ -112,9 +140,12 @@ const ProductosPage = () => {
           <input
             className="searchbar"
             type="text"
-            placeholder="Search Productos..."
+            placeholder="Buscar Productos..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyPress={handleKeyPress}
           />
-          <button className="search-btn">
+          <button className="search-btn" onClick={handleSearch}>
             <img src={searchIcon} alt="Search" />
           </button>
         </div>
@@ -127,6 +158,8 @@ const ProductosPage = () => {
     );
   }
 
+  const productsToDisplay = isSearchActive ? searchResults : productos;
+
   return (
     <div className="container">
       <div className="text">Productos</div>
@@ -135,15 +168,17 @@ const ProductosPage = () => {
           <input
             className="searchbar"
             type="text"
-            placeholder="Search Productos..."
+            placeholder="Buscar ID, Nombre, Descripción, Precio, Disponibilidad o Marca..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyPress={handleKeyPress}
           />
-          <button className="search-btn">
+          <button className="search-btn" onClick={handleSearch}>
             <img src={searchIcon} alt="Search" />
           </button>
         </div>
-        <button className='addbutton' onClick={() => openNewCard()}> Agregar Producto +</button>
+        <button className='addbutton' onClick={() => openCard('new')}> Agregar Producto +</button>
       </div>
-      {/* PANTALLA PRINCIPAL SIN BUSCAR */}
       <div className="table">
         <div className="table3-grid table-header">
           <h3></h3>
@@ -156,39 +191,34 @@ const ProductosPage = () => {
           <h3>Mas Información</h3>
           <h3>Editar</h3>
         </div>
-        {productos.map((producto, index) => (
-          <div className="table3-grid table-row" key={index}>
-            <FaTrash color='#00668C' className='trash_icon' onClick={() => openDeleteCard(producto)}></FaTrash>
+        {productsToDisplay.map((producto) => (
+          <div className="table3-grid table-row" key={producto.id_producto}>
+            <FaTrash color='#00668C' className='trash_icon' onClick={() => openCard('delete', producto)} />
             <p className='table-text'>#{producto.id_producto}</p>
             <p className='table-text'>{producto.nombre}</p>
             <p className='table-text'>{producto.descripción}</p>
             <p className='table-text'>Q.{producto.precio}</p>
-            <p className='table-text'>{producto.disponibilidad} Unidades</p>
+            <div className='units_sec'>
+              <p className='table-text'>{producto.disponibilidad} Unidades</p>
+              <IoMdAdd color='#00668C'className='add_more_prod_icon'onClick={() => openCard('more', producto)}/>
+            </div>
             <p className='table-text'>{producto.marca}</p>
-            <button 
-              className='more-edit' 
-              onClick={() => openCard(producto)}>
-              ...
-            </button>
-            <button className='more-edit'
-              onClick={() => openEditCard(producto)}>
-              <CiEdit size={25}/>
-              
-            </button>
+            <button className='more-edit' onClick={() => openCard('info', producto)}>...</button>
+            <button className='more-edit' onClick={() => openCard('edit', producto)}><CiEdit size={25}/></button>
           </div>
         ))}
       </div>
       {selectedProduct && isInformationCardOpen && (
         <InfoProdCard
           isOpen={isInformationCardOpen}
-          closeCard={closeCard}
+          closeCard={() => closeCard('info')}
           product={selectedProduct}
         />
       )}
       {selectedProduct && isEditCardOpen && (
         <EditProdCard
           isOpen={isEditCardOpen}
-          closeCard={closeEditCard}
+          closeCard={() => closeCard('edit')}
           product={selectedProduct}
           refetchProducts={refetch}
           setSuccsessMessage={setSuccessMessage}
@@ -198,7 +228,7 @@ const ProductosPage = () => {
       {isNewCardOpen && (
         <NewProdCard
           isOpen={isNewCardOpen}
-          closeCard={closeNewCard}
+          closeCard={() => closeCard('new')}
           refetchProducts={refetch}
           setSuccsessMessage={setSuccessMessage}
           setErrorMessage={setErrorMessageState}
@@ -207,17 +237,23 @@ const ProductosPage = () => {
       {isDeleteCardOpen && (
         <DeleteCard
           isOpen={isDeleteCardOpen}
-          closeCard={closeDeleteCard}
+          closeCard={() => closeCard('delete')}
           product={selectedProduct}
           setSuccsessMessage={setSuccessMessage}
           setErrorMessage={setErrorMessageState}
           refetchProducts={refetch}
         />
       )}
+      {isMoreCardOpen && (
+        <MoreCard
+          isOpen={isMoreCardOpen}
+          closeCard={() => closeCard('more')}
+          product={selectedProduct}
+        />
+      )}
       <StateCard message={successMessage} isOpen={!!successMessage} type={1}/>
       <StateCard message={errorMessageState} isOpen={!!errorMessageState} type={2}/>
     </div>
-    
   );
 };
 

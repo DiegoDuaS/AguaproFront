@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
-import useApiPr from '../hooks/useAPIProduct';
+import useApiPr from '../../hooks/useAPIProduct';
 import './EditProdCard.css';
-import ProductosPage from '../pages/products/Admin/ProductosPage';
-import useUpdateProduct from '../hooks/useUpdateProduct';
-import { getSizeIndex, getEnergiaIndex, getCondicionesIndex, getTipoIndex } from '../hooks/useFetchs';
+import ProductosPage from '../../pages/products/Admin/ProductosPage';
+import useUpdateProduct from '../../hooks/useUpdateProduct';
+import { getSizeIndex, getEnergiaIndex, getCondicionesIndex, getTipoIndex } from '../../hooks/useFetchs';
 
 const EditProdCard = ({ isOpen, closeCard, product, refetchProducts, setSuccsessMessage, setErrorMessage}) => {
     
