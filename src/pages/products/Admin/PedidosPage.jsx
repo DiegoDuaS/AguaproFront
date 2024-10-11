@@ -23,6 +23,38 @@ const PedidosPage = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [isSearchActive, setIsSearchActive] = useState(false);
 
+  const fetchProductos = async (pedidoId) => {
+    setIsLoadingProductos(true); // Comienza a cargar productos
+    try {
+        const response = await fetch(`https://aguapro-back.vercel.app/pedidos/${pedidoId}/productos`);
+        if (!response.ok) throw new Error('Failed to fetch productos');
+        const data = await response.json();
+        setProductos(data);
+        setIsCardOpen(true);
+    } catch (error) {
+        console.error(error);
+    } finally {
+        setIsLoadingProductos(false); // Finaliza la carga (éxito o error)
+    }
+};
+
+    const handlePedidoClick = (pedidoId) => {
+        setSelectedPedido(pedidoId);
+        fetchProductos(pedidoId);
+        setIsCardOpen(true);
+    };
+  // Inicializar las direcciones cuando se cargan los pedidos
+  useEffect(() => {
+    if (pedidos) {
+      const initialDirecciones = {};
+      pedidos.forEach((pedido) => {
+        initialDirecciones[pedido.id_pedido] = pedido.direccion;
+      });
+      setDirecciones(initialDirecciones);
+    }
+  }, [pedidos]);
+
+  // Manejo de mensajes de éxito
   useEffect(() => {
     if (pedidos) {
       const initialDirecciones = pedidos.reduce((acc, pedido) => {
@@ -205,6 +237,7 @@ const PedidosPage = () => {
 
   return (
     <div className="container">
+      
       <div className="text">Pedidos</div>
       <div className="search-bar">
         <input 
@@ -223,7 +256,6 @@ const PedidosPage = () => {
       
       <StateCard message={successMessage} isOpen={!!successMessage} type={1}/>
       <StateCard message={errorMessageState} isOpen={!!errorMessageState} type={2}/>
-
       <div className="table">
         <div className="table-grid table-header">
           <h3>Pedido Id</h3>

@@ -98,6 +98,16 @@ const ProductosPage = () => {
     setSelectedProduct(null);
   };
 
+  const openDeleteCard = (producto) => {
+    setSelectedProduct(producto);
+    setisDeleteCardOpen(true);
+  };
+
+  const closeDeleteCard = () => {
+    setisDeleteCardOpen(false);
+    setSelectedProduct(null);
+  };
+
   if (isLoading) {
     return (
       <div className="container">
@@ -231,11 +241,24 @@ const ProductosPage = () => {
           setSuccsessMessage={setSuccessMessage}
           setErrorMessage={setErrorMessageState}
           refetchProducts={refetch}
+          setSuccsessMessage={setSuccessMessage}
+          setErrorMessage={setErrorMessageState}
+        />
+      )}
+      {isDeleteCardOpen && (
+        <DeleteCard
+          isOpen={isDeleteCardOpen}
+          closeCard={closeDeleteCard}
+          product={selectedProduct}
+          setSuccsessMessage={setSuccessMessage}
+          setErrorMessage={setErrorMessageState}
+          refetchProducts={refetch}
         />
       )}
       <StateCard message={successMessage} isOpen={!!successMessage} type={1}/>
       <StateCard message={errorMessageState} isOpen={!!errorMessageState} type={2}/>
     </div>
+    
   );
 };
 
