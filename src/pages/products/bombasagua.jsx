@@ -5,8 +5,8 @@
 
 import { useState } from 'react';
 import useApiP from '../../hooks/useAPIProducts';
-import Card from "../../components/card";
-import LargeCard from "../../components/LargeCard";
+import Card from "../../components/cards/card";
+import LargeCard from "../../components/cards/LargeCard";
 import { CircularProgress } from '@mui/material';
 import { BiError } from "react-icons/bi";
 import './products.css';

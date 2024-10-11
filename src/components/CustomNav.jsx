@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from 'prop-types';
-import './_CustomNav.css'
+import './CustomNav.css'
 import menuIcon from '../image/menuIcon.png';
 
 const CustomNav = ({ items, onOptionSelect, isOpen, setIsSidebarOpen, setActivePage }) => {

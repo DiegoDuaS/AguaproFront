@@ -142,11 +142,11 @@ const AnaliticaPage = () => {
   const optionsProducts = {
     scales: {
       y: {
-        beginAtZero: true, // Esto asegura que el eje Y comience desde cero
+        beginAtZero: true, 
         ticks: {
-          stepSize: 1, // Esto asegura que los ticks en el eje Y sean solo enteros
+          stepSize: 1, 
           callback: function(value) {
-            return `${value} Unidades`; // Formato "X Unidades"
+            return `${value} Unidades`; 
           }
         },
       }

@@ -5,8 +5,8 @@ import searchIcon from './../../../image/searchIcon.png';
 import { CircularProgress } from '@mui/material';
 import useApiP from '../../../hooks/useAPIProducts';
 import { BiError } from "react-icons/bi";
-import StateCard from '../../../components/stateCard';
-import InfoProdPedidoCard from '../../../components/InfoProdPedidoCard';
+import StateCard from '../../../components/cards/stateCard';
+import InfoProdPedidoCard from '../../../components/cards/InfoProdPedidoCard';
 
 const API_BASE_URL = 'https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app';
 

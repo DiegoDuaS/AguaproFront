@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { createProduct, addProductChars, fetchTypeId, addProductVariableChars } from '../hooks/useProductChars';
-import useApiP from '../hooks/useAPIProducts';
+import { createProduct, addProductChars, fetchTypeId, addProductVariableChars } from '../../hooks/useProductChars';
+import useApiP from '../../hooks/useAPIProducts';
 import './NewProdCard.css';
 import { CircularProgress } from '@mui/material';
 

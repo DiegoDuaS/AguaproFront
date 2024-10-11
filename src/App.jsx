@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import './index.css';
 import menuIcon from './image/menuIcon.png';
-import Header from './components/header';
+import Header from './components/headers/header';
 import BombasAgua from './pages/products/bombasagua';
 import Mantenimiento from './pages/services/mantenimiento';
 import Perforacion from './pages/services/perforacion';

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
-import useApiPr from '../hooks/useAPIProduct';
+import useApiPr from '../../hooks/useAPIProduct';
 import './InfoProdCard.css';
-import ProductosPage from '../pages/products/Admin/ProductosPage';
+import ProductosPage from '../../pages/products/Admin/ProductosPage';
 
 const InfoProdCard = ({ isOpen, closeCard, product}) => {
     

@@ -51,13 +51,13 @@
     border-radius: 10px;
   }
   
-  .large-card::-webkit-scrollbar-thumb {
+  .large-card-prod::-webkit-scrollbar-thumb {
     background: #00668C; /* Color del pulgar */
     border-radius: 10px;
     max-height: 10px;
   }
   
-  .large-card::-webkit-scrollbar-thumb:hover {
+  .large-card-prod::-webkit-scrollbar-thumb:hover {
     background: #00668C; /* Color del pulgar al pasar el mouse */
   }
 

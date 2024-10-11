@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import CheckoutHeader from '../../components/checkoutHeader';
+import CheckoutHeader from '../../components/headers/checkoutHeader';
 import './checkout.css';
 
 const Checkout = ({ onRouteChange, cartItems }) => {
