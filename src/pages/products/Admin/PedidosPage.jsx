@@ -115,16 +115,6 @@ const PedidosPage = () => {
     }
   }, [refetch, showMessage]);
 
-/*
- pedido.cliente.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      pedido.nit_empresa.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      pedido.direccion.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (pedido.productos && pedido.productos.toLowerCase().includes(searchTerm.toLowerCase()))
-    );
-
-    setSearchResults(filteredResults);
-    setIsSearchActive(true);
-     */
 
   const handleSearch = useCallback(() => {
     if (!searchTerm.trim()) {

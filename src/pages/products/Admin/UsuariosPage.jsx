@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import './admin.css';
 import { CircularProgress } from '@mui/material';
 import searchIcon from './../../../image/searchIcon.png';
@@ -20,6 +20,9 @@ const UsuariosPage = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessageState, setErrorMessageState] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const [isSearchActive, setIsSearchActive] = useState(false);
 
   const openNewCard = () => {
     setisNewCardOpen(true);
@@ -54,6 +57,32 @@ const UsuariosPage = () => {
       closeNewCard(); // Close the card
   };
 
+  const handleSearch = useCallback(() => {
+    if (!searchTerm.trim()) {
+      setSearchResults([]);
+      setIsSearchActive(false);
+      return;
+    }
+
+
+    const filteredResults = usuarios.filter(usuario =>
+      usuario.id.toString().includes(searchTerm.toLowerCase()) ||
+      usuario.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      usuario.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      usuario.role.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      usuario.created_at.includes(searchTerm)
+    );
+
+    setSearchResults(filteredResults);
+    setIsSearchActive(true);
+  }, [searchTerm, usuarios]);
+
+  const handleKeyPress = useCallback((e) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
+  }, [handleSearch]);
+
   useEffect(() => {
     if (successMessage) {
       const timer = setTimeout(() => {
@@ -82,10 +111,11 @@ const UsuariosPage = () => {
           <input
             className="searchbar"
             type="text"
-            placeholder="Search Usuarios..."
+            placeholder="Buscar Usuarios..."
+            aria-label="Buscar Usuarios"
           />
-          <button className="search-btn">
-            <img src={searchIcon} alt="Search" />
+          <button className="search-btn" aria-label="Search">
+            <img src={searchIcon} alt="" />
           </button>
         </div>
         <div className='space' />
@@ -105,10 +135,14 @@ const UsuariosPage = () => {
           <input
             className="searchbar"
             type="text"
-            placeholder="Search Usuarios..."
+            placeholder="Buscar Usuarios..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyPress={handleKeyPress}
+            aria-label="Buscar Usuarios"
           />
-          <button className="search-btn">
-            <img src={searchIcon} alt="Search" />
+          <button className="search-btn" onClick={handleSearch} aria-label="Search">
+            <img src={searchIcon} alt="" />
           </button>
         </div>
         <div className='space' />
@@ -120,6 +154,8 @@ const UsuariosPage = () => {
     );
   }
 
+  const usuariosToDisplay = isSearchActive ? searchResults : usuarios;
+
   return (
     <div className="container">
       <div className="text">Usuarios</div>
@@ -128,17 +164,20 @@ const UsuariosPage = () => {
           <input 
             className="searchbar" 
             type="text" 
-            placeholder="Search Usuarios..." 
+            placeholder="Buscar por ID, Nombre, Correo, Rol o Fecha..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyPress={handleKeyPress}
+            aria-label="Buscar Usuarios"
           />
-          <button className="search-btn">
-            <img src={searchIcon} alt="Search" />
+          <button className="search-btn" onClick={handleSearch} aria-label="Search">
+            <img src={searchIcon} alt="" />
           </button>
         </div>
         <button className='addbutton' onClick={() => openNewCard()}> Agregar Usuario +</button>
       </div>
 
       <div className='clients-tablespace'> 
-      {/* PANTALLA PRINCIPAL SIN BUSCAR */}
         <div className="table2">
           <div className="table5-grid table2-header">
             <h3/>
@@ -149,11 +188,9 @@ const UsuariosPage = () => {
             <h3>Fecha de Creación</h3>
             <h3>Editar</h3>
           </div>
-          {usuarios.map((usuario, index) => {
+          {usuariosToDisplay.map((usuario, index) => {
             const iconColor = storedUser.id !== usuario.id ? '#00668C' : '#FF0000';
             const iconClass = storedUser.id !== usuario.id ? 'trash_icon' : 'trash_icon_undelteable';
-
-            // Define click handler only if deletable
             const handleClick = storedUser.id !== usuario.id ? () => openDeleteCard(usuario) : null;
 
             return (
@@ -161,7 +198,7 @@ const UsuariosPage = () => {
                 <FaTrash 
                   color={iconColor} 
                   className={iconClass} 
-                  onClick={handleClick}  // Attach click handler conditionally
+                  onClick={handleClick}
                 />
                 <p className='table-text'>#{usuario.id}</p>
                 <p className='table-text'>{usuario.username}</p>
@@ -180,7 +217,7 @@ const UsuariosPage = () => {
         <NewUserCard
           isOpen={isNewCardOpen}
           closeCard={closeNewCard}
-          onRegister={handleUserRegistration} // Pass the registration handler
+          onRegister={handleUserRegistration}
           refetch={refetch}
           setSuccessMessage={setSuccessMessage}
           setErrorMessage={setErrorMessageState}
