@@ -1,4 +1,5 @@
 import './services.css'
+import FormsSer from '../../components/forms/formsSer';
 
 function Mantenimiento() {
 
@@ -31,7 +32,8 @@ function Mantenimiento() {
                 <img className='mant' src="https://www.aguatesa.com/images/swmenufree/transmenu/Nuevas/P1060557.JPG" alt="Imagen Servicios Mant 1"/>
             </div>
             <h3 className='subtitle'>Solicitud de Servicios</h3>
-            <h4 className='subtitlem'>Contacténos</h4>
+            <FormsSer type={2}/>
+            <h3 className='subtitle'>Contacténos</h3>
             <p className='textservice'>
                 <strong>Dirección:</strong> 10 Calle 5-28 Zona 6, Villa Nueva, Residenciales Catalina
             </p>
