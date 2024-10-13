@@ -259,26 +259,40 @@ const PedidosPage = () => {
         <button onClick={toggleFilter} className="filter-button">
           <FaFilter /> Filter
         </button>
-      </div>
-
-      <div className="filter-sort-section">
-          {isFilterOpen && (
-            <>
-                <button onClick={toggleFilterEstados} className="filter-dropdown">
-                  Estado
-                </button>
-                {isFilterOpenEstados && (
-                  <div className="filter-dropdown">
-                    <select value={filterState} onChange={handleFilterChange}>
-                      <option value="">Todos los estados</option>
-                      <option value="Pendiente">Pendiente</option>
-                      <option value="Procesando">Procesando</option>
-                      <option value="Enviado">Enviado</option>
-                      <option value="Entregado">Entregado</option>
-                      <option value="Cancelado">Cancelado</option>
-                    </select>
-                  </div>
-                )}
+        {isFilterOpen && (
+          <>
+            <div>
+              <button onClick={toggleFilterEstados} className="filter-dropdown">
+                Estado
+              </button>
+              {isFilterOpenEstados && (
+                <div className="filter-dropdown">
+                  <select value={filterState} onChange={handleFilterChange}>
+                    <option value="">Todos los estados</option>
+                    <option value="Pendiente">Pendiente</option>
+                    <option value="Procesando">Procesando</option>
+                    <option value="Enviado">Enviado</option>
+                    <option value="Entregado">Entregado</option>
+                    <option value="Cancelado">Cancelado</option>
+                  </select>
+                </div>
+              )}
+            </div>
+            <button onClick={toggleFilterEstados} className="filter-dropdown">
+              Estado
+            </button>
+            {isFilterOpenEstados && (
+              <div className="filter-dropdown">
+                <select value={filterState} onChange={handleFilterChange}>
+                  <option value="">Todos los estados</option>
+                  <option value="Pendiente">Pendiente</option>
+                  <option value="Procesando">Procesando</option>
+                  <option value="Enviado">Enviado</option>
+                  <option value="Entregado">Entregado</option>
+                  <option value="Cancelado">Cancelado</option>
+                </select>
+              </div>
+            )}
 
               <button onClick={toggleFilterPrecios} className="filter-dropdown">
                 Precio
