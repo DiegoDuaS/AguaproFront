@@ -264,6 +264,23 @@ const PedidosPage = () => {
         <div className='filter-sort-section'>
         {isFilterOpen && (
           <>
+            <div>
+              <button onClick={toggleFilterEstados} className="filter-dropdown">
+                Estado
+              </button>
+              {isFilterOpenEstados && (
+                <div className="filter-dropdown">
+                  <select value={filterState} onChange={handleFilterChange}>
+                    <option value="">Todos los estados</option>
+                    <option value="Pendiente">Pendiente</option>
+                    <option value="Procesando">Procesando</option>
+                    <option value="Enviado">Enviado</option>
+                    <option value="Entregado">Entregado</option>
+                    <option value="Cancelado">Cancelado</option>
+                  </select>
+                </div>
+              )}
+            </div>
             <button onClick={toggleFilterEstados} className="filter-dropdown">
               Estado
             </button>
