@@ -7,6 +7,7 @@ import Mantenimiento from './pages/services/mantenimiento';
 import Perforacion from './pages/services/perforacion';
 import CustomNav from './components/CustomNav.jsx';
 import Cart from './components/cart';
+import UserMenu from './components/UserMenu';
 import LoginPage from './pages/products/login';
 import RegisterPage from './pages/products/register';
 import ClientInfoPage from './pages/products/ClientInfo';
@@ -21,6 +22,7 @@ function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Estado para la barra lateral
   const [isCartOpen, setIsCartOpen] = useState(false); // Estado para el carrito
   const [cartItems, setCartItems] = useState([]); // Estado para los elementos del carrito
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   
   console.log("Cart: "+cartItems);
   useEffect(() => {
@@ -50,6 +52,10 @@ function App() {
     setIsCartOpen(!isCartOpen);
   };
 
+  const toggleUserMenu = () => {
+    setIsUserMenuOpen(!isUserMenuOpen);  // Toggle UserMenu on click
+  };
+
 const userId = localStorage.getItem('id');
 const { role, loading, error } = useUserRole(userId);
 
@@ -63,6 +69,8 @@ const { role, loading, error } = useUserRole(userId);
       const isValid = await validateToken(token);
       if (isValid && role === 'admin') {
         setActivePage('AdminPage');
+      } else if (isValid) {
+        setIsUserMenuOpen(true);
       } else {
         setActivePage('Login');
       }
@@ -97,7 +105,22 @@ const { role, loading, error } = useUserRole(userId);
   const closeCart = () => {
     setIsCartOpen(false);
   };
+  
+  const closeUserMenu = () => {
+    setIsUserMenuOpen(false);  // Close the UserMenu
+  };
 
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('id');
+    setActivePage('Bombas de agua');
+    closeUserMenu();
+  };
+
+  const handleViewInfo = () => {
+    setActivePage('ClientInfoPage');
+    closeUserMenu();
+  };
  
   return (
     <AuthProvider> 
@@ -142,6 +165,13 @@ const { role, loading, error } = useUserRole(userId);
               removeCartItem={removeCartItem}
               closeCart={closeCart}
               checkout={handleCheckout}
+            />
+          )}
+          {isUserMenuOpen && (
+            <UserMenu 
+              closeUserMenu={closeUserMenu} 
+              onLogout={handleLogout} 
+              onViewInfo={handleViewInfo}
             />
           )}
           {activePage === 'Bombas de agua' && <BombasAgua 
