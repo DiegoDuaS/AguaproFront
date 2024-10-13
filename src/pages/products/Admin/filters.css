@@ -2,9 +2,8 @@
     display: flex;
     align-items: center;
     margin-top: 20px;
-    margin-bottom: 20px;
     flex-wrap: wrap;
-    justify-content: flex-end; 
+    justify-content: flex-start; 
     width: 100%;
   }
 
@@ -19,7 +18,7 @@
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
-    margin-right: 10px;
+    margin-left: 15px;
   }
   
   .filter-button:hover {
@@ -33,7 +32,6 @@
   .filter-dropdown {
     margin-left: 10px;
     margin-right: 10px;
-    order: -1;
   }
   
   .filter-dropdown select {
@@ -55,7 +53,6 @@
     align-items: center;
     margin-left: 5px;
     border: none;
-    order: -2;
   }
 
   .sort-button {
@@ -83,5 +80,11 @@
   
   .sort-button svg {
     margin-right: 5px;
+  }
+
+  .filter-section {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
   }
   

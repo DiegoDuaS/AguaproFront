@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import './admin.css';
-import './filers.css'
+import './filters.css'
 import { CiEdit } from "react-icons/ci";
 import searchIcon from './../../../image/searchIcon.png';
 import { CircularProgress } from '@mui/material';
@@ -241,72 +241,76 @@ const PedidosPage = () => {
   return (
     <div className="container">
       <div className="text">Pedidos</div>
-      <div className="search-bar">
-        <input 
-          className="searchbar" 
-          type="text" 
-          placeholder="Buscar Clientes, NIT, Dirección o Productos..." 
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          onKeyPress={handleKeyPress}
-          aria-label="Buscar Clientes, NIT, Dirección o Productos"
-        />
-        <button className="search-btn" onClick={handleSearch} aria-label="Search">
-          <img src={searchIcon} alt="" />
+      <div className='filter-section'> 
+        <div className="search-bar">
+          <input 
+            className="searchbar" 
+            type="text" 
+            placeholder="Buscar Clientes, NIT, Dirección o Productos..." 
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyPress={handleKeyPress}
+            aria-label="Buscar Clientes, NIT, Dirección o Productos"
+          />
+          <button className="search-btn" onClick={handleSearch} aria-label="Search">
+            <img src={searchIcon} alt="" />
+          </button>
+        </div>
+        <button onClick={toggleFilter} className="filter-button">
+          <FaFilter /> Filter
         </button>
       </div>
+
+      <div className="filter-sort-section">
+          {isFilterOpen && (
+            <>
+                <button onClick={toggleFilterEstados} className="filter-dropdown">
+                  Estado
+                </button>
+                {isFilterOpenEstados && (
+                  <div className="filter-dropdown">
+                    <select value={filterState} onChange={handleFilterChange}>
+                      <option value="">Todos los estados</option>
+                      <option value="Pendiente">Pendiente</option>
+                      <option value="Procesando">Procesando</option>
+                      <option value="Enviado">Enviado</option>
+                      <option value="Entregado">Entregado</option>
+                      <option value="Cancelado">Cancelado</option>
+                    </select>
+                  </div>
+                )}
+
+              <button onClick={toggleFilterPrecios} className="filter-dropdown">
+                Precio
+              </button>
+              {isFilterOpenPrecios && (
+                <div className="sort-controls">
+                  <div className='filter-dropdown'>
+                    <button 
+                      onClick={() => handleSortChange('asc')} 
+                      className={`sort-button ${sortOrder === 'asc' ? 'active' : ''}`}
+                    >
+                      <FaSortAmountUp /> Precio: Bajo a Alto
+                    </button>
+                    <button 
+                      onClick={() => handleSortChange('desc')} 
+                      className={`sort-button ${sortOrder === 'desc' ? 'active' : ''}`}
+                    >
+                      <FaSortAmountDown /> Precio: Alto a Bajo
+                    </button>
+                  </div>
+                </div>
+              )}
+            </>
+          )}
+        </div>
       
       <StateCard message={successMessage} isOpen={!!successMessage} type={1}/>
       <StateCard message={errorMessageState} isOpen={!!errorMessageState} type={2}/>
       
-      <div className="filter-sort-section">
-        <button onClick={toggleFilter} className="filter-button">
-          <FaFilter /> Filter
-        </button>
-        {isFilterOpen && (
-          <>
-            <div>
-              <button onClick={toggleFilterEstados} className="filter-dropdown">
-                Estado
-              </button>
-              {isFilterOpenEstados && (
-                <div className="filter-dropdown">
-                  <select value={filterState} onChange={handleFilterChange}>
-                    <option value="">Todos los estados</option>
-                    <option value="Pendiente">Pendiente</option>
-                    <option value="Procesando">Procesando</option>
-                    <option value="Enviado">Enviado</option>
-                    <option value="Entregado">Entregado</option>
-                    <option value="Cancelado">Cancelado</option>
-                  </select>
-                </div>
-              )}
-            </div>
-
-            <button onClick={toggleFilterPrecios} className="filter-dropdown">
-              Precio
-            </button>
-            {isFilterOpenPrecios && (
-              <div className="sort-controls">
-                <div className='filter-dropdown'>
-                  <button 
-                    onClick={() => handleSortChange('asc')} 
-                    className={`sort-button ${sortOrder === 'asc' ? 'active' : ''}`}
-                  >
-                    <FaSortAmountUp /> Precio: Bajo a Alto
-                  </button>
-                  <button 
-                    onClick={() => handleSortChange('desc')} 
-                    className={`sort-button ${sortOrder === 'desc' ? 'active' : ''}`}
-                  >
-                    <FaSortAmountDown /> Precio: Alto a Bajo
-                  </button>
-                </div>
-              </div>
-            )}
-          </>
-        )}
-      </div>
+      
+        
+    
     
       <div className="table">
         <div className="table-grid table-header">
