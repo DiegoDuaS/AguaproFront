@@ -14,6 +14,7 @@ import CheckoutPage from './pages/products/checkout';
 import AdminPage from './pages/products/AdminPage';
 import { AuthProvider } from './hooks/authProvider.jsx'; 
 import validateToken from './hooks/Auth';
+import useUserRole from './hooks/useUserRole';
 
 function App() {
   const [activePage, setActivePage] = useState(null); // Estado inicial para la página activa
@@ -49,6 +50,9 @@ function App() {
     setIsCartOpen(!isCartOpen);
   };
 
+const userId = localStorage.getItem('id');
+const { role, loading, error } = useUserRole(userId);
+
   const navigateToLogin = async () => {
     const token = localStorage.getItem('token');
     console.log(token);
@@ -57,7 +61,7 @@ function App() {
       setActivePage('Login');
     } else {
       const isValid = await validateToken(token);
-      if (isValid) {
+      if (isValid && role === 'admin') {
         setActivePage('AdminPage');
       } else {
         setActivePage('Login');

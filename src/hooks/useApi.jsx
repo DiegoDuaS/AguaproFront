@@ -40,6 +40,7 @@ export const useApi = () => {
     
             if (response.status === 200) {
                 localStorage.setItem('token', responseData.token);
+                localStorage.setItem('id',responseData.id);
                 login(responseData.token, {
                     username: responseData.username,
                     role: responseData.role,
