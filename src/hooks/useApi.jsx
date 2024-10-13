@@ -45,7 +45,7 @@ export const useApi = () => {
                     role: responseData.role,
                     id: responseData.id,
                 });
-                return response;
+                return responseData;
             } else {
                 const errorMsg = 'El usuario o contraseña están incorrectos';
                 setError(errorMsg);
