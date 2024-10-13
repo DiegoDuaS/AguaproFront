@@ -7,6 +7,10 @@ import useApiP from '../../../hooks/useAPIProducts';
 import { BiError } from "react-icons/bi";
 import StateCard from '../../../components/cards/stateCard';
 import InfoProdPedidoCard from '../../../components/cards/InfoProdPedidoCard';
+import { color } from 'chart.js/helpers';
+import { FaFilter } from 'react-icons/fa';
+import { FaSortAmountDown, FaSortAmountUp } from 'react-icons/fa';
+
 
 const API_BASE_URL = 'https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app';
 
@@ -22,6 +26,26 @@ const PedidosPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [isSearchActive, setIsSearchActive] = useState(false);
+  const [filterState, setFilterState] = useState('');
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [isFilterOpenEstados, setIsFilterOpenEstados] = useState(false);
+  const [isFilterOpenPrecios, setIsFilterOpenPrecios] = useState(false);
+  const [sortOrder, setSortOrder] = useState('');
+
+  const sortPedidos = (pedidosToSort) => {
+    if (sortOrder === 'asc') {
+      return [...pedidosToSort].sort((a, b) => a.monto_total - b.monto_total);
+    } else if (sortOrder === 'desc') {
+      return [...pedidosToSort].sort((a, b) => b.monto_total - a.monto_total);
+    }
+    return pedidosToSort;
+  };
+
+  const pedidosToDisplay = sortPedidos(
+    (isSearchActive ? searchResults : pedidos).filter(pedido => 
+      filterState === '' || pedido.estado === filterState
+    )
+  );
 
   useEffect(() => {
     if (pedidos) {
@@ -140,6 +164,27 @@ const PedidosPage = () => {
     }
   }, [handleSearch]);
 
+ const handleFilterChange = (e) => {
+    setFilterState(e.target.value);
+  };
+
+  const toggleFilter = () => {
+    setIsFilterOpen(!isFilterOpen);
+  };
+
+  const toggleFilterEstados = () => {
+    setIsFilterOpenEstados(!isFilterOpenEstados);
+  };
+
+  const toggleFilterPrecios = () => {
+    setIsFilterOpenPrecios(!isFilterOpenPrecios);
+  };
+
+  const handleSortChange = (order) => {
+    setSortOrder(order);
+  };
+
+
   if (isLoading) {
     return (
       <div className="container">
@@ -191,8 +236,7 @@ const PedidosPage = () => {
     );
   }
 
-  const pedidosToDisplay = isSearchActive ? searchResults : pedidos;
-
+ 
   return (
     <div className="container">
       <div className="text">Pedidos</div>
@@ -213,6 +257,54 @@ const PedidosPage = () => {
       
       <StateCard message={successMessage} isOpen={!!successMessage} type={1}/>
       <StateCard message={errorMessageState} isOpen={!!errorMessageState} type={2}/>
+      
+      <div className="filter-sort-section">
+        <button onClick={toggleFilter} className="filter-button">
+          <FaFilter /> Filter
+        </button>
+        {isFilterOpen && (
+          <>
+            <button onClick={toggleFilterEstados} className="filter-dropdown">
+              Estado
+            </button>
+            {isFilterOpenEstados && (
+              <div className="filter-dropdown">
+                <select value={filterState} onChange={handleFilterChange}>
+                  <option value="">Todos los estados</option>
+                  <option value="Pendiente">Pendiente</option>
+                  <option value="Procesando">Procesando</option>
+                  <option value="Enviado">Enviado</option>
+                  <option value="Entregado">Entregado</option>
+                  <option value="Cancelado">Cancelado</option>
+                </select>
+              </div>
+            )}
+
+            <button onClick={toggleFilterPrecios} className="filter-dropdown">
+              Precio
+            </button>
+            {isFilterOpenPrecios && (
+              <div className="sort-controls">
+                <div className='filter-dropdown'>
+                  <button 
+                    onClick={() => handleSortChange('asc')} 
+                    className={`sort-button ${sortOrder === 'asc' ? 'active' : ''}`}
+                  >
+                    <FaSortAmountUp /> Precio: Bajo a Alto
+                  </button>
+                  <button 
+                    onClick={() => handleSortChange('desc')} 
+                    className={`sort-button ${sortOrder === 'desc' ? 'active' : ''}`}
+                  >
+                    <FaSortAmountDown /> Precio: Alto a Bajo
+                  </button>
+                </div>
+              </div>
+            )}
+          </>
+        )}
+      </div>
+    
       <div className="table">
         <div className="table-grid table-header">
           <h3>Pedido Id</h3>
@@ -224,6 +316,8 @@ const PedidosPage = () => {
           <h3>Productos</h3>
           <h3>Estado</h3>
         </div>
+
+        
         {pedidosToDisplay.map((pedido) => (
           <div className="table-grid table-row" key={pedido.id_pedido}>
             <p className='table-text'>#{pedido.id_pedido}</p>
@@ -277,6 +371,7 @@ const PedidosPage = () => {
             </select>
           </div>
         ))}
+        
       </div>
     </div>
   );
