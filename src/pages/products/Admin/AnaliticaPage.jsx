@@ -3,6 +3,7 @@ import './admin.css';
 import { BiError } from "react-icons/bi";
 import { CircularProgress } from '@mui/material';
 import { Line, Bar } from 'react-chartjs-2';
+import { TbMoodSad2 } from "react-icons/tb";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -38,6 +39,7 @@ const AnaliticaPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [fechaInicio, setFechaInicio] = useState('');
   const [fechaFin, setFechaFin] = useState('');
+  const [noSalesMessage, setNoSalesMessage] = useState('');
   const today = new Date();
   const oneMonthAgo = new Date();
   oneMonthAgo.setMonth(today.getMonth() - 1);
@@ -79,7 +81,7 @@ const AnaliticaPage = () => {
   };
 
   useEffect(() => {
-    if (fechaInicio && fechaFin) { 
+    if (fechaInicio && fechaFin) {
       const fetchAllData = async () => {
         setIsLoading(true);
         try {
@@ -89,69 +91,90 @@ const AnaliticaPage = () => {
           const dailySalesData = await fetchData(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/sales/daily?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`);
           const totalSalesData = await fetchData(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/sales/sum?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`);
 
-          setSales(salesData || []);
-          setProducts(productsData || []);
-          setClients(clientsData || []);
-          setDailySales(dailySalesData || []);
-          setTotalSales(totalSalesData || 0);
+          if (
+            (salesData && salesData === "No sales found.") &&
+            (productsData && productsData === "No sales found.") &&
+            (clientsData && clientsData === "No data found.") &&
+            (dailySalesData && dailySalesData === "No sales found.") &&
+            (totalSalesData === null) 
+          ) {
+            setNoSalesMessage(`No hubo ventas entre ${fechaInicio} y ${fechaFin}`);
+            console.log(salesData);
+          } else {
+            console.log(salesData);
+            console.log(productsData);
+            console.log(clientsData);
+            console.log(dailySalesData);
+            console.log(totalSalesData);
+            setNoSalesMessage("");
+            setSales(salesData || []);
+            setProducts(productsData || []);
+            setClients(clientsData || []);
+            setDailySales(dailySalesData || []);
+            setTotalSales(totalSalesData || 0);
+          }
         } catch (error) {
           setError(error.message);
+          console.log(error);
         } finally {
           setIsLoading(false);
         }
       };
-
+  
       fetchAllData();
     }
   }, [fechaInicio, fechaFin]);
 
 
-  const dailySalesChartData  = {
-    labels: dailySales.map(sale => sale.fecha.slice(0, 10)),
-    datasets: [{
-      label: 'Ventas Diarias',
-      data: dailySales.map(sale => sale.total_ventas),
-      borderColor: 'rgba(0, 102, 140, 1)',
-      backgroundColor: 'rgba(0, 102, 140, 0.8)',
-      fill: false,
-    }]
-  };
+// Create daily sales chart data only if there are daily sales
+const dailySalesChartData = Array.isArray(dailySales) && dailySales.length > 0 ? {
+  labels: dailySales.map(sale => sale.fecha.slice(0, 10)), // Ensure this is safe
+  datasets: [{
+    label: 'Ventas Diarias',
+    data: dailySales.map(sale => sale.total_ventas), // Ensure this is safe
+    borderColor: 'rgba(0, 102, 140, 1)',
+    backgroundColor: 'rgba(0, 102, 140, 0.8)',
+    fill: false,
+  }]
+} : { labels: [], datasets: [] }; // Default to empty arrays
 
-  const optionsDailySales = {
-    scales: {
-      y: {
-        beginAtZero: true, // Esto asegura que el eje Y comience desde cero
-        ticks: {
-          callback: function(value) {
-            return `Q. ${value}`; // Formato "Q. {numero}"
-          }
+const optionsDailySales = {
+  scales: {
+    y: {
+      beginAtZero: true,
+      ticks: {
+        callback: function(value) {
+          return `Q. ${value}`;
         }
       }
     }
-  };
+  }
+};
 
-  const productsChartData = {
-    labels: products.map(product => product.nombre),
-    datasets: [{
-      label: 'Productos Vendidos',
-      data: products.map(product => product.avg),
-      backgroundColor: 'rgba(0, 102, 140, 0.8)',
-    }]
-  };
+// Create product chart data only if there are products
+const productsChartData = Array.isArray(products) && products.length > 0 ? {
+  labels: products.map(product => product.nombre), // Ensure this is safe
+  datasets: [{
+    label: 'Productos Vendidos',
+    data: products.map(product => product.avg), // Ensure this is safe
+    backgroundColor: 'rgba(0, 102, 140, 0.8)',
+  }]
+} : { labels: [], datasets: [] }; // Default to empty arrays
 
-  const optionsProducts = {
-    scales: {
-      y: {
-        beginAtZero: true, 
-        ticks: {
-          stepSize: 1, 
-          callback: function(value) {
-            return `${value} Unidades`; 
-          }
-        },
-      }
+const optionsProducts = {
+  scales: {
+    y: {
+      beginAtZero: true,
+      ticks: {
+        stepSize: 1,
+        callback: function(value) {
+          return `${value} Unidades`;
+        }
+      },
     }
-  };
+  }
+};
+
   
   if (isLoading) {
     return (
@@ -179,6 +202,40 @@ const AnaliticaPage = () => {
     );
   }
 
+  if (noSalesMessage){
+    return (
+      <div className="container">
+        <div className="text">Analítica</div>
+        
+        <div className='date-filters'>
+        <label>
+          Fecha de Inicio:
+          <input
+            type="date"
+            value={fechaInicio}
+            onChange={(e) => setFechaInicio(e.target.value)}
+            max={fechaFin}
+          />
+        </label>
+        <label>
+          Fecha de Fin:
+          <input
+            type="date"
+            value={fechaFin}
+            onChange={(e) => setFechaFin(e.target.value)}
+            min={fechaInicio}
+          />
+        </label>
+      </div>
+      <div className='space' />
+        <div className='error-container'>
+          <TbMoodSad2 color='black' size={80}/>
+          <p className='loading'><strong>{noSalesMessage}</strong></p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="container">
       <div className="text">Analítica</div>
@@ -190,6 +247,7 @@ const AnaliticaPage = () => {
             type="date"
             value={fechaInicio}
             onChange={(e) => setFechaInicio(e.target.value)}
+            max={fechaFin}
           />
         </label>
         <label>
@@ -198,6 +256,7 @@ const AnaliticaPage = () => {
             type="date"
             value={fechaFin}
             onChange={(e) => setFechaFin(e.target.value)}
+            min={fechaInicio}
           />
         </label>
       </div>
@@ -230,12 +289,16 @@ const AnaliticaPage = () => {
               <h3>Cliente</h3>
               <h3>Pedidos</h3>
             </div>
-            {clients.map((cliente, index) => (
-            <div className="table4-grid table-row" key={index}>
-              <p className='table-text'>{cliente.nombre}</p>
-              <p className='table-text'>{cliente.total_pedidos}</p>
-            </div>
-            ))}
+            {Array.isArray(clients) && clients.length > 0 ? (
+              clients.map((cliente, index) => (
+                <div className="table4-grid table-row" key={index}>
+                  <p className='table-text'>{cliente.nombre}</p>
+                  <p className='table-text'>{cliente.total_pedidos}</p>
+                </div>
+              ))
+            ) : (
+              <p className='table-text'>No hay clientes disponibles.</p> // Message when no clients are available
+            )}
             <div className="table4-grid table-row">
               <p className='table-text'>test</p>
               <p className='table-text'>test</p>
