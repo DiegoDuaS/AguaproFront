@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { FiUser, FiLogOut } from "react-icons/fi"; // Importing icons for the options
+import { FiUser, FiLogOut } from "react-icons/fi"; // Importing icons for the optionss
 import './UserMenu.css'; // Add some styling
 import useUserData from '../hooks/useUserData';
 
