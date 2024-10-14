@@ -69,16 +69,20 @@ const { role, loading, error } = useUserRole(userId);
   const navigateToLogin = async () => {
     const token = localStorage.getItem('token');
     console.log(token);
-
+    console.log(role);
     if (!token) {
       setActivePage('Login');
     } else {
+      console.log("hay token");
       const isValid = await validateToken(token);
       if (isValid && role === 'admin') {
+        console.log("Es admin");
         setActivePage('AdminPage');
       } else if (isValid) {
+        console.log("No es admin");
         setIsUserMenuOpen(true);
       } else {
+        console.log("Token no valido");
         setActivePage('Login');
       }
     }
@@ -141,7 +145,16 @@ const { role, loading, error } = useUserRole(userId);
         <AdminPage onRouteChange={setActivePage} />
       )}
       {activePage === 'CheckoutPage' && (
-        <CheckoutPage onRouteChange={setActivePage} cartItems={cartItems} navigateToLogin={navigateToLogin}/>
+        <CheckoutPage onRouteChange={setActivePage} 
+          cartItems={cartItems} 
+          navigateToLogin={navigateToLogin} />
+      )}
+     {isUserMenuOpen && (
+            <UserMenu
+              closeUserMenu={closeUserMenu}
+              onLogout={handleLogout}
+              onViewInfo={handleViewInfo}
+            />
       )}
       {activePage !== 'RegisterPage' && activePage !== 'CheckoutPage' && activePage !== 'Login' && activePage !== 'AdminPage' && (
         <>
@@ -175,13 +188,7 @@ const { role, loading, error } = useUserRole(userId);
               checkout={handleCheckout}
             />
           )}
-          {isUserMenuOpen && (
-            <UserMenu 
-              closeUserMenu={closeUserMenu} 
-              onLogout={handleLogout} 
-              onViewInfo={handleViewInfo}
-            />
-          )}
+          
           {activePage === 'Bombas de agua' && <BombasAgua 
               cartItems={cartItems}
               setCartItems={setCartItems}
