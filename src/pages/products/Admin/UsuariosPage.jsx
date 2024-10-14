@@ -10,6 +10,10 @@ import EditUserCard from '../../../components/cards/editUsercard';
 import { BiError } from "react-icons/bi";
 import { FaTrash } from "react-icons/fa6";
 import { CiEdit } from "react-icons/ci";
+import FilterSectionUsuarios from './FilterSectionUsuarios';
+import { FaFilter } from 'react-icons/fa';
+
+
 
 const UsuariosPage = () => {
   const { data: usuarios, errorMessage, isLoading, refetch } = useApiP('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/users');
@@ -23,6 +27,9 @@ const UsuariosPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [isSearchActive, setIsSearchActive] = useState(false);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [filterRole, setFilterRole] = useState('');
+  const [sortOrder, setSortOrder] = useState('');
 
   const openNewCard = () => {
     setisNewCardOpen(true);
@@ -103,6 +110,36 @@ const UsuariosPage = () => {
     }
   }, [errorMessageState]);
 
+  const toggleFilter = () => setIsFilterOpen(!isFilterOpen);
+
+  const handleFilterChange = (e) => {
+    setFilterRole(e.target.value);
+  };
+
+  const handleSortChange = (order) => {
+    setSortOrder(order);
+  };
+
+  const filteredAndSortedUsers = useCallback(() => {
+    let result = isSearchActive ? searchResults : usuarios;
+    if (filterRole) {
+      result = result.filter(usuario => usuario.role.toLowerCase() === filterRole.toLowerCase());
+    }
+    if (sortOrder) {
+      result.sort((a, b) => {
+        if (sortOrder === 'asc') {
+          return new Date(a.created_at) - new Date(b.created_at);
+        } else if (sortOrder === 'desc') {
+          return new Date(b.created_at) - new Date(a.created_at);
+        }
+        return 0;
+      });
+    }
+
+    return result;
+  }, [isSearchActive, searchResults, usuarios, filterRole, sortOrder]);
+
+  const usuariosToDisplay = filteredAndSortedUsers();
   if (isLoading) {
     return (
       <div className="container">
@@ -154,7 +191,7 @@ const UsuariosPage = () => {
     );
   }
 
-  const usuariosToDisplay = isSearchActive ? searchResults : usuarios;
+
 
   return (
     <div className="container">
@@ -173,9 +210,19 @@ const UsuariosPage = () => {
           <button className="search-btn" onClick={handleSearch} aria-label="Search">
             <img src={searchIcon} alt="" />
           </button>
+          <button onClick={toggleFilter} className="filter-button">
+            <FaFilter /> Filter
+          </button>
         </div>
         <button className='addbutton' onClick={() => openNewCard()}> Agregar Usuario +</button>
       </div>
+      <FilterSectionUsuarios 
+        isFilterOpen={isFilterOpen}
+        filterRole={filterRole}
+        handleFilterChange={handleFilterChange}
+        sortOrder={sortOrder}
+        handleSortChange={handleSortChange}
+      />
 
       <div className='clients-tablespace'> 
         <div className="table2">
