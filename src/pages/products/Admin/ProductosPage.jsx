@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import './admin.css';
+import FilterSection from './FilterSectionProductos';
 import searchIcon from './../../../image/searchIcon.png';
 import { CircularProgress } from '@mui/material';
 import useApiP from '../../../hooks/useAPIProducts';
@@ -13,9 +14,11 @@ import NewProdCard from '../../../components/cards/NewProdCard';
 import StateCard from '../../../components/cards/stateCard';
 import DeleteCard from '../../../components/cards/deleteCard';
 import MoreCard from '../../../components/cards/moreCard';
+import { FaFilter } from 'react-icons/fa';
+
 
 const ProductosPage = () => {
-  const { data: productos, errorMessage, isLoading, refetch } = useApiP('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/productos');
+  const { data: productos, errorMessage, isLoading, refetch } = useApiP('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/catalogo');
   const [isInformationCardOpen, setIsInformationCardOpen] = useState(false);
   const [isNewCardOpen, setIsNewCardOpen] = useState(false);
   const [isEditCardOpen, setIsEditCardOpen] = useState(false);
@@ -27,6 +30,10 @@ const ProductosPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [isSearchActive, setIsSearchActive] = useState(false);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [filterAvailability, setFilterAvailability] = useState('');
+  const [sortOrder, setSortOrder] = useState('');
+
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -106,6 +113,41 @@ const ProductosPage = () => {
     setSelectedProduct(null);
   };
 
+  const toggleFilter = () => setIsFilterOpen(!isFilterOpen);
+
+  const handleFilterChange = (e) => {
+    setFilterAvailability(e.target.value);
+  };
+
+  const handleSortChange = (order) => {
+    setSortOrder(order);
+  };
+  const filteredAndSortedProducts = useCallback(() => {
+    let result = isSearchActive ? searchResults : productos;
+
+    // Apply availability filter
+    if (filterAvailability) {
+      result = result.filter(producto => 
+        filterAvailability === 'available' ? producto.disponibilidad > 0 : producto.disponibilidad === 0
+      );
+    }
+
+    // Apply sorting
+    if (sortOrder) {
+      result.sort((a, b) => {
+        if (sortOrder === 'asc') {
+          return a.precio - b.precio;
+        } else {
+          return b.precio - a.precio;
+        }
+      });
+    }
+
+    return result;
+  }, [isSearchActive, searchResults, productos, filterAvailability, sortOrder]);
+
+  const productsToDisplay = filteredAndSortedProducts();
+
   if (isLoading) {
     return (
       <div className="container">
@@ -146,6 +188,7 @@ const ProductosPage = () => {
             onKeyPress={handleKeyPress}
           />
           <button className="search-btn" onClick={handleSearch}>
+
             <img src={searchIcon} alt="Search" />
           </button>
         </div>
@@ -158,27 +201,41 @@ const ProductosPage = () => {
     );
   }
 
-  const productsToDisplay = isSearchActive ? searchResults : productos;
 
   return (
     <div className="container">
       <div className="text">Productos</div>
       <div className='modbar'>
-        <div className="search-bar">
-          <input
-            className="searchbar"
-            type="text"
-            placeholder="Buscar ID, Nombre, Descripción, Precio, Disponibilidad o Marca..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            onKeyPress={handleKeyPress}
-          />
-          <button className="search-btn" onClick={handleSearch}>
-            <img src={searchIcon} alt="Search" />
+        <div className='filter-section'>
+          <div className="search-bar">
+            <input
+              className="searchbar"
+              type="text"
+              placeholder="Buscar ID, Nombre, Descripción, Precio, Disponibilidad o Marca..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              onKeyPress={handleKeyPress}
+            />
+            <button className="search-btn" onClick={handleSearch}>
+              <img src={searchIcon} alt="Search" />
+            </button>
+          </div>
+          <button onClick={toggleFilter} className="filter-button">
+            <FaFilter /> Filter
           </button>
         </div>
+        
         <button className='addbutton' onClick={() => openCard('new')}> Agregar Producto +</button>
       </div>
+      <FilterSection 
+            isFilterOpen={isFilterOpen}
+            toggleFilter={toggleFilter}
+            filterAvailability={filterAvailability}
+            handleFilterChange={handleFilterChange}
+            sortOrder={sortOrder}
+            handleSortChange={handleSortChange}
+          />
+      
       <div className="table">
         <div className="table3-grid table-header">
           <h3></h3>
