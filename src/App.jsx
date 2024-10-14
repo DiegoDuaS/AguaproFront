@@ -30,7 +30,7 @@ function App() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setSuccessMessage('');
-    }, 5000);
+    }, 4000);
 
     return () => clearTimeout(timer);
   }, [successMessage]);
@@ -141,7 +141,7 @@ const { role, loading, error } = useUserRole(userId);
         <AdminPage onRouteChange={setActivePage} />
       )}
       {activePage === 'CheckoutPage' && (
-        <CheckoutPage onRouteChange={setActivePage} cartItems={cartItems} />
+        <CheckoutPage onRouteChange={setActivePage} cartItems={cartItems} navigateToLogin={navigateToLogin}/>
       )}
       {activePage !== 'RegisterPage' && activePage !== 'CheckoutPage' && activePage !== 'Login' && activePage !== 'AdminPage' && (
         <>

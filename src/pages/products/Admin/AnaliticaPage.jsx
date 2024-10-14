@@ -99,13 +99,7 @@ const AnaliticaPage = () => {
             (totalSalesData === null) 
           ) {
             setNoSalesMessage(`No hubo ventas entre ${fechaInicio} y ${fechaFin}`);
-            console.log(salesData);
           } else {
-            console.log(salesData);
-            console.log(productsData);
-            console.log(clientsData);
-            console.log(dailySalesData);
-            console.log(totalSalesData);
             setNoSalesMessage("");
             setSales(salesData || []);
             setProducts(productsData || []);
