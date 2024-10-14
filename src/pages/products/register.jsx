@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import useRegisterUser from '../../hooks/useRegisterUser';
 import { CircularProgress } from '@mui/material';
 import { useApi } from '../../hooks/useApi';
+import StateCard from '../../components/cards/stateCard';
 
 const RegisterPage = ({ onRouteChange }) => {
   const { registerUser,loading,error } = useRegisterUser();
@@ -18,11 +19,19 @@ const RegisterPage = ({ onRouteChange }) => {
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setErrorMessage('');
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, [errorMessage]);
+
+
   const handleSubmitRegister = async () => {
     if (password !== passwordConfirm) {
         setErrorMessage('Las contraseñas no coinciden');
         setSuccessMessage(''); // Clear success message
-        console.log(errorMessage);
         return;
     }
 
@@ -95,9 +104,8 @@ return (
           onChange={(e) => setEmail(e.target.value)}
         />
         {loading && (<div> <CircularProgress /> </div>)}
-        {error && <div className="errorMessage">{error}</div>}
         <button className="inputButton" onClick={handleSubmitRegister}>
-          Registrar
+          Registrar Usuario
         </button>
         <button className="inputButton" onClick={() => onRouteChange('Bombas de agua')}>
           Regresar
@@ -109,8 +117,10 @@ return (
           </span>
         </div>
         <div className="spacelogin"></div>
+        <StateCard message={errorMessage} isOpen={!!errorMessage} type={2}/>
       </div>
     </div>
+    
   );
 };
 

@@ -2,7 +2,6 @@
     width: auto;
     height: auto;
     border-radius: 10px;
-    border: 2px solid #bfbfbf;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -14,14 +13,14 @@
 
 .forms_input{
     width: 32rem;
-    height: 2rem;
+    height: 2.5rem;
     border-radius: 10px;
     background-color:rgba(255, 255, 255, 0.87);
     color: black;
     padding-left: 10px;
     margin-left: 50px;
     margin-right: 50px;
-    border: 2px solid #bfbfbf;
+    border: 2px solid #acacac;
 }
 
 .personalinfo{

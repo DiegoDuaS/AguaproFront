@@ -12,7 +12,7 @@ button, div {
   font-family: 'Oxygen', sans-serif; /* Segunda fuente para h4 */
 }
 
-p, h5, h6, span, a, input {
+p, h5, h6, span, a, input, select{
   font-family: 'Nunito Sans', sans-serif; /* Tercera fuente para párrafos y otros textos */
 }
 

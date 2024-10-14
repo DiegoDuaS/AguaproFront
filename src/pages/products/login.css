@@ -73,8 +73,8 @@
   width: 400px;
   font-size: large;
   border-radius: 8px;
-  border: 1px solid rgb(211, 209, 209);
-  background-color:rgb(211, 209, 209) ;
+  border: 2px solid #acacac;
+  background-color:rgba(255, 255, 255, 0.87);
   padding-left: 8px;
   margin-bottom: 16px;
   font-size: 15px;
@@ -87,7 +87,7 @@
   color: white;
   padding-bottom: 16px;
   margin: 8px;
-  font-size: 20px;
+  font-size: 17px;
   border-radius: 8px;
   cursor: pointer;
 }
@@ -110,6 +110,7 @@
 }
 
 .registerContainer{
+  margin-top: 10px;
   color: black;
 }
 
@@ -129,9 +130,9 @@
   flex-direction: row;
   width: 400px;
   align-items: flex-start;
-  background-color:rgb(211, 209, 209) ;
+  background-color:rgba(255, 255, 255, 0.87);
   border-radius: 8px;
-  border: 1px solid rgb(211, 209, 209);
+  border: 2px solid #acacac;
   height: 48px;
   margin-bottom: 8px;
 }
@@ -142,11 +143,15 @@
   font-size: large;
   border-radius: 8px;
   border: 1px solid rgb(211, 209, 209);
-  background-color:rgb(211, 209, 209) ;
+  background-color:rgba(255, 255, 255, 0.87);
   padding-left: 8px;
   font-size: 15px;
   color: black;
   border: 0;
   outline: 0;
+}
+
+.inputError {
+  border: 2px solid rgb(198, 0, 0);
 }
 
