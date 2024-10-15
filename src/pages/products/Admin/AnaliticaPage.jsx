@@ -114,7 +114,6 @@ const AnaliticaPage = () => {
           setIsLoading(false);
         }
       };
-  
       fetchAllData();
     }
   }, [fechaInicio, fechaFin]);
