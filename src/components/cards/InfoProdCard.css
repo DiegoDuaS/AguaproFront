@@ -107,8 +107,12 @@
   font-weight: bold;
 }
 
-.info {
+.info_des_prod {
   color: #555;
+  word-wrap: break-word; 
+  max-width: 18ch;
+  white-space: normal
+
 }
 
 .section{

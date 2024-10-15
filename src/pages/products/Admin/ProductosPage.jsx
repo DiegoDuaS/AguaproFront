@@ -253,7 +253,7 @@ const ProductosPage = () => {
             <FaTrash color='#00668C' className='trash_icon' onClick={() => openCard('delete', producto)} />
             <p className='table-text'>#{producto.id_producto}</p>
             <p className='table-text'>{producto.nombre}</p>
-            <p className='table-text'>{producto.descripción}</p>
+            <p className='table-text descriptionprod'>{producto.descripción}</p>
             <p className='table-text'>Q.{producto.precio}</p>
             <div className='units_sec'>
               <p className='table-text'>{producto.disponibilidad} Unidades</p>

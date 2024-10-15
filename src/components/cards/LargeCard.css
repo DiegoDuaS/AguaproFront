@@ -127,6 +127,9 @@
   padding-left: 40px;
   padding-right: 10px;
   padding-top: 5px;
+  word-wrap: break-word; 
+  max-width: 50ch;
+  white-space: normal
 }
 
 .size-section{
