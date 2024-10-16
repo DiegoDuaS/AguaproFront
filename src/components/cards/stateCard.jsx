@@ -41,7 +41,7 @@ const StateCard = ({ message, isOpen, type }) => {
 
   if (type === 3){
     return(
-      <div className={`cart-card ${showCard ? 'slide-in' : 'slide-out'}`}>
+      <div className={`success-card ${showCard ? 'slide-in' : 'slide-out'}`}>
         <div className="success-message2">
           <IoCartOutline  size={24} />
           {message}

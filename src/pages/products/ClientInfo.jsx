@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import './ClientInfo.css';
 
 const ClientInfo = () => {
+  const user = JSON.parse(localStorage.getItem('user')); 
+  const username = user?.username;
+
   const [formData, setFormData] = useState({
     nombre: '',
     correo: '',
@@ -26,7 +29,7 @@ const ClientInfo = () => {
 
   return (
     <div className="client-info-container">
-      <h2>Bienvenido "Username"</h2>
+      <h2>Bienvenido {username}</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group-cf">
           <label>Nombre:</label>

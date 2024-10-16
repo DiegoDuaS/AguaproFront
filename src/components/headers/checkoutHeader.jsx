@@ -10,8 +10,8 @@ function CheckoutHeader({navigateToLogin }) {
         <div className="brand">AGUATESA</div>
         <div style={{marginRight: '20px'}} className="icons">
           {/* Cart, User, and Notification icons */}
-          <FaUser size={32} onClick={navigateToLogin} color='black' className='icon'></FaUser>
-          <IoIosNotifications size={38} color='black' className='icon'></IoIosNotifications>
+          <FaUser size={32} onClick={navigateToLogin} color='black' className='icon' data-testid="user-icon"></FaUser>
+          <IoIosNotifications size={38} color='black' className='icon' data-testid="notification-icon"></IoIosNotifications>
         </div>
       </header>
     );

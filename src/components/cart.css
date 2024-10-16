@@ -13,6 +13,25 @@
   left: 70%;
 }
 
+.cart-items::-webkit-scrollbar {
+  width: 12px;/* Ancho de la scrollbar vertical */
+}
+
+.cart-items::-webkit-scrollbar-track {
+  background: #D9D9D9; /* Color del fondo de la pista */
+  border-radius: 10px;
+}
+
+.cart-items::-webkit-scrollbar-thumb {
+  background: #00668C; /* Color del pulgar */
+  border-radius: 10px;
+  max-height: 10px;
+}
+
+.cart-items::-webkit-scrollbar-thumb:hover {
+  background: #00668C; /* Color del pulgar al pasar el mouse */
+}
+
 .cart h3 {
   text-align: center;
   margin-bottom: 20px;
@@ -82,7 +101,6 @@
 }
 
 .checkout-button {
-  background-color: #007bff;
   color: #fff;
   border: none;
   padding: 10px 20px;

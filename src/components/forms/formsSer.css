@@ -1,0 +1,58 @@
+.forms{
+    width: auto;
+    height: auto;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    background-color: #F5F4F1;
+}
+
+.forms_input{
+    width: 32rem;
+    height: 2.5rem;
+    border-radius: 10px;
+    background-color:rgba(255, 255, 255, 0.87);
+    color: black;
+    padding-left: 10px;
+    margin-left: 50px;
+    margin-right: 50px;
+    border: 2px solid #acacac;
+}
+
+.personalinfo{
+    width: 20rem;
+    margin-left: 0;
+    margin-right: 40px;
+    margin-top: 0;
+}
+
+.sendforms{
+   margin-top: 25px;
+   margin-bottom: 20px;
+}
+
+.persoinfo{
+    display: flex;
+    flex-direction: row;
+    margin-top: 5px;
+    margin-left: 40px;
+}
+
+.inputsect{
+    display: flex;
+    color: black;
+    flex-direction: column;
+    margin-top: 25px;
+}
+
+.labelforms_ser{
+    padding-left: 10px;
+}
+
+.labelforms_ser2{
+    padding-left: 55px;
+}

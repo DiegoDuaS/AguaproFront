@@ -11,10 +11,10 @@ import { CircularProgress } from '@mui/material';
 import { BiError } from "react-icons/bi";
 import './products.css';
 
-const BombasAgua = ({cartItems, setCartItems }) => {
+const BombasAgua = ({cartItems, setCartItems, setSuccessMessage }) => {
   const [isLargeCardOpen, setIsLargeCardOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const { data: productos, errorMessage, isLoading } = useApiP('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/productos');
+  const { data: productos, errorMessage, isLoading } = useApiP('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/catalogo');
 
   // Función para abrir tarjeta de información
   const openCard = (product) => {
@@ -30,19 +30,20 @@ const BombasAgua = ({cartItems, setCartItems }) => {
 
   // Función para agregar productos al carrito
   const addToCart = (product) => {
-  setCartItems((prevItems) => {
-    const existingItem = prevItems.find((item) => item.id_producto === product.id_producto);
+    setCartItems((prevItems) => {
+      const existingItem = prevItems.find((item) => item.id_producto === product.id_producto);
 
-    const updatedItems = existingItem
-      ? prevItems.map((item) =>
-          item.id_producto === product.id_producto
-            ? { ...item, quantity: item.quantity + (product.quantity || 1) }
-            : item
-        )
-      : [...prevItems, { ...product, quantity: product.quantity || 1 }]; // Use the quantity from the product
+      const updatedItems = existingItem
+        ? prevItems.map((item) =>
+            item.id_producto === product.id_producto
+              ? { ...item, quantity: item.quantity + (product.quantity || 1) }
+              : item
+          )
+        : [...prevItems, { ...product, quantity: product.quantity || 1 }]; // Use the quantity from the product
 
-    return updatedItems;
-  });
+      return updatedItems;
+    });
+    setSuccessMessage("Tu producto se añadió al carrito")
 };
 
 

@@ -29,7 +29,7 @@
   border: none;
   margin-left: 10px;
   box-shadow: none;
-  height: 43px;
+  height: auto;
   cursor: pointer;
   background-color:white;  
 }
@@ -71,7 +71,7 @@
   cursor: pointer;
   background-color: white;
   border: none;
-  height: 43px;
+  height: auto;
   box-shadow:none;
   margin:0;
   width:170px;
