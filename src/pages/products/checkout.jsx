@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import CheckoutHeader from '../../components/headers/checkoutHeader';
 import './checkout.css';
 
-const Checkout = ({ onRouteChange, cartItems }) => {
+const Checkout = ({ onRouteChange, cartItems, navigateToLogin }) => {
   const subtotal = cartItems.reduce((acc, item) => acc + item.precio * item.quantity, 0);
   const [checkoutStep, setCheckoutStep] = useState('entrega'); // Nuevo estado para controlar el paso
 
@@ -43,7 +43,7 @@ const Checkout = ({ onRouteChange, cartItems }) => {
   };
   return (
     <div>
-      <CheckoutHeader />
+      <CheckoutHeader navigateToLogin={navigateToLogin}/>
       <div className="containerch">
         <h2> Checkout</h2>
         <div className="order-container">
@@ -126,10 +126,10 @@ const Checkout = ({ onRouteChange, cartItems }) => {
                       <input 
                         type="radio" 
                         name="paymentMethod" 
-                        value="contra_entrega" 
-                        checked={formData.paymentMethod === 'contra_entrega'} 
+                        value="deposito" 
+                        checked={formData.paymentMethod === 'deposito'} 
                         onChange={handleInputChange} 
-                      /> Contra entrega
+                      /> Deposito
                     </label>
                   </div>
 
@@ -171,7 +171,7 @@ const Checkout = ({ onRouteChange, cartItems }) => {
                     </div>
                   )}
 
-                  {formData.paymentMethod === 'contra_entrega' && (
+                  {formData.paymentMethod === 'deposito' && (
                     <div className="tarjeta-info">
                       <div className="form-group">
                         <label>Cantidad Pago</label>
@@ -206,12 +206,12 @@ const Checkout = ({ onRouteChange, cartItems }) => {
                     <th>Precio</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody className='resumen-box'>
                   {cartItems.map((item, index) => (
                     <tr key={index}>
                       <td>{item.nombre}</td>
                       <td>{item.quantity}</td>
-                      <td>Q.{item.precio}</td>
+                      <td>Q.{item.precio * item.quantity}</td>
                     </tr>
                   ))}
                   <tr>

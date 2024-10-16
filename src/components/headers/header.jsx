@@ -3,19 +3,26 @@ import { IoCartOutline } from "react-icons/io5";
 import { FaUser } from "react-icons/fa";
 import { IoIosNotifications } from "react-icons/io";
 
-function Header({toggleCart, navigateToLogin }) {
+function Header({ toggleCart, navigateToLogin, cantItemscart }) {
 
-    return (
-        <header className="fixed-header">
-        <div className="brand">AGUATESA</div>
-        <div style={{marginRight: '20px'}} className="icons">
-          {/* Cart, User, and Notification icons */}
-          <IoCartOutline size={40} onClick={toggleCart} color='black' className='icon'></IoCartOutline>
-          <FaUser size={32} onClick={navigateToLogin} color='black' className='icon'></FaUser>
-          <IoIosNotifications size={38} color='black' className='icon'></IoIosNotifications>
+  return (
+    <header className="fixed-header">
+      <div className="brand">AGUATESA</div>
+      <div style={{ marginRight: '20px' }} className="icons">
+        <div style={{ position: 'relative' }}>
+          {/* Icono del carrito */}
+          <IoCartOutline size={40} onClick={toggleCart} color='black' className='icon' />
+          {cantItemscart > 0 && (
+            <div className="cart-badge">
+              {cantItemscart}
+            </div>
+          )}
         </div>
-      </header>
-    );
+        <FaUser size={32} onClick={navigateToLogin} color='black' className='icon' />
+        <IoIosNotifications size={38} color='black' className='icon' />
+      </div>
+    </header>
+  );
 }
 
 export default Header

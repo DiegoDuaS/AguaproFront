@@ -3,7 +3,6 @@ import ProductosPage from './Admin/ProductosPage';
 import AnaliticaPage from './Admin/AnaliticaPage';
 import ClientesPage from './Admin/ClientesPage';
 import { useState, useEffect } from "react";
-import "./admin.scss";
 import CustomNav from "../../components/AdminNav.jsx";
 import AdminHeader from "../../components/headers/AdminHeader.jsx";
 import PropTypes from 'prop-types';

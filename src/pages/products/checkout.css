@@ -18,6 +18,7 @@
     border: 1px solid #333; /* Borde negro */
     background-color: #f2f2f2; /* Color de fondo gris claro */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra */
+    border-radius: 7px;
   }
   
   /* Sección izquierda para detalles adicionales */
@@ -37,6 +38,25 @@
     flex-direction: column;
     justify-content: space-between;
     overflow-y: auto;
+  }
+
+  .order-summary::-webkit-scrollbar {
+    width: 12px;/* Ancho de la scrollbar vertical */
+  }
+  
+  .order-summary::-webkit-scrollbar-track {
+    background: #D9D9D9; /* Color del fondo de la pista */
+    border-radius: 10px;
+  }
+  
+  .order-summary::-webkit-scrollbar-thumb {
+    background: #00668C; /* Color del pulgar */
+    border-radius: 10px;
+    min-height: 30px;
+  }
+  
+  .order-summary::-webkit-scrollbar-thumb:hover {
+    background: #00668C; /* Color del pulgar al pasar el mouse */
   }
   
   /* Título */
@@ -148,6 +168,7 @@
   font-weight: bold;
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
+  color: white;
 }
 
 

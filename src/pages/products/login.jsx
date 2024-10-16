@@ -31,16 +31,16 @@ const LoginPage = ({ onRouteChange }) => {
 
   const handleSubmitLogin = async () => {
     try {
-        const response = await userLogin(login, username, password);
+        const responseData = await userLogin(login, username, password);
         
-        if (response.ok) {
+        if (responseData.role === 'admin') {
             onRouteChange('AdminPage');
-            console.log('Logging in with', username, password);                 
-            // Save token to local storage
-
-            console.log("token", localStorage.getItem('token'));
-            return;
+        } else {
+            onRouteChange('Bombas de agua');
         }
+
+        console.log('Logging in with', username, password);                 
+        console.log("token", localStorage.getItem('token'));
     } catch (error) {
         setError(error.message); 
     }
