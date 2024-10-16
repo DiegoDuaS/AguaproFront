@@ -12,7 +12,6 @@ import { color } from 'chart.js/helpers';
 import { FaFilter } from 'react-icons/fa';
 import { FaSortAmountDown, FaSortAmountUp } from 'react-icons/fa';
 
-
 const API_BASE_URL = 'https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app';
 
 const PedidosPage = () => {
@@ -92,7 +91,7 @@ const PedidosPage = () => {
     setSelectedPedido(pedidoId);
     fetchProductos(pedidoId);
   }, [fetchProductos]);
-
+  
   const handleEstadoChange = useCallback(async (pedidoId, newEstado) => {
     const estadoMap = { "Pendiente": 1, "Procesando": 2, "Enviado": 3, "Entregado": 4, "Cancelado": 5 };
     const idEstado = estadoMap[newEstado] || 0;
@@ -139,7 +138,6 @@ const PedidosPage = () => {
       console.error(error);
     }
   }, [refetch, showMessage]);
-
 
   const handleSearch = useCallback(() => {
     if (!searchTerm.trim()) {
@@ -236,7 +234,6 @@ const PedidosPage = () => {
       </div>
     );
   }
-
  
   return (
     <div className="container">
@@ -307,7 +304,6 @@ const PedidosPage = () => {
       
       <StateCard message={successMessage} isOpen={!!successMessage} type={1}/>
       <StateCard message={errorMessageState} isOpen={!!errorMessageState} type={2}/>
-    
       <div className="table">
         <div className="table-grid table-header">
           <h3>Pedido Id</h3>
@@ -319,8 +315,6 @@ const PedidosPage = () => {
           <h3>Productos</h3>
           <h3>Estado</h3>
         </div>
-
-        
         {pedidosToDisplay.map((pedido) => (
           <div className="table-grid table-row" key={pedido.id_pedido}>
             <p className='table-text'>#{pedido.id_pedido}</p>

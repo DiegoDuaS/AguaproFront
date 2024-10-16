@@ -187,7 +187,6 @@ const ProductosPage = () => {
             onKeyPress={handleKeyPress}
           />
           <button className="search-btn" onClick={handleSearch}>
-
             <img src={searchIcon} alt="Search" />
           </button>
         </div>
@@ -234,7 +233,6 @@ const ProductosPage = () => {
             sortOrder={sortOrder}
             handleSortChange={handleSortChange}
           />
-      
       <div className="table">
         <div className="table3-grid table-header">
           <h3></h3>
