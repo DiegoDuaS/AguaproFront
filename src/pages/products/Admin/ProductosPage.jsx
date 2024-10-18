@@ -16,7 +16,6 @@ import DeleteCard from '../../../components/cards/deleteCard';
 import MoreCard from '../../../components/cards/moreCard';
 import { FaFilter } from 'react-icons/fa';
 
-
 const ProductosPage = () => {
   const { data: productos, errorMessage, isLoading, refetch } = useApiP('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/catalogo');
   const [isInformationCardOpen, setIsInformationCardOpen] = useState(false);
