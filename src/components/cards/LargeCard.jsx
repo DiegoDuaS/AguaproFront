@@ -46,7 +46,7 @@ const LargeCard = ({ isOpen, closeCard, product, addToCart, cartItems }) => {
         <div className='photo-title'>
           <img className='imagecard' src={`/image/${product.id_producto}.png`} alt={product.nombre} />
           <div className="product-title">{product.nombre}</div>
-          <p className='price'>Q {product.precio}</p>
+          <p className='price'>Q {product.precio.toFixed(2)}</p>
         </div>
       </div>
       <div className="right-section">

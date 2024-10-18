@@ -5,15 +5,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Oxygen:wght@300;400;700&display=swap');
 
 h1, h2, h3, h4 {
-  font-family: 'Fira Sans Condensed', sans-serif; /* Primera fuente para h1, h2 y h3 */
+  font-family: 'Fira Sans Condensed', sans-serif;
 }
 
 button, div {
-  font-family: 'Oxygen', sans-serif; /* Segunda fuente para h4 */
+  font-family: 'Oxygen', sans-serif; 
 }
 
 p, h5, h6, span, a, input, select{
-  font-family: 'Nunito Sans', sans-serif; /* Tercera fuente para párrafos y otros textos */
+  font-family: 'Nunito Sans', sans-serif; 
 }
 
 :root {

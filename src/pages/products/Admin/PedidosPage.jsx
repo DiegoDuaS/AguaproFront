@@ -326,7 +326,7 @@ const PedidosPage = () => {
             <p className='table-text'>#{pedido.id_pedido}</p>
             <p className='table-text'>{pedido.cliente}</p>
             <p className='table-text'>{pedido.nit_empresa}</p>
-            <p className='table-text'>Q.{pedido.monto_total}</p>
+            <p className='table-text'>Q.{pedido.monto_total.toFixed(2)}</p>
             {pedido.estatus >= 3 ? (
               <p className='table-text'>{pedido.direccion}</p>
             ) : (
