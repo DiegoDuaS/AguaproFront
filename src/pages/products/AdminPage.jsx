@@ -2,14 +2,17 @@ import PedidosPage from './Admin/PedidosPage';
 import ProductosPage from './Admin/ProductosPage';
 import AnaliticaPage from './Admin/AnaliticaPage';
 import ClientesPage from './Admin/ClientesPage';
+import SolicitudesPage from './Admin/SolicitudesPage';
 import { useState, useEffect } from "react";
 import CustomNav from "../../components/AdminNav.jsx";
 import AdminHeader from "../../components/headers/AdminHeader.jsx";
 import PropTypes from 'prop-types';
 import { orders, products, analytics, clients } from './images.js';
 import UsuariosPage from './Admin/UsuariosPage.jsx';
-import { BsBoxSeam } from "react-icons/bs";
-
+//import { BsBoxSeam } from "react-icons/bs";
+import { BsBoxSeam, BsGraphUp, BsPeople, BsGear } from "react-icons/bs";
+import { FaClipboardList, FaUsers } from "react-icons/fa";
+import { ImEnvelop } from "react-icons/im";
 
 const AdminPage = ({ onRouteChange }) => {
   const [selectedOption, setSelectedOption] = useState('Pedidos');
@@ -34,6 +37,8 @@ const AdminPage = ({ onRouteChange }) => {
         return <ClientesPage />;
       case 'Usuarios':
         return <UsuariosPage />;
+      case 'Solicitudes':
+        return <SolicitudesPage />
       default:
         return <PedidosPage />; // Default to PedidosPage
     }
@@ -64,11 +69,12 @@ const AdminPage = ({ onRouteChange }) => {
       <div style={{ display: 'flex', flex: '1' }}>
         <CustomNav
           li={[
-            ["Pedidos", orders],
-            ["Productos", products],
-            ["Analítica", analytics],
-            ["Clientes", clients],
-            ["Usuarios", clients]
+            ["Pedidos", FaClipboardList],
+            ["Productos", BsBoxSeam],
+            ["Analítica", BsGraphUp],
+            ["Clientes", FaUsers],
+            ["Usuarios", BsGear],
+            ["Solicitudes", ImEnvelop]
           ]}
           onOptionSelect={handleOptionSelect}
           isExpanded={isExpanded}
