@@ -7,7 +7,7 @@ const AdminNav = ({ li, onOptionSelect, isExpanded }) => {
       <ul className="Anavbar__list">
         {li.map(([label, Icon], i) => (
           <li key={i} className="Anavbar__li-box" onClick={() => onOptionSelect(label)}>
-            <Icon style={{ color: 'black' }} className="Anavbar__icon" /> {/* Render Icon as a component */}
+            <Icon style={{ color: 'black' }} className="Anavbar__icon" size={30}/> {/* Render Icon as a component */}
             {isExpanded && <span className="Anavbar__label">{label}</span>}
           </li>
         ))}

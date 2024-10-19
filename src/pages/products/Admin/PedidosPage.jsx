@@ -32,6 +32,11 @@ const PedidosPage = () => {
   const [isFilterOpenEstados, setIsFilterOpenEstados] = useState(false);
   const [isFilterOpenPrecios, setIsFilterOpenPrecios] = useState(false);
   const [sortOrder, setSortOrder] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const totalPages = Math.ceil(pedidos.length / 10);
+  const startIndex = (currentPage - 1) * 10;
+  const endIndex = startIndex + 10;
 
   const sortPedidos = (pedidosToSort) => {
     if (sortOrder === 'asc') {
@@ -47,6 +52,14 @@ const PedidosPage = () => {
       filterState === '' || pedido.estado === filterState
     )
   );
+
+  const pedidosEnPagina = pedidosToDisplay.slice(startIndex, endIndex);
+
+  const handlePageChange = (newPage) => {
+    if (newPage >= 1 && newPage <= totalPages) {
+      setCurrentPage(newPage);
+    }
+  };
 
   useEffect(() => {
     if (pedidos) {
@@ -321,7 +334,7 @@ const PedidosPage = () => {
         </div>
 
         
-        {pedidosToDisplay.map((pedido) => (
+        {pedidosEnPagina.map((pedido) => (
           <div className="table-grid table-row" key={pedido.id_pedido}>
             <p className='table-text'>#{pedido.id_pedido}</p>
             <p className='table-text'>{pedido.cliente}</p>
@@ -374,7 +387,23 @@ const PedidosPage = () => {
             </select>
           </div>
         ))}
-        
+
+      </div>
+
+      <div className="pagination-controls">
+        <button 
+          onClick={() => handlePageChange(currentPage - 1)} 
+          disabled={currentPage === 1}
+        >
+          Anterior
+        </button>
+        <span>Página {currentPage} de {totalPages}</span>
+        <button 
+          onClick={() => handlePageChange(currentPage + 1)} 
+          disabled={currentPage === totalPages}
+        >
+          Siguiente
+        </button>
       </div>
     </div>
   );

@@ -10,17 +10,17 @@ import PropTypes from 'prop-types';
 import { orders, products, analytics, clients } from './images.js';
 import UsuariosPage from './Admin/UsuariosPage.jsx';
 //import { BsBoxSeam } from "react-icons/bs";
-import { BsBoxSeam, BsGraphUp, BsPeople, BsGear } from "react-icons/bs";
+import { BsBoxSeam, BsGraphUp, BsGear } from "react-icons/bs";
 import { FaClipboardList, FaUsers } from "react-icons/fa";
 import { ImEnvelop } from "react-icons/im";
+import { GoMail } from "react-icons/go";
+import { PiClipboardText } from "react-icons/pi";
+import { FiMail } from "react-icons/fi";
+
 
 const AdminPage = ({ onRouteChange }) => {
   const [selectedOption, setSelectedOption] = useState('Pedidos');
   const [isExpanded, setIsExpanded] = useState(false);
-
-  useEffect(() => {
-    console.log("You are on the Admin Page");
-  }, []);
 
   const handleOptionSelect = (option) => {
     setSelectedOption(option);
@@ -69,12 +69,12 @@ const AdminPage = ({ onRouteChange }) => {
       <div style={{ display: 'flex', flex: '1' }}>
         <CustomNav
           li={[
-            ["Pedidos", FaClipboardList],
+            ["Pedidos", PiClipboardText ],
             ["Productos", BsBoxSeam],
             ["Analítica", BsGraphUp],
             ["Clientes", FaUsers],
             ["Usuarios", BsGear],
-            ["Solicitudes", ImEnvelop]
+            ["Solicitudes", GoMail]
           ]}
           onOptionSelect={handleOptionSelect}
           isExpanded={isExpanded}
