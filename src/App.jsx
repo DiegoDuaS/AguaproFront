@@ -159,6 +159,7 @@ const { role, loading, error } = useUserRole(userId);
       {activePage !== 'RegisterPage' && activePage !== 'CheckoutPage' && activePage !== 'Login' && activePage !== 'AdminPage' && (
         <>
           <Header toggleCart={toggleCart} navigateToLogin={navigateToLogin} cantItemscart={cartItems.length}/>
+          <StateCard message={successMessage} isOpen={!!successMessage} type={3}/>
           <div className="fixed-section">
             <img
               style={{ top: '20px', height: '20px', width: '30px', cursor: 'pointer' }}
@@ -176,7 +177,7 @@ const { role, loading, error } = useUserRole(userId);
               setIsSidebarOpen={setIsSidebarOpen}
               setActivePage={setActivePage}
             />
-            <StateCard message={successMessage} isOpen={!!successMessage} type={3}/>
+            
           </div>
           
           {isCartOpen && (
