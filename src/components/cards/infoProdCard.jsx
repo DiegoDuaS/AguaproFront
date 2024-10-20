@@ -1,7 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import useApiPr from '../../hooks/useAPIProduct';
 import './InfoProdCard.css';
-import ProductosPage from '../../pages/products/Admin/ProductosPage';
 
 const InfoProdCard = ({ isOpen, closeCard, product}) => {
     
@@ -41,11 +39,11 @@ const InfoProdCard = ({ isOpen, closeCard, product}) => {
                         </div>
                         <div className="table-row2">
                             <div className="table-cell title">Tipo de Producto</div>
-                            <div className="table-cell info_des_prod">{product.tipo_producto}</div>
+                            <div className="table-cell info_des_prod">{product.tipoproducto}</div>
                         </div>
                         <div className="table-row2">
                             <div className="table-cell title">Precio</div>
-                            <div className="table-cell info_des_prod">${product.precio}</div>
+                            <div className="table-cell info_des_prod">Q.{product.precio}</div>
                         </div>
                         <div className="table-row2">
                             <div className="table-cell title">Disponibilidad</div>
@@ -59,75 +57,11 @@ const InfoProdCard = ({ isOpen, closeCard, product}) => {
                             <div className="table-cell title">Material</div>
                             <div className="table-cell info_des_prod">{product.material}</div>
                         </div>
-                        <div className="table-row2">
-                            <div className="table-cell title">Profundidad</div>
-                            <div className="table-cell info_des_prod">{product.profundidad} mm</div>
-                        </div>
-                        <div className="table-row2">
-                            <div className="table-cell title">Temperatura Líquida Máxima</div>
-                            <div className="table-cell info_des_prod">{product.temperatura_liquida_max} °C</div>
-                        </div>
-                        <div className="table-row2">
-                            <div className="table-cell title">Conexión de Tubería</div>
-                            <div className="table-cell info_des_prod">{product.conexion_tuberia}</div>
-                        </div>
-                        <div className="table-row2">
-                            <div className="table-cell title">Presión Funcional</div>
-                            <div className="table-cell info_des_prod">{product.presion_funcional} bar</div>
-                        </div>
-                        <div className="table-row2">
-                            <div className="table-cell title">Head</div>
-                            <div className="table-cell info_des_prod">{product.head} m</div>
-                        </div>
                     </div>
                 </div>
                 <div className='section'>
-                    <div className='vertical-table'>
-                        <div className="table-row2">
-                            <div className="table-cell title">Aplicaciones</div>
-                            <div className="table-cell info_des_prod">{product.aplicaciones}</div>
-                        </div>
-                        <div className="table-row2">
-                            <div className="table-cell title">Temperatura Media</div>
-                            <div className="table-cell info_des_prod">{product.temperatura_media} °C</div>
-                        </div>
-                        <div className="table-row2">
-                            <div className="table-cell title">GPM Mínimo</div>
-                            <div className="table-cell info_des_prod">{product.min_gpm} GPM</div>
-                        </div>
-                        <div className="table-row2">
-                            <div className="table-cell title">GPM Máximo</div>
-                            <div className="table-cell info_des_prod">{product.max_gpm} GPM</div>
-                        </div>
-                        <div className="table-row2">
-                            <div className="table-cell title">HP Mínimo</div>
-                            <div className="table-cell info_des_prod">{product.min_hp} HP</div>
-                        </div>
-                        <div className="table-row2">
-                            <div className="table-cell title">HP Máximo</div>
-                            <div className="table-cell info_des_prod">{product.max_hp} HP</div>
-                        </div>
-                        <div className="table-row2">
-                            <div className="table-cell title">Capacitor</div>
-                            <div className="table-cell info_des_prod">{product.capacitor}</div>
-                        </div>
-                        <div className="table-row2">
-                            <div className="table-cell title">Temperatura Líquida Mínima</div>
-                            <div className="table-cell info_des_prod">{product.temperatura_liquida_min} °C</div>
-                        </div>
-                        <div className="table-row2">
-                            <div className="table-cell title">Temperatura Ambiente</div>
-                            <div className="table-cell info_des_prod">{product.temperatura_ambiente} °C</div>
-                        </div>
-                        <div className="table-row2">
-                            <div className="table-cell title">Presión</div>
-                            <div className="table-cell info_des_prod">{product.presion} bar</div>
-                        </div>
-                        <div className="table-row2">
-                            <div className="table-cell title">Caudal</div>
-                            <div className="table-cell info_des_prod">{product.flow_rate} L/min</div>
-                        </div>
-                    </div>
+                    <div className="table-cell title">Imagen del Producto</div>
+                    <img className='img_prod2' src='https://elarenal.com.gt/cdn/shop/products/PLO-ROT-BACR5_bf4c08cb-f95f-44b2-8536-d995a4d337ed.jpg?v=1643991840' alt='Bomba de agua' />
                 </div>
             </div>
 

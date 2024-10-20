@@ -3,7 +3,6 @@ import './cart.css'; // Import your CSS file
 import { IoCartOutline } from "react-icons/io5";
 
 const Cart = ({ cartItems, updateCartItem, removeCartItem, closeCart, checkout }) => {
- console.log('Cart items:', cartItems);
  const [total, setTotal] = useState(0);
  const cartRef = useRef(null);
  

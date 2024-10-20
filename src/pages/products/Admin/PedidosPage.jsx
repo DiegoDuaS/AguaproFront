@@ -34,10 +34,6 @@ const PedidosPage = () => {
   const [sortOrder, setSortOrder] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
 
-  const totalPages = Math.ceil(pedidos.length / 10);
-  const startIndex = (currentPage - 1) * 10;
-  const endIndex = startIndex + 10;
-
   const sortPedidos = (pedidosToSort) => {
     if (sortOrder === 'asc') {
       return [...pedidosToSort].sort((a, b) => a.monto_total - b.monto_total);
@@ -52,6 +48,10 @@ const PedidosPage = () => {
       filterState === '' || pedido.estado === filterState
     )
   );
+
+  const totalPages = Math.ceil(pedidosToDisplay.length / 10);
+  const startIndex = (currentPage - 1) * 10;
+  const endIndex = startIndex + 10;
 
   const pedidosEnPagina = pedidosToDisplay.slice(startIndex, endIndex);
 
@@ -358,7 +358,7 @@ const PedidosPage = () => {
               />
             )}
             <p className='table-text'>
-              {['N/A', '5%', '10%', '15%', '20%', '25%'][pedido.id_descuento] || 'Otro tipo de descuento'}
+              {['N/A', '5%', '10%', '15%', '20%', '25%'][pedido.id_descuento] || '0%'}
             </p>
             <button 
               className='more-edit'
@@ -389,21 +389,22 @@ const PedidosPage = () => {
         ))}
 
       </div>
-
       <div className="pagination-controls">
-        <button 
-          onClick={() => handlePageChange(currentPage - 1)} 
-          disabled={currentPage === 1}
-        >
-          Anterior
-        </button>
-        <span>Página {currentPage} de {totalPages}</span>
-        <button 
-          onClick={() => handlePageChange(currentPage + 1)} 
-          disabled={currentPage === totalPages}
-        >
-          Siguiente
-        </button>
+        <div className='change-page'>
+          <button 
+            onClick={() => handlePageChange(currentPage - 1)} 
+            disabled={currentPage === 1}
+          >
+            Anterior
+          </button>
+          <span>Página {currentPage} de {totalPages}</span>
+          <button 
+            onClick={() => handlePageChange(currentPage + 1)} 
+            disabled={currentPage === totalPages}
+          >
+            Siguiente
+          </button>
+        </div>
       </div>
     </div>
   );

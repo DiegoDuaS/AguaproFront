@@ -100,6 +100,22 @@
     align-items: center;
     justify-items: center
   }
+
+  .pagination-controls{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    justify-content: center
+  }
+
+  .change-page{
+    width: 25rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+  }
   
   
   .table-grid {
@@ -168,6 +184,7 @@
     margin-top: 45px;
     border: 1px solid #ddd;
     align-items: center;
+    margin-bottom: 45px;
   }
 
   .table2-grid {
@@ -212,7 +229,9 @@
     width: -webkit-fill-available;
     height: auto;
     display: flex;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
   }
 
   .success-message{

@@ -12,7 +12,7 @@ button, div {
   font-family: 'Oxygen', sans-serif; 
 }
 
-p, h5, h6, span, a, input, select{
+p, h5, h6, span, a, input, select, textarea{
   font-family: 'Nunito Sans', sans-serif; 
 }
 
@@ -87,4 +87,8 @@ p {
 
 span{
   color: black;
+}
+
+input[type = "file"]{
+  display: none;
 }

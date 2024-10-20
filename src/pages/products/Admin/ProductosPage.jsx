@@ -12,16 +12,17 @@ import InfoProdCard from '../../../components/cards/infoProdCard';
 import EditProdCard from '../../../components/cards/EditProdCard';
 import NewProdCard from '../../../components/cards/NewProdCard';
 import StateCard from '../../../components/cards/stateCard';
-import DeleteCard from '../../../components/cards/deleteCard';
+import HideCard from '../../../components/cards/hideCard';
 import MoreCard from '../../../components/cards/moreCard';
 import { FaFilter } from 'react-icons/fa';
+import { FaCircleCheck } from "react-icons/fa6";
 
 const ProductosPage = () => {
-  const { data: productos, errorMessage, isLoading, refetch } = useApiP('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/catalogo');
+  const { data: productos, errorMessage, isLoading, refetch } = useApiP('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/productos');
   const [isInformationCardOpen, setIsInformationCardOpen] = useState(false);
   const [isNewCardOpen, setIsNewCardOpen] = useState(false);
   const [isEditCardOpen, setIsEditCardOpen] = useState(false);
-  const [isDeleteCardOpen, setIsDeleteCardOpen] = useState(false);
+  const [IsHideCardOpen, setIsHideCardOpen] = useState(false);
   const [isMoreCardOpen, setIsMoreCardOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [successMessage, setSuccessMessage] = useState('');
@@ -32,7 +33,14 @@ const ProductosPage = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [filterAvailability, setFilterAvailability] = useState('');
   const [sortOrder, setSortOrder] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
 
+
+  const handlePageChange = (newPage) => {
+    if (newPage >= 1 && newPage <= totalPages) {
+      setCurrentPage(newPage);
+    }
+  };
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -79,8 +87,8 @@ const ProductosPage = () => {
       case 'new':
         setIsNewCardOpen(true);
         break;
-      case 'delete':
-        setIsDeleteCardOpen(true);
+      case 'hide':
+        setIsHideCardOpen(true);
         break;
       case 'more':
         setIsMoreCardOpen(true);
@@ -100,8 +108,8 @@ const ProductosPage = () => {
       case 'new':
         setIsNewCardOpen(false);
         break;
-      case 'delete':
-        setIsDeleteCardOpen(false);
+      case 'hide':
+        setIsHideCardOpen(false);
         break;
       case 'more':
         setIsMoreCardOpen(false);
@@ -146,6 +154,11 @@ const ProductosPage = () => {
   }, [isSearchActive, searchResults, productos, filterAvailability, sortOrder]);
 
   const productsToDisplay = filteredAndSortedProducts();
+
+  const totalPages = Math.ceil(productsToDisplay.length / 10);
+  const startIndex = (currentPage - 1) * 10;
+  const endIndex = startIndex + 10;
+  const productosEnPagina = productsToDisplay.slice(startIndex, endIndex);
 
   if (isLoading) {
     return (
@@ -247,22 +260,43 @@ const ProductosPage = () => {
           <h3>Mas Información</h3>
           <h3>Editar</h3>
         </div>
-        {productsToDisplay.map((producto) => (
-          <div className="table3-grid table-row" key={producto.id_producto}>
-            <FaTrash color='#00668C' className='trash_icon' onClick={() => openCard('delete', producto)} />
-            <p className='table-text'>#{producto.id_producto}</p>
-            <p className='table-text'>{producto.nombre}</p>
-            <p className='table-text descriptionprod'>{producto.descripción}</p>
-            <p className='table-text'>Q.{producto.precio.toFixed(2)}</p>
-            <div className='units_sec'>
-              <p className='table-text'>{producto.disponibilidad} Unidades</p>
-              <IoMdAdd color='#00668C'className='add_more_prod_icon'onClick={() => openCard('more', producto)}/>
+        {productosEnPagina.map((producto) => {
+          const iconColor = producto.estado !== "en venta" ? '#808080' : '#00668C';
+
+          return(
+            <div className="table3-grid table-row" key={producto.id_producto}>
+              <FaCircleCheck color={iconColor} className='trash_icon' onClick={() => openCard('hide', producto)} />
+              <p className='table-text'>#{producto.id_producto}</p>
+              <p className='table-text'>{producto.nombre}</p>
+              <p className='table-text descriptionprod'>{producto.descripción}</p>
+              <p className='table-text'>Q.{producto.precio.toFixed(2)}</p>
+              <div className='units_sec'>
+                <p className='table-text'>{producto.disponibilidad} Unidades</p>
+                <IoMdAdd color='#00668C'className='add_more_prod_icon'onClick={() => openCard('more', producto)}/>
+              </div>
+              <p className='table-text'>{producto.marca}</p>
+              <button className='more-edit' onClick={() => openCard('info', producto)}>...</button>
+              <button className='more-edit' onClick={() => openCard('edit', producto)}><CiEdit size={25}/></button>
             </div>
-            <p className='table-text'>{producto.marca}</p>
-            <button className='more-edit' onClick={() => openCard('info', producto)}>...</button>
-            <button className='more-edit' onClick={() => openCard('edit', producto)}><CiEdit size={25}/></button>
-          </div>
-        ))}
+          )
+      })}
+      </div>
+      <div className="pagination-controls">
+        <div className='change-page'>
+          <button 
+            onClick={() => handlePageChange(currentPage - 1)} 
+            disabled={currentPage === 1}
+          >
+            Anterior
+          </button>
+          <span>Página {currentPage} de {totalPages}</span>
+          <button 
+            onClick={() => handlePageChange(currentPage + 1)} 
+            disabled={currentPage === totalPages}
+          >
+            Siguiente
+          </button>
+        </div>
       </div>
       {selectedProduct && isInformationCardOpen && (
         <InfoProdCard
@@ -290,10 +324,10 @@ const ProductosPage = () => {
           setErrorMessage={setErrorMessageState}
         />
       )}
-      {isDeleteCardOpen && (
-        <DeleteCard
-          isOpen={isDeleteCardOpen}
-          closeCard={() => closeCard('delete')}
+      {IsHideCardOpen && (
+        <HideCard
+          isOpen={IsHideCardOpen}
+          closeCard={() => closeCard('hide')}
           product={selectedProduct}
           setSuccsessMessage={setSuccessMessage}
           setErrorMessage={setErrorMessageState}

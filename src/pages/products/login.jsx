@@ -38,9 +38,7 @@ const LoginPage = ({ onRouteChange }) => {
         } else {
             onRouteChange('Bombas de agua');
         }
-
-        console.log('Logging in with', username, password);                 
-        console.log("token", localStorage.getItem('token'));
+        
     } catch (error) {
         setError(error.message); 
     }

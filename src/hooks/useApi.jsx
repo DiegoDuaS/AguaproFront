@@ -24,7 +24,6 @@ export const useApi = () => {
     const userLogin = async (login, username, password) => {
         setLoading(true);
         const body = JSON.stringify({ username, password })
-        console.log(body)
 
         try {
             const response = await fetch(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/login`, {

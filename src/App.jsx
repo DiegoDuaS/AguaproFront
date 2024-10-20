@@ -40,7 +40,7 @@ function App() {
   useEffect(() => {
     const storedPage = localStorage.getItem('activePage'); // Obtener la página almacenada
     if (storedPage) {
-      setActivePage(storedPage); // Establecer la página almacenada como activa
+      setActivePage(storedPage); 
     } else {
       setActivePage('Bombas de agua'); // Página por defecto si no hay ninguna en localStorage
     }
@@ -70,21 +70,15 @@ const { role, loading, error } = useUserRole(userId);
 
   const navigateToLogin = async () => {
     const token = localStorage.getItem('token');
-    console.log(token);
-    console.log(role);
     if (!token) {
       setActivePage('Login');
     } else {
-      console.log("hay token");
       const isValid = await validateToken(token);
       if (isValid && role === 'admin') {
-        console.log("Es admin");
         setActivePage('AdminPage');
       } else if (isValid) {
-        console.log("No es admin");
         setIsUserMenuOpen(true);
       } else {
-        console.log("Token no valido");
         setActivePage('Login');
       }
     }

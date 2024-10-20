@@ -7,24 +7,30 @@ import { useState, useEffect } from "react";
 import CustomNav from "../../components/AdminNav.jsx";
 import AdminHeader from "../../components/headers/AdminHeader.jsx";
 import PropTypes from 'prop-types';
-import { orders, products, analytics, clients } from './images.js';
 import UsuariosPage from './Admin/UsuariosPage.jsx';
-//import { BsBoxSeam } from "react-icons/bs";
 import { BsBoxSeam, BsGraphUp, BsGear } from "react-icons/bs";
-import { FaClipboardList, FaUsers } from "react-icons/fa";
-import { ImEnvelop } from "react-icons/im";
+import {FaUsers } from "react-icons/fa";
 import { GoMail } from "react-icons/go";
 import { PiClipboardText } from "react-icons/pi";
-import { FiMail } from "react-icons/fi";
 
 
 const AdminPage = ({ onRouteChange }) => {
-  const [selectedOption, setSelectedOption] = useState('Pedidos');
+  const [selectedOption, setSelectedOption] = useState(() => {
+    return localStorage.getItem('activeOption') || 'Pedidos';
+  });
+  
   const [isExpanded, setIsExpanded] = useState(false);
+
+  useEffect(() => {
+    if (selectedOption) {
+      localStorage.setItem('activeOption', selectedOption);
+    }
+  }, [selectedOption]);
 
   const handleOptionSelect = (option) => {
     setSelectedOption(option);
   };
+
   const renderSelectedPage = () => {
     switch (selectedOption) {
       case 'Pedidos':
@@ -38,15 +44,16 @@ const AdminPage = ({ onRouteChange }) => {
       case 'Usuarios':
         return <UsuariosPage />;
       case 'Solicitudes':
-        return <SolicitudesPage />
+        return <SolicitudesPage />;
       default:
-        return <PedidosPage />; // Default to PedidosPage
+        return <PedidosPage />; // Página por defecto
     }
   };
 
   const handleLogout = () => {
-    // Perform logout logic
+    // Lógica para cerrar sesión
     localStorage.removeItem('token');
+    localStorage.removeItem('activeOption');
     onRouteChange('Bombas de agua');
   };
 
@@ -85,7 +92,7 @@ const AdminPage = ({ onRouteChange }) => {
       </div>
     </div>
   );
-}
+};
 
 AdminPage.propTypes = {
   onRouteChange: PropTypes.func.isRequired
