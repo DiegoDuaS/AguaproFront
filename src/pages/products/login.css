@@ -100,7 +100,21 @@
 }
 
 .errorMessage{
-  color: black;
+  display: flex;
+  flex-direction: row;
+  color: #a30e0e;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  border: 2px solid #e11212;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border-radius: 10px;
+  background-color: #fedbdb;
+  align-items: center;
+  width: 370px;
+  justify-content: center;
 }
 
 .registerLink {

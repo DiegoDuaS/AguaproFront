@@ -3,7 +3,7 @@
 // Fuente: https://github.com/mui/material-ui/tree/master
 // Descripción: Componentes que implementan el Material Design System de Google
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import useApiP from '../../hooks/useAPIProducts';
 import Card from "../../components/cards/card";
 import LargeCard from "../../components/cards/LargeCard";
@@ -15,6 +15,12 @@ const BombasAgua = ({cartItems, setCartItems, setSuccessMessage }) => {
   const [isLargeCardOpen, setIsLargeCardOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const { data: productos, errorMessage, isLoading } = useApiP('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/catalogo');
+
+  useEffect(() => {
+    if (errorMessage) {
+      console.log(errorMessage);
+    }
+  }, [errorMessage]);
 
   // Función para abrir tarjeta de información
   const openCard = (product) => {
@@ -62,13 +68,15 @@ const BombasAgua = ({cartItems, setCartItems, setSuccessMessage }) => {
 
   // Pantalla de Error
   if (errorMessage) {
+    return(
     <main className="main-content-loading">
         <h2>Bombas de Agua</h2>
         <div className='space' />
-        <BiError color='black' size={80}/>
-        <p className='loading'>Error Cargando Productos:{errorMessage}</p>
+        <BiError color='black' size={60}/>
+        <p className='loading'>Error Cargando Productos: {errorMessage}</p>
         <div className='space' />
       </main>
+    )
   }
 
   // Pantalla Principal
