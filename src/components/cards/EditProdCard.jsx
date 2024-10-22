@@ -143,7 +143,7 @@ const EditProdCard = ({ isOpen, closeCard, product, refetchProducts, setSuccsess
                         <div className="table-row2">
                             <div className="table-cell title">Precio</div>
                             <input
-                                type="text"
+                                type="number"
                                 className="table-cell input"
                                 value={precio}
                                 placeholder={product.precio}
