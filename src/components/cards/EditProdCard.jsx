@@ -17,9 +17,12 @@ const EditProdCard = ({ isOpen, closeCard, product, refetchProducts, setSuccsess
     const [precio, setPrecio] = useState(product.precio);
     const [disponibilidad, setDisponibilidad] = useState(product.disponibilidad);
     const [marca, setMarca] = useState(product.marca);
+    const [modelo, setModelo] = useState(product.modelo);
     const [material, setMaterial] = useState(product.material);
     const [tipoIndex, setTipoIndex] = useState(null); 
     const [image, setImage] = useState(null);
+    const [capacidadmin, setCapacidadmin] = useState(product.capacidadmin);
+    const [capacidadmax, setCapacidadmax] = useState(product.capacidadmax);
 
     const handleImageChange = (e) => {
         const file = e.target.files[0]; // Get the selected file
@@ -70,27 +73,32 @@ const EditProdCard = ({ isOpen, closeCard, product, refetchProducts, setSuccsess
     }, [isOpen, tipoProducto]);
 
     const handleSave = async () => {
-        try {
-            
-            // Actualizar el producto principal
-            const response = await fetch(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/productos/${product.id_producto}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ nombre, descripción, tipo_producto: tipoIndex }),
-            });
-            if (!response.ok) {
-                throw new Error('Error al actualizar el producto');
-            }
-    
-            await refetchProducts();
-            setSuccsessMessage('Cambios guardados exitosamente.');
-            closeCard();
-        } catch (error) {
-            console.error('Error al guardar los cambios:', error);
-            setErrorMessage('Hubo un error al guardar los cambios. Inténtalo de nuevo.');
+      try {
+        const productData = {
+          nombre,
+          descripción,
+          tipo_producto: tipoIndex,
+          marca,
+          modelo,
+          material,
+          capacidad_min: parseFloat(capacidadmin),
+          capacidad_max: parseFloat(capacidadmax),
+          precio: parseFloat(precio),
+          disponibilidad: parseInt(disponibilidad)
+        };
+        console.log(productData);     
+        const result = await updateProduct(product.id_producto, productData);
+        if (result.success) {
+          await refetchProducts();
+          setSuccsessMessage('Cambios guardados exitosamente.');
+          closeCard();
+        } else {
+          setErrorMessage('Hubo un error al guardar los cambios.');
         }
+      } catch (error) {
+        console.error('Error al guardar los cambios:', error);
+        setErrorMessage('Hubo un error al guardar los cambios. Inténtalo de nuevo.');
+      }
     };
             
 
@@ -163,6 +171,16 @@ const EditProdCard = ({ isOpen, closeCard, product, refetchProducts, setSuccsess
                             />
                         </div>
                         <div className="table-row2">
+                            <div className="table-cell title">Modelo</div>
+                            <input
+                                type="text"
+                                className="table-cell input"
+                                value={modelo}
+                                placeholder={product.modelo}
+                                onChange={(e) => setModelo(e.target.value)}
+                            />
+                        </div>
+                        <div className="table-row2">
                             <div className="table-cell title">Material</div>
                             <input
                                 type="text"
@@ -170,6 +188,26 @@ const EditProdCard = ({ isOpen, closeCard, product, refetchProducts, setSuccsess
                                 value={material}
                                 placeholder={product.material}
                                 onChange={(e) => setMaterial(e.target.value)}
+                            />
+                        </div>
+                        <div className="table-row2">
+                            <div className="table-cell title">Capacidad mínima</div>
+                            <input
+                                type="text"
+                                className="table-cell input"
+                                value={capacidadmin}
+                                placeholder={product.capacidadmin}
+                                onChange={(e) => setCapacidadmin(e.target.value)}
+                            />
+                        </div>
+                        <div className="table-row2">
+                            <div className="table-cell title">Capacidad máxima</div>
+                            <input
+                                type="text"
+                                className="table-cell input"
+                                value={capacidadmax}
+                                placeholder={product.capacidadmax}
+                                onChange={(e) => setCapacidadmax(e.target.value)}
                             />
                         </div>
                     </div>
