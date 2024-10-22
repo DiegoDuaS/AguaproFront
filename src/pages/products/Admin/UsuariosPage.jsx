@@ -318,6 +318,7 @@ const UsuariosPage = () => {
           isOpen={isEditCardOpen}
           closeCard={closeEditCard}
           user={selectedUser}
+          refetchUsers={refetch}
         />
       )}
       <StateCard message={successMessage} isOpen={!!successMessage} type={1}/>
