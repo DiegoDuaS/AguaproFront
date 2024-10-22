@@ -15,6 +15,7 @@ const NewProdCard = ({ isOpen, closeCard, refetchProducts, setSuccsessMessage, s
   const [nombre, setNombre] = useState(''); //Se manda paso 2
   const [descripcion, setDescripcion] = useState(''); // Se manda paso 2
   const [marca, setMarca] = useState(''); // Se manda paso 3
+  const [modelo, setModelo] = useState(''); // Se manda paso 3
   const [material, setMaterial] = useState(''); // Se manda paso 3
   const [capacidadMax, setCapacidadmax] = useState(''); // Se manda paso 3
   const [capacidadMin, setCapacidadmin] = useState(''); // Se manda paso 3
@@ -43,6 +44,7 @@ const NewProdCard = ({ isOpen, closeCard, refetchProducts, setSuccsessMessage, s
   const handleNombreChange = (e) => setNombre(e.target.value);
   const handleDescripcionChange = (e) => setDescripcion(e.target.value);
   const handleMarcaChange = (e) => setMarca(e.target.value);
+  const handleModeloChange = (e) => setModelo(e.target.value);
   const handleMaterialChange = (e) => setMaterial(e.target.value);
   const handlePrecioChange = (e) => setPrecio(e.target.value);
   const handleDisponibilidadChange = (e) => setDisponibilidad(e.target.value);
@@ -75,7 +77,7 @@ const NewProdCard = ({ isOpen, closeCard, refetchProducts, setSuccsessMessage, s
 
       setStep(3);
     } else if (step === 3) {
-      if (!marca || !material || !image) {
+      if (!marca || !modelo || !material || !image) {
         setErrorMessage("Completa todos los campos")
         return;
       }
@@ -86,12 +88,8 @@ const NewProdCard = ({ isOpen, closeCard, refetchProducts, setSuccsessMessage, s
           setErrorMessage("Completa todos los campos")
           return;
         }
-        const productDetails = {
-          nombre,
-          descripcion,
-          tipo_producto: tipoSelected,
-        };
-        const createdProduct = await createProduct(productDetails.nombre, productDetails.descripcion, productDetails.tipo_producto);
+        
+        const createdProduct = await createProduct(nombre, descripcion, tipoSelected, marca, modelo, material, capacidadMin, capacidadMax, precio, disponibilidad);
         if (!createdProduct) {
           setErrorMessage("No se pudo crear el producto.")
           return;
@@ -202,6 +200,14 @@ const NewProdCard = ({ isOpen, closeCard, refetchProducts, setSuccsessMessage, s
                       placeholder="Marca del Producto"
                       value={marca}
                       onChange={handleMarcaChange}
+                      className='writer2'
+                    />
+                    <label>Modelo:</label>
+                    <input
+                      type="text"
+                      placeholder="Modelo del Producto"
+                      value={modelo}
+                      onChange={handleModeloChange}
                       className='writer2'
                     />
                     <label>Material:</label>
