@@ -10,7 +10,7 @@ import EditUserCard from '../../../components/cards/editUsercard';
 import { BiError } from "react-icons/bi";
 import { FaTrash } from "react-icons/fa6";
 import { CiEdit } from "react-icons/ci";
-import FilterSectionUsuarios from './FilterSectionUsuarios';
+import FilterSectionUsuarios from './Filtros/FilterSectionUsuarios';
 import { FaFilter } from 'react-icons/fa';
 
 
