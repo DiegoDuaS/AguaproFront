@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import './admin.css';
-import './filters.css'
+import './Filtros/filters.css'
 import { CiEdit } from "react-icons/ci";
 import searchIcon from './../../../image/searchIcon.png';
 import { CircularProgress } from '@mui/material';

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import './admin.css';
-import FilterSection from './FilterSectionProductos';
+import FilterSection from './Filtros/FilterSectionProductos';
 import searchIcon from './../../../image/searchIcon.png';
 import { CircularProgress } from '@mui/material';
 import useApiP from '../../../hooks/useAPIProducts';
@@ -32,6 +32,7 @@ const ProductosPage = () => {
   const [isSearchActive, setIsSearchActive] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [filterAvailability, setFilterAvailability] = useState('');
+  const [filterVisibility, setFilterVisibility] = useState('');
   const [sortOrder, setSortOrder] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -129,17 +130,26 @@ const ProductosPage = () => {
   const handleSortChange = (order) => {
     setSortOrder(order);
   };
+  
+  
   const filteredAndSortedProducts = useCallback(() => {
     let result = isSearchActive ? searchResults : productos;
-
-    // Apply availability filter
+  
+    // Aplicar filtro de visibilidad
+    if (filterVisibility) {
+      result = result.filter(producto => 
+        filterVisibility === 'hidden' ? producto.estado === 'oculto' : producto.estado === 'en venta'
+      );
+    }
+  
+    // Aplicar filtro de disponibilidad
     if (filterAvailability) {
       result = result.filter(producto => 
         filterAvailability === 'available' ? producto.disponibilidad > 0 : producto.disponibilidad === 0
       );
     }
-
-    // Apply sorting
+  
+    // Aplicar ordenamiento
     if (sortOrder) {
       result.sort((a, b) => {
         if (sortOrder === 'asc') {
@@ -149,10 +159,15 @@ const ProductosPage = () => {
         }
       });
     }
-
+  
     return result;
-  }, [isSearchActive, searchResults, productos, filterAvailability, sortOrder]);
+  }, [isSearchActive, searchResults, productos, filterAvailability, filterVisibility, sortOrder]);
+  
+  const handleVisibilityChange = (e) => {
+    setFilterVisibility(e.target.value);
+  };
 
+  
   const productsToDisplay = filteredAndSortedProducts();
 
   const totalPages = Math.ceil(productsToDisplay.length / 10);
@@ -240,13 +255,15 @@ const ProductosPage = () => {
         <button className='addbutton' onClick={() => openCard('new')}> Agregar Producto +</button>
       </div>
       <FilterSection 
-            isFilterOpen={isFilterOpen}
-            toggleFilter={toggleFilter}
-            filterAvailability={filterAvailability}
-            handleFilterChange={handleFilterChange}
-            sortOrder={sortOrder}
-            handleSortChange={handleSortChange}
-          />
+          isFilterOpen={isFilterOpen}
+          toggleFilter={toggleFilter}
+          filterAvailability={filterAvailability}
+          handleFilterChange={handleFilterChange}
+          filterVisibility={filterVisibility}
+          handleVisibilityChange={handleVisibilityChange}
+          sortOrder={sortOrder}
+          handleSortChange={handleSortChange}
+        />
       
       <div className="table">
         <div className="table3-grid table-header">

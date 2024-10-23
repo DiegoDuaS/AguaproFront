@@ -5,11 +5,14 @@ const FilterSection = ({
   isFilterOpen, 
   toggleFilter, 
   filterAvailability, 
-  handleFilterChange, 
+  handleFilterChange,
+  filterVisibility,
+  handleVisibilityChange, 
   sortOrder, 
   handleSortChange 
 }) => {
   const [isFilterOpenAvailability, setIsFilterOpenAvailability] = useState(false);
+  const [isFilterOpenVisibility, setIsFilterOpenVisibility] = useState(false);
   const [isFilterOpenPrice, setIsFilterOpenPrice] = useState(false);
 
   return (
@@ -17,7 +20,23 @@ const FilterSection = ({
       {isFilterOpen && (
         <>
         <div className='filter-sort-section'>
-        <button 
+          <button 
+            onClick={() => setIsFilterOpenVisibility(!isFilterOpenVisibility)} 
+            className="filter-dropdown"
+          >
+            Visibilidad
+          </button>
+          {isFilterOpenVisibility && (
+            <div className="filter-dropdown">
+              <select value={filterVisibility} onChange={handleVisibilityChange}>
+                <option value="">Todos</option>
+                <option value="hidden">Ocultos</option>
+                <option value="visible">En venta</option>
+              </select>
+            </div>
+          )}
+
+          <button 
             onClick={() => setIsFilterOpenAvailability(!isFilterOpenAvailability)} 
             className="filter-dropdown"
           >
@@ -58,7 +77,6 @@ const FilterSection = ({
             </div>
           )}
         </div>
-         
         </>
       )}
     </div>
