@@ -57,6 +57,14 @@ const InfoProdCard = ({ isOpen, closeCard, product}) => {
                             <div className="table-cell title">Material</div>
                             <div className="table-cell info_des_prod">{product.material}</div>
                         </div>
+                        <div className="table-row2">
+                            <div className="table-cell title">Capacidad Mínima</div>
+                            <div className="table-cell info_des_prod">{product.capacidadmin}</div>
+                        </div>
+                        <div className="table-row2">
+                            <div className="table-cell title">Capacidad Máxima</div>
+                            <div className="table-cell info_des_prod">{product.capacidadmax}</div>
+                        </div>
                     </div>
                 </div>
                 <div className='section'>

@@ -51,7 +51,28 @@ const HideCard = ({ isOpen, closeCard, product, setSuccsessMessage, setErrorMess
     }
   }
 
-  if (state === 1){
+  const handleUnHide = async () => {
+        try {
+            const response = await fetch(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/productos/unhide/${product.id_producto}`, {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' }
+            });
+      
+            if (response.ok) {
+              setSuccsessMessage('Producto publicado correctamente.');
+              setErrorMessage(''); 
+              await refetchProducts(); 
+              closeCard();
+            } else {
+              throw new Error('Error al publicar el producto');
+            }
+          } catch (error) {
+            setErrorMessage('Error al conectar con el servidor. Intente nuevamente.');
+            setSuccsessMessage(''); 
+          }
+  }
+
+  if (state === 1  && product.estado == "en venta"){
     return (
         <div className={`large-card-delete`} ref={cardRef}>
           <p className='delete_text'>¿Seguro que quieres ocultar '{product.nombre}'?</p>
@@ -63,7 +84,19 @@ const HideCard = ({ isOpen, closeCard, product, setSuccsessMessage, setErrorMess
       );
   }
 
-  if (state === 2){
+  if (state === 1  && product.estado == "oculto"){
+    return (
+        <div className={`large-card-delete`} ref={cardRef}>
+          <p className='delete_text'>¿Seguro que quieres poner visible '{product.nombre}'?</p>
+          <div className='select_delete'>
+            <button className='delete_button' onClick={() => handleUnHide()}>Si</button>
+            <button className='delete_button' onClick={closeCard}>No</button>
+          </div>
+        </div>
+      );
+  }
+
+  if (state === 2 && product.estado == "en venta"){
     return(
         <div className={`large-card-delete`} ref={cardRef}>
             <p className='delete_text'> Escribe el nombre del producto para ocultarlo:</p>

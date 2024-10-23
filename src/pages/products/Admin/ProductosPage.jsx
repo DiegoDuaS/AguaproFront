@@ -339,6 +339,9 @@ const ProductosPage = () => {
           isOpen={isMoreCardOpen}
           closeCard={() => closeCard('more')}
           product={selectedProduct}
+          setSuccsessMessage={setSuccessMessage}
+          setErrorMessage={setErrorMessageState}
+          refetchProducts={refetch}
         />
       )}
       <StateCard message={successMessage} isOpen={!!successMessage} type={1}/>

@@ -39,7 +39,7 @@ const Cart = ({ cartItems, updateCartItem, removeCartItem, closeCart, checkout }
           <div className="cart-items">
             {cartItems.map((item) => (
               <div key={item.id_producto} className="cart-item">
-                <img src={item.imagen} alt={item.nombre} className="cart-item-image" />
+                <img src={`/image/${item.id_producto}.png`} alt={item.nombre} className="cart-item-image" />
                 <div className="cart-item-details">
                   <p>{item.nombre}</p>
                   <p>Q.{item.precio !== undefined ? parseFloat(item.precio* item.quantity).toFixed(2) : '0.00'}</p>

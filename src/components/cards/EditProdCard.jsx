@@ -85,8 +85,7 @@ const EditProdCard = ({ isOpen, closeCard, product, refetchProducts, setSuccsess
           capacidad_max: parseFloat(capacidadmax),
           precio: parseFloat(precio),
           disponibilidad: parseInt(disponibilidad)
-        };
-        console.log(productData);     
+        }; 
         const result = await updateProduct(product.id_producto, productData);
         if (result.success) {
           await refetchProducts();
@@ -149,17 +148,7 @@ const EditProdCard = ({ isOpen, closeCard, product, refetchProducts, setSuccsess
                                 placeholder={product.precio}
                                 onChange={(e) => setPrecio(e.target.value)}
                             />
-                        </div>
-                        <div className="table-row2">
-                            <div className="table-cell title">Disponibilidad</div>
-                            <input
-                                type="text"
-                                className="table-cell input"
-                                value={disponibilidad}
-                                placeholder={product.disponibilidad}
-                                onChange={(e) => setDisponibilidad(e.target.value)}
-                            />
-                        </div>  
+                        </div> 
                         <div className="table-row2">
                             <div className="table-cell title">Marca</div>
                             <input
