@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import useApiPr from '../../hooks/useAPIProduct';
+import { CircularProgress } from '@mui/material';
 import './EditProdCard.css';
 import ProductosPage from '../../pages/products/Admin/ProductosPage';
 import useUpdateProduct from '../../hooks/useUpdateProduct';
@@ -8,6 +8,9 @@ import { getSizeIndex, getEnergiaIndex, getCondicionesIndex, getTipoIndex } from
 const EditProdCard = ({ isOpen, closeCard, product, refetchProducts, setSuccsessMessage, setErrorMessage}) => {
     
     const cardRef = useRef(null);
+    const [imageSrc, setImageSrc] = useState('');
+    const [isLoadingIm, setIsLoadingIm] = useState(true);
+    const [error, setError] = useState(null);
 
     const { updateProduct, isLoading, errorMessage } = useUpdateProduct('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app');
 
@@ -34,6 +37,33 @@ const EditProdCard = ({ isOpen, closeCard, product, refetchProducts, setSuccsess
             reader.readAsDataURL(file); // Read the file as a data URL
         }
     };
+
+    useEffect(() => {
+        const fetchImage = async () => {
+
+          try {
+            const response = await fetch(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/images/visualize/${product.id_producto}.png`, {
+              method: 'GET',
+            });
+            console.log()
+    
+            if (response.ok) {
+              const blob = await response.blob();
+              const url = URL.createObjectURL(blob);
+              setImageSrc(url);
+            } else {
+              setError('Error al obtener la imagen');
+            }
+          } catch (error) {
+            console.error('Error al cargar la imagen:', error);
+            setError('Error al cargar la imagen');
+          } finally {
+            setIsLoadingIm(false);
+          }
+        };
+    
+        fetchImage();
+      });
 
 
     const handleClickOutside = (event) => {
@@ -206,23 +236,31 @@ const EditProdCard = ({ isOpen, closeCard, product, refetchProducts, setSuccsess
                     {image ? (
                       <img src={image} alt="Preview" className='img_prod' />
                     ) : (
-                      <img src='https://elarenal.com.gt/cdn/shop/products/PLO-ROT-BACR5_bf4c08cb-f95f-44b2-8536-d995a4d337ed.jpg?v=1643991840' alt="Preview" className='img_prod' />
+                        isLoadingIm ? (
+                            <>
+                                <p>Cargando imagen...</p>
+                                <CircularProgress/>
+                            </>  
+                        ) : error ? (
+                            <p>{error}</p>
+                        ) : (
+                         <img className='img_prod2' src={imageSrc} alt='Bomba de agua' />
+                        )
                     )}
                     <input
                         id="upload_btn"
                         type="file"
                         onChange={handleImageChange}
-                        accept=".jpg, .png"
+                        accept=".png"
                     />
                     <label for="upload_btn" className='upload_image'>Subir Imagen</label>
-                    <p>Solo archivos .png o .jpg</p>
+                    <p>Solo archivos .png</p>
                 
                 </div>
             </div>
             <button className="save-button" onClick={handleSave} disabled={isLoading}>
                 {isLoading ? 'Guardando...' : 'Guardar'}
-            </button>
-            {errorMessage && <p className="error-message">{errorMessage}</p>}	    
+            </button>	    
         </div>
     );
 };

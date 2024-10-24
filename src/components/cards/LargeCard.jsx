@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './LargeCard.css';
 
-const LargeCard = ({ isOpen, closeCard, product, addToCart, cartItems }) => {
+const LargeCard = ({ isOpen, closeCard, product, addToCart, imageRef}) => {
   const cardRef = useRef(null);
   const [quantity, setQuantity] = useState(1);
   const [sizeSelected, setSizeSelected] = useState('4\'\'');
@@ -44,7 +44,7 @@ const LargeCard = ({ isOpen, closeCard, product, addToCart, cartItems }) => {
       <button className="close-button" onClick={closeCard}>X</button>
       <div className="left-section">
         <div className='photo-title'>
-          <img className='imagecard' src={`/image/${product.id_producto}.png`} alt={product.nombre} />
+          <img className='imagecard' src={imageRef} alt={product.nombre} />
           <div className="product-title">{product.nombre}</div>
           <p className='price'>Q {product.precio.toFixed(2)}</p>
         </div>

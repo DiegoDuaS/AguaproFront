@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import useApiP from '../../hooks/useAPIProducts';
 import Card from "../../components/cards/card";
 import LargeCard from "../../components/cards/LargeCard";
@@ -12,6 +12,67 @@ const BombasAgua = ({cartItems, setCartItems, setSuccessMessage }) => {
   const [isLargeCardOpen, setIsLargeCardOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const { data: productos, errorMessage, isLoading } = useApiP('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/catalogo');
+  const [images, setImages] = useState({}); 
+  const [loadingImages, setLoadingImages] = useState(false);
+  const [imageError, setImageError] = useState(null);
+  const imageCache = useRef({});
+
+  useEffect(() => {
+    if (productos && productos.length > 0) {
+      const fetchImages = async () => {
+        setLoadingImages(true);
+        setImageError(null);
+
+        try {
+          // Filtrar productos cuyas imágenes aún no se han cargado para evitar solicitudes innecesarias
+          const uncachedProducts = productos.filter(product => !imageCache.current[product.id_producto]);
+
+          if (uncachedProducts.length > 0) {
+            // Realizar las solicitudes en paralelo con Promise.all
+            const imagePromises = uncachedProducts.map(async (product) => {
+              const response = await fetch(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/images/visualize/${product.id_producto}.png`);
+              if (response.ok) {
+                const imageBlob = await response.blob();
+                const imageURL = URL.createObjectURL(imageBlob);
+                // Almacenar en caché
+                imageCache.current[product.id_producto] = imageURL;
+                return { id: product.id_producto, url: imageURL };
+              } else {
+                const fallbackImage = 'fallback-image.png'; // Imagen de respaldo
+                imageCache.current[product.id_producto] = fallbackImage;
+                return { id: product.id_producto, url: fallbackImage };
+              }
+            });
+
+            // Esperar a que todas las imágenes se carguen
+            const loadedImages = await Promise.all(imagePromises);
+
+            // Solo actualizamos el estado si hay nuevas imágenes
+            const newImages = { ...images };
+            loadedImages.forEach(({ id, url }) => {
+              newImages[id] = url;
+            });
+
+            setImages(prevImages => {
+              // Solo actualizamos si algo ha cambiado
+              if (JSON.stringify(prevImages) !== JSON.stringify(newImages)) {
+                return newImages;
+              }
+              return prevImages;
+            });
+          }
+        } catch (error) {
+          console.error('Error al obtener las imágenes:', error);
+          setImageError('Error al cargar imágenes.');
+        } finally {
+          setLoadingImages(false);
+        }
+      };
+
+      fetchImages();
+    }
+  }, [productos]);
+
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [isSearchActive, setIsSearchActive] = useState(false);
@@ -73,7 +134,7 @@ const BombasAgua = ({cartItems, setCartItems, setSuccessMessage }) => {
     setSuccessMessage("Tu producto se añadió al carrito")
   };
 
-  if (isLoading) {
+  if (isLoading || loadingImages) {
     return (
       <main className="main-content-loading">
         <h2>Bombas de Agua</h2>
@@ -124,7 +185,7 @@ const BombasAgua = ({cartItems, setCartItems, setSuccessMessage }) => {
             key={product.id_producto}
             nombre={product.nombre}
             precio={product.precio}
-            imagen={`/image/${product.id_producto}.png`}
+            imagen={images[product.id_producto] || 'fallback-image.png'}
             onMoreInfoClick={() => openCard(product)}
           />
         ))}
@@ -135,7 +196,7 @@ const BombasAgua = ({cartItems, setCartItems, setSuccessMessage }) => {
           closeCard={closeCard}
           product={selectedProduct}
           addToCart={addToCart}
-          cartItems={cartItems}
+          imageRef={images[selectedProduct.id_producto]}
         />
       )}
     </main>

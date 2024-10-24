@@ -1,9 +1,41 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { CircularProgress } from '@mui/material';
 import './InfoProdCard.css';
 
 const InfoProdCard = ({ isOpen, closeCard, product}) => {
+
+    const [imageSrc, setImageSrc] = useState('');
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
     
     const cardRef = useRef(null);
+
+    useEffect(() => {
+        const fetchImage = async () => {
+
+          try {
+            const response = await fetch(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/images/visualize/${product.id_producto}.png`, {
+              method: 'GET',
+            });
+            console.log()
+    
+            if (response.ok) {
+              const blob = await response.blob();
+              const url = URL.createObjectURL(blob);
+              setImageSrc(url);
+            } else {
+              setError('Error al obtener la imagen');
+            }
+          } catch (error) {
+            console.error('Error al cargar la imagen:', error);
+            setError('Error al cargar la imagen');
+          } finally {
+            setIsLoading(false);
+          }
+        };
+    
+        fetchImage();
+      });
 
     const handleClickOutside = (event) => {
         if (cardRef.current && !cardRef.current.contains(event.target)) {
@@ -69,7 +101,16 @@ const InfoProdCard = ({ isOpen, closeCard, product}) => {
                 </div>
                 <div className='section'>
                     <div className="table-cell title">Imagen del Producto</div>
-                    <img className='img_prod2' src='https://elarenal.com.gt/cdn/shop/products/PLO-ROT-BACR5_bf4c08cb-f95f-44b2-8536-d995a4d337ed.jpg?v=1643991840' alt='Bomba de agua' />
+                    {isLoading ? (
+                        <>
+                            <p>Cargando imagen...</p>
+                            <CircularProgress/>
+                        </>  
+                    ) : error ? (
+                        <p>{error}</p>
+                    ) : (
+                     <img className='img_prod2' src={imageSrc} alt='Bomba de agua' />
+                     )}
                 </div>
             </div>
 
