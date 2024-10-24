@@ -35,6 +35,7 @@ const LargeCard = ({ isOpen, closeCard, product, addToCart, imageRef}) => {
       ...product,
       quantity: quantity,
       size: sizeSelected,
+      image: imageRef
     };
     addToCart(productToAdd);
   };
