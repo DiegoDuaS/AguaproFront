@@ -1,8 +1,11 @@
 import './services.css'
+import React, { useState } from 'react';
 import FormsSer from '../../components/forms/formsSer';
+import { AiFillEdit } from "react-icons/ai";
 
 function Perforacion() {
-
+    const [showForms, setShowForms] = useState(false);
+    
     return (
         <main className="main-content-ser">
             <h2>Perforación de Pozos</h2>
@@ -19,10 +22,17 @@ function Perforacion() {
                 mismo.   
             </p>
             <div className='imagescontainer'>
-                <img className='per' src="https://www.aguatesa.com/images/20140709_101122.jpg" alt="Imagen Servicios Mant 1"/>
+                <img className='per' src="src\image\perforacion.jpg" alt="Imagen Servicios Mant 1"/>
             </div>
             <h3 className='subtitle'>Solicitud de Servicios</h3>
-            <FormsSer type={1}/>
+            {showForms ? (
+                <FormsSer type={1} />
+            ) : (
+                <div className="fill_the_service" onClick={() => setShowForms(true)}>
+                <p>Llena un formulario con tu información</p>
+                <AiFillEdit color="black" size={25} />
+                </div>
+            )}
             <h3 className='subtitle'>Contacténos</h3>
             <p className='textservice'>
                 <strong>Dirección:</strong> 10 Calle 5-28 Zona 6, Villa Nueva, Residenciales Catalina

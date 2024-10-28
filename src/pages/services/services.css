@@ -39,5 +39,20 @@ h3{
 
 .per{
     height: 520px;
-    width: 270px;
+    width: 350px;
+}
+
+.fill_the_service{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: row;
+    background-color: #F5F4F1;
+    padding-left: 20px;
+    padding-right: 20px;
+    align-items: center;
+    width: 20rem;
+    justify-content: space-between;
+    border-radius: 10px;
+    cursor: pointer;
 }

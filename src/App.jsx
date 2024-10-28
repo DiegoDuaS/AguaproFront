@@ -20,6 +20,7 @@ import validateToken from './hooks/Auth';
 import useUserRole from './hooks/useUserRole';
 import StateCard from './components/cards/stateCard.jsx';
 import { AiOutlineConsoleSql } from 'react-icons/ai';
+import ScrollToTop from "react-scroll-to-top";
 
 function App() {
   const [activePage, setActivePage] = useState(null); // Estado inicial para la página activa
@@ -131,6 +132,10 @@ const { role, loading, error } = useUserRole(userId);
  
   return (
     <AuthProvider> 
+      <ScrollToTop smooth 
+            color='#00668C'
+            viewBox='0 0 400 300'
+            className='scroll'/>
       {activePage === 'Login' && (
         <LoginPage onRouteChange={setActivePage} />
       )}
@@ -166,7 +171,7 @@ const { role, loading, error } = useUserRole(userId);
             <CustomNav
               items={[
                 { name: 'Productos', subItems: ['Bombas de agua'] },
-                { name: 'Servicios', subItems: ['Perforación de Pozos', 'Mantenimiento de Pozos', 'Servicio Técnico', 'Servicio de Aforo'] },
+                { name: 'Servicios', subItems: ['Perforación de Pozos', 'Mantenimiento de Pozos', 'Servicio Técnico', 'Servicio de Aforo'] }
               ]}
               onOptionSelect={handleOptionSelect}
               isOpen={isSidebarOpen}
