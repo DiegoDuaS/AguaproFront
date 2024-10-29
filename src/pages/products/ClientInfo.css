@@ -3,14 +3,12 @@
   margin: 0 auto;
   padding: 20px;
   background-color: #f9f9f9;
-  border: 1px solid #ccc;
   border-radius: 10px;
 }
 
 .client-info-container h2 {
   text-align: center;
   margin-bottom: 20px;
-  color: #333;
 }
 
 .form-group-cf {
@@ -29,9 +27,10 @@
 .form-group-cf input {
   flex: 2;
   padding: 8px;
-  border: 1px solid #ccc;
+  border: 2px solid #acacac;
+  background-color:rgba(255, 255, 255, 0.87);
+  color: black;
   border-radius: 4px;
-  background-color: #ccc;
 }
 
 .button-container-cf {
