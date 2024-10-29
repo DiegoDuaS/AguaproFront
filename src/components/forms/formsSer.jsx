@@ -13,213 +13,117 @@ const FormsSerPoz = ({type}) => {
     const [longitud, setlongitud] = useState("");
     const [direccionPozo, setDireccionPozo] = useState("");
     const [profundidad, setProfundidad] = useState("");
-    const [diametro, setDiametro] = useState("");
-    const [tipoMaterial, setTipoMaterial] = useState("");
-    const [estudioHidrogeologico, setEstudioHidrogeologico] = useState("");
-    const [estudioArchHidrogeologico, setEstudioArchHidrogeologico] = useState(null);
-    const [quiereEstudio, setQuiereEstudio] = useState("");
-    const [horasAforo, setHorasAforo] = useState("");
-    const [horasLimpieza, setHorasLimpieza] = useState("");
-    const [gruaService, setGruaService] = useState("");
+    const [empresa, setEmpresa] = useState("");
+    const [departamento, setDepartamento] = useState("");
+    const [tipoServicio, setTipoServicio] = useState("");
+    const [mensaje, setMensaje] = useState("");
+
 
     if (type === 1){
         return(
-            <div className="forms">
-            <div className='persoinfo'>
+            <div className="forms">           
                 <div className='inputsect'>
-                    <label className='labelforms_ser'><strong>Nombre de Juridica o Individual:</strong></label>
+                    <label className='labelforms_ser2'><strong>Nombre Completo</strong></label>
                     <input
-                        type="text" 
-                        className="forms_input personalinfo"
+                        type="number" 
+                        className="forms_input"
                         value={name}
-                        placeholder="Nombre"
+                        placeholder="Nombre Completo"
                         onChange={(e) => setName(e.target.value)}
                     />
                 </div>
                 <div className='inputsect'>
-                    <label className='labelforms_ser'><strong>Dirección:</strong></label>
+                    <label className='labelforms_ser2'><strong>Correo Electrónico</strong></label>
                     <input
                         type="text" 
-                        className="forms_input personalinfo"
-                        value={direccion}
-                        placeholder="Dirección Personal o de Empresa"
-                        onChange={(e) => setDireccion(e.target.value)}
-                    />
-                </div>
-            </div>
-            <div className='persoinfo'>
-                <div className='inputsect'>
-                    <label className='labelforms_ser'><strong>Correo:</strong></label>
-                    <input
-                        type="text" 
-                        className="forms_input personalinfo"
+                        className="forms_input"
                         value={correo}
-                        placeholder="Correo Electónico"
+                        placeholder="Correo Electrónico"
                         onChange={(e) => setCorreo(e.target.value)}
                     />
                 </div>
                 <div className='inputsect'>
-                    <label className='labelforms_ser'><strong>Télefono:</strong></label>
+                    <label className='labelforms_ser2'><strong>Número de Teléfono</strong></label>
                     <input
-                        type="number" 
-                        className="forms_input personalinfo"
+                        className="forms_input"
+                        type="tel" 
+                        pattern="[0-9]{4}-[0-9]{4}"
                         value={telefono}
-                        placeholder="Número de Telefóno"
+                        placeholder="1234-5678"
                         onChange={(e) => setTelefono(e.target.value)}
+                        required
                     />
                 </div>
-            </div>
-            <div className='persoinfo'>
                 <div className='inputsect'>
-                    <label className='labelforms_ser'><strong>Atención a:</strong></label>
+                    <label className='labelforms_ser2'><strong>Empresa</strong></label>
                     <input
                         type="text" 
-                        className="forms_input personalinfo"
-                        value={atencion}
-                        placeholder="PlaceHolder"
-                        onChange={(e) => setAtencion(e.target.value)}
+                        className="forms_input"
+                        value={empresa}
+                        placeholder="Nombre Empresa"
+                        onChange={(e) => setEmpresa(e.target.value)}
                     />
+                </div>
+                <div className="dropdown-forms">
+                    <label className="labelforms_ser3">Departamento</label>
+                    <select
+                        id="tipoMaterial"
+                        name="tipoMaterial"
+                        className="dropdown-forms-select"
+                        value={departamento}
+                        onChange={(e) => setDepartamento(e.target.value)}
+                    >
+                        <option value="">Seleccione una opción</option>
+                        <option value="Guatemala">Guatemala</option>
+                        <option value="Alta Verapaz">Alta Verapaz</option>
+                        <option value="Baja Verapaz">Baja Verapaz</option>
+                        <option value="Chimaltenango">Chimaltenango</option>
+                        <option value="Chiquimula">Chiquimula</option>
+                        <option value="El Progreso">El Progreso</option>
+                        <option value="Escuintla">Escuintla</option>
+                        <option value="Huehuetenango">Huehuetenango</option>
+                        <option value="Izabal">Izabal</option>
+                        <option value="Jalapa">Jalapa</option>
+                        <option value="Jutiapa">Jutiapa</option>
+                        <option value="Petén">Petén</option>
+                        <option value="Quetzaltenango">Quetzaltenango</option>
+                        <option value="Quiché">Quiché</option>
+                        <option value="Retalhuleu">Retalhuleu</option>
+                        <option value="Sacatepéquez">Sacatepéquez</option>
+                        <option value="San Marcos">San Marcos</option>
+                        <option value="Santa Rosa">Santa Rosa</option>
+                        <option value="Sololá">Sololá</option>
+                        <option value="Suchitepéquez">Suchitepéquez</option>
+                        <option value="Totonicapán">Totonicapán</option>
+                        <option value="Zacapa">Zacapa</option>
+                    </select>
+                </div>
+                <div className="dropdown-forms">
+                    <label className="labelforms_ser3">Tipo de Servicio</label>
+                    <select
+                    id="estudioHidrogeologico"
+                    name="estudioHidrogeologico"
+                    className="dropdown-forms-select"
+                    value={tipoServicio}
+                    onChange={(e) => setTipoServicio(e.target.value)}
+                    >
+                    <option value="">Seleccione una opción</option>
+                    <option value="Servicio 1">Servicio 1</option>
+                    <option value="Servicio 2">Servicio 2</option>
+                    </select>
                 </div>
                 <div className='inputsect'>
-                    <label className='labelforms_ser'><strong>Nit:</strong></label>
-                    <input
-                        type="email" 
-                        className="forms_input personalinfo"
-                        value={nit}
-                        placeholder="Nit"
-                        onChange={(e) => setNit(e.target.value)}
+                    <label className='labelforms_ser2'><strong>Deja un mensaje</strong></label>
+                    <textarea
+                        type="text" 
+                        className="forms_input2"
+                        value={mensaje}
+                        placeholder="..."
+                        maxlength="500"
+                        onChange={(e) => setMensaje(e.target.value)}
                     />
-                    <p className='optional_label'>*opcional</p>
                 </div>
-            </div>
-            
-            <div className='inputsect'>
-                <label className='labelforms_ser2'><strong>¿Cuáles son las coordenadas de donde se encuentra el punto de perforación?</strong></label>
-                <input
-                    type="number" 
-                    className="forms_input"
-                    value={latitud}
-                    placeholder="Latitud"
-                    onChange={(e) => setlatitud(e.target.value)}
-                />
-                <div className='espacio'/>
-                <input
-                    type="number" 
-                    className="forms_input"
-                    value={longitud}
-                    placeholder="Longitud"
-                    onChange={(e) => setlongitud(e.target.value)}
-                />
-            </div>
-            <div className='inputsect'>
-                <label className='labelforms_ser2'><strong>Dirección donde se realizará el Pozo Mecánico</strong></label>
-                <input
-                    type="text" 
-                    className="forms_input"
-                    value={direccionPozo}
-                    placeholder="Dirección"
-                    onChange={(e) => setDireccionPozo(e.target.value)}
-                />
-            </div>
-            <div className='inputsect'>
-                <label className='labelforms_ser2'><strong>¿Cuál seria la profundidad requerida?</strong></label>
-                <input
-                    type="number" 
-                    className="forms_input"
-                    value={profundidad}
-                    placeholder="0.0 m"
-                    onChange={(e) => setProfundidad(e.target.value)}
-                />
-            </div>
-            <div className='inputsect'>
-                <label className='labelforms_ser2'><strong>¿Cuál es el diámetro de perforación?</strong></label>
-                <input
-                    type="number" 
-                    className="forms_input"
-                    value={diametro}
-                    placeholder="0.0 m"
-                    onChange={(e) => setDiametro(e.target.value)}
-                />
-            </div>
-            <div className="dropdown-forms">
-                <label className='labelforms_ser3'>Tipo de Material para Entubado:</label>
-                <select
-                    id="tipoMaterial"
-                    name="tipoMaterial"
-                    className="dropdown-forms-select"
-                    value={tipoMaterial}
-                    onChange={(e) => setTipoMaterial(e.target.value)}
-                >
-                    <option value="">Seleccione una opción</option>
-                    <option value="PVC">PVC</option>
-                    <option value="aceroAlCarbon">Acero al Carbón</option>
-                </select>
-            </div>
-            <div className="dropdown-forms">
-                <label className="labelforms_ser3">¿Tiene Estudio Hidrogeológico?</label>
-                <select
-                id="estudioHidrogeologico"
-                name="estudioHidrogeologico"
-                className="dropdown-forms-select"
-                value={estudioHidrogeologico}
-                onChange={(e) => setEstudioHidrogeologico(e.target.value)}
-                >
-                <option value="">Seleccione una opción</option>
-                <option value="Si">Sí</option>
-                <option value="No">No</option>
-                </select>
-            </div>
-            {estudioHidrogeologico === "Si" && (
-                <div className="upload_section">
-                    <label className="labelforms_ser3">Cargue el Archivo del Estudio</label>
-                    {estudioArchHidrogeologico && (
-                    <p className='file_name'>{estudioArchHidrogeologico.name}</p>
-                    )}
-                    <input
-                    id="upload_btn"
-                    type="file" 
-                    onChange={(e) => setEstudioArchHidrogeologico(e.target.files[0])}
-                    />
-                    <label htmlFor="upload_btn" className="upload_image">Subir Archivo</label>
-                </div>
-            )}
-            {estudioHidrogeologico === "No" && (
-                <div className="dropdown-forms">
-                <label className="labelforms_ser3">¿Desea realizar un estudio?</label>
-                <select
-                    id="quiereEstudio"
-                    name="quiereEstudio"
-                    className="dropdown-forms-select"
-                    value={quiereEstudio}
-                    onChange={(e) => setQuiereEstudio(e.target.value)}
-                >
-                    <option value="">Seleccione una opción</option>
-                    <option value="Si">Sí</option>
-                    <option value="No">No</option>
-                </select>
-                </div>
-            )}
-            <div className='inputsect'>
-                <label className='labelforms_ser2'><strong>¿Cuántas horas de aforo son requeridas?</strong></label>
-                <input
-                    type="number" 
-                    className="forms_input"
-                    value={horasAforo}
-                    placeholder="0"
-                    onChange={(e) => setHorasAforo(e.target.value)}
-                />
-            </div>
-            <div className='inputsect'>
-                <label className='labelforms_ser2'><strong>¿Cuántas horas de limpieza son requeridas?</strong></label>
-                <input
-                    type="number" 
-                    className="forms_input"
-                    value={horasLimpieza}
-                    placeholder="0"
-                    onChange={(e) => setHorasLimpieza(e.target.value)}
-                />
-            </div>
-            <button className='sendforms'>Enviar</button>
+                <button className='sendforms'>Enviar</button>
         </div>
         );
     }
