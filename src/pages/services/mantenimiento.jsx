@@ -1,6 +1,6 @@
 import './services.css'
 import React, { useState } from 'react';
-import FormsSerMant from '../../components/forms/formsMant';
+import FormsSer from '../../components/forms/formsSer';
 import { AiFillEdit } from "react-icons/ai";
 
 function Mantenimiento() {
@@ -36,7 +36,7 @@ function Mantenimiento() {
             </div>
             <h3 className='subtitle'>Solicitud de Servicios</h3>
             {showForms ? (
-                <FormsSerMant type={2} />
+                <FormsSer type={1} />
             ) : (
                 <div className="fill_the_service" onClick={() => setShowForms(true)}>
                 <p>Llena un formulario con tu información</p>

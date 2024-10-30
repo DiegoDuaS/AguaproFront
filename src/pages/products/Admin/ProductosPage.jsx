@@ -6,7 +6,6 @@ import { CircularProgress } from '@mui/material';
 import useApiP from '../../../hooks/useAPIProducts';
 import { CiEdit } from "react-icons/ci";
 import { BiError } from "react-icons/bi";
-import { FaTrash } from "react-icons/fa6";
 import { IoMdAdd } from "react-icons/io";
 import InfoProdCard from '../../../components/cards/infoProdCard';
 import EditProdCard from '../../../components/cards/EditProdCard';

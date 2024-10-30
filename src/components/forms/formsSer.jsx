@@ -2,17 +2,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import './formsSer.css';
 import { Button } from 'react-bootstrap';
 
-const FormsSerPoz = ({type}) => {
+const FormsSer = ({type}) => {
     const [name, setName] = useState("");
-    const [direccion, setDireccion] = useState("");
     const [telefono, setTelefono] = useState("");
     const [correo, setCorreo] = useState("");
-    const [atencion, setAtencion] = useState("");
-    const [nit, setNit] = useState("");
-    const [latitud, setlatitud] = useState("");
-    const [longitud, setlongitud] = useState("");
-    const [direccionPozo, setDireccionPozo] = useState("");
-    const [profundidad, setProfundidad] = useState("");
     const [empresa, setEmpresa] = useState("");
     const [departamento, setDepartamento] = useState("");
     const [tipoServicio, setTipoServicio] = useState("");
@@ -130,4 +123,4 @@ const FormsSerPoz = ({type}) => {
 
 };
 
-export default FormsSerPoz;
+export default FormsSer;

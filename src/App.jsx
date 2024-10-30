@@ -19,7 +19,6 @@ import { AuthProvider } from './hooks/authProvider.jsx';
 import validateToken from './hooks/Auth';
 import useUserRole from './hooks/useUserRole';
 import StateCard from './components/cards/stateCard.jsx';
-import { AiOutlineConsoleSql } from 'react-icons/ai';
 import ScrollToTop from "react-scroll-to-top";
 
 function App() {

@@ -6,6 +6,7 @@ import useUpdateUser from '../../hooks/useUpdateUser';
 import { useUpdateClient } from '../../hooks/useUpdateClient';
 import useRegisterClient from '../../hooks/useRegisterClient';
 import { CircularProgress } from '@mui/material';
+import StateCard from '../../components/cards/stateCard';
 
 const ClientInfo = () => {
   const user = JSON.parse(localStorage.getItem('user'));
@@ -23,6 +24,8 @@ const ClientInfo = () => {
   const [showAdditionalForm, setShowAdditionalForm] = useState(false);
   const [formData2, setFormData2] = useState({ username: '', email: '', created_at: '' });
   const [formData, setFormData] = useState({ nombre: '', correo: '', telefono: '', nit: '', direccion: '' });
+  const [successMessage, setSuccessMessage] = useState(false);
+  const [errorMessage2, setErrorMessage2] = useState(false);
 
   const memoizedGetUserInfo = useCallback(getUserInfo, []);
 
@@ -75,7 +78,7 @@ const ClientInfo = () => {
     e.preventDefault();
     const result = await updateUser(userReference, { username: formData2.username, email: formData2.email });
     if (result.success) {
-      console.log('User information updated:', result.message);
+      setSuccessMessage(true)
     }
   };
   //console.log(client.data.id_cliente);
@@ -86,9 +89,9 @@ const ClientInfo = () => {
       await registerClient(formData, userReference);
       setShowAdditionalForm(false); // Hide the form after registration
     } else {
-      console.log(parseInt(client.data.id_cliente));
       const id = parseInt(client.data.id_cliente);
       await updateClient(id, formData);
+      setSuccessMessage(true)
     }
   };
  
@@ -104,7 +107,7 @@ const ClientInfo = () => {
   }
 
   return (
-    <div className="client-page">
+    <div className="client-page">  
       <div className="user-info-container">
 
         {!showAdditionalForm && (
@@ -133,13 +136,19 @@ const ClientInfo = () => {
               </div>
               <button type="submit">Actualizar</button>
             </form>
-            <p>Usuario desde {formData2.created_at.slice(0, 10)}</p>
+            <p>Usuario desde <strong>{formData2.created_at.slice(0, 10)}</strong></p>
 
-            {!showAdditionalForm && (
-              <p>
-                Deseas llenar información adicional?{' '}
-                <button onClick={() => setShowAdditionalForm(true)}>Has click aquí</button>
-              </p>
+            {(client !== null) ? (
+              <>
+                <p>¡Encuentra tu información como cliente!{' '}</p>
+                <button onClick={() => setShowAdditionalForm(true)}>Haz click aquí</button>
+              
+              </>
+            ) : (
+              <>
+                <p>¿Quieres volverte un cliente frecuente?{' '}</p>
+                <button onClick={() => setShowAdditionalForm(true)}>Haz click aquí</button>
+              </>
             )}
           </>
         )}
@@ -155,7 +164,7 @@ const ClientInfo = () => {
                   name="nombre"
                   value={formData.nombre}
                   onChange={handleChange}
-                  placeholder="Full Name"
+                  placeholder="Nombre Completo"
                 />
               </div>
               <div className="form-group-cf">
@@ -165,7 +174,7 @@ const ClientInfo = () => {
                   name="telefono"
                   value={formData.telefono}
                   onChange={handleChange}
-                  placeholder="Phone Number"
+                  placeholder="Número de Teléfono"
                 />
               </div>
               <div className="form-group-cf">
@@ -185,15 +194,27 @@ const ClientInfo = () => {
                   name="direccion"
                   value={formData.direccion}
                   onChange={handleChange}
-                  placeholder="Delivery Address"
+                  placeholder="Dirrección de Envio"
                 />
               </div>
-              <button type="submit">Actualizar</button>
-              <button type="button" onClick={() => setShowAdditionalForm(false)}>Back</button>
+              
+              <div className='button-section-2'>
+                <button type="button" onClick={() => setShowAdditionalForm(false)}>Regresar</button>
+                {(client !== null) ? (
+                  <>
+                    <button type="submit">Actualizar</button>
+                  </>
+                ) : (
+                  <>
+                    <button type="submit">Crear Información</button>
+                  </>
+                )}
+              </div>
             </form>
           </div>
         )}
       </div>
+      <StateCard message={"Información Actualizada Correctamente"} isOpen={!!successMessage} type={1}></StateCard>
     </div>
   );
 };
