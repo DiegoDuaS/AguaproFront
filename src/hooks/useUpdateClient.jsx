@@ -10,7 +10,7 @@ export const useUpdateClient = () => {
     setSuccess(null);
     setError(null);
     try {
-      const response = await fetch('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/clientes/${id}', {
+      const response = await fetch(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/clientes/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
