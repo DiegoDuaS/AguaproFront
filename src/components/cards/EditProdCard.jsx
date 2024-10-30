@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { CircularProgress } from '@mui/material';
 import './EditProdCard.css';
-import ProductosPage from '../../pages/products/Admin/ProductosPage';
+import useModifyImage from '../../hooks/useModifyImage';
 import useUpdateProduct from '../../hooks/useUpdateProduct';
 import { getSizeIndex, getEnergiaIndex, getCondicionesIndex, getTipoIndex } from '../../hooks/useFetchs';
 
@@ -13,6 +13,7 @@ const EditProdCard = ({ isOpen, closeCard, product, refetchProducts, setSuccsess
     const [error, setError] = useState(null);
 
     const { updateProduct, isLoading, errorMessage } = useUpdateProduct('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app');
+    const { modifyImage, isLoading2, errorMessage2, success} = useModifyImage('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app');
 
     const [nombre, setNombre] = useState(product.nombre);
     const [descripción, setDescripción] = useState(product.descripción);
@@ -26,15 +27,18 @@ const EditProdCard = ({ isOpen, closeCard, product, refetchProducts, setSuccsess
     const [image, setImage] = useState(null);
     const [capacidadmin, setCapacidadmin] = useState(product.capacidadmin);
     const [capacidadmax, setCapacidadmax] = useState(product.capacidadmax);
+    const [file, setFile] = useState(null)
 
     const handleImageChange = (e) => {
-        const file = e.target.files[0]; // Get the selected file
-        if (file) {
+        const selectedFile = e.target.files[0]; // Obtén el archivo seleccionado
+        if (selectedFile) {
+            setFile(selectedFile); // Guarda el archivo en el estado `file`
+
             const reader = new FileReader();
             reader.onloadend = () => {
-                setImage(reader.result); // Set the image state to the data URL
+                setImage(reader.result); // Establece el estado `image` con la vista previa
             };
-            reader.readAsDataURL(file); // Read the file as a data URL
+            reader.readAsDataURL(selectedFile); // Lee el archivo como una URL de datos
         }
     };
 
@@ -116,13 +120,31 @@ const EditProdCard = ({ isOpen, closeCard, product, refetchProducts, setSuccsess
           precio: parseFloat(precio),
           disponibilidad: parseInt(disponibilidad)
         }; 
-        const result = await updateProduct(product.id_producto, productData);
-        if (result.success) {
-          await refetchProducts();
-          setSuccsessMessage('Cambios guardados exitosamente.');
-          closeCard();
-        } else {
-          setErrorMessage('Hubo un error al guardar los cambios.');
+        if (file){
+            const result2 = await modifyImage(product.id_producto, file);
+            const result = await updateProduct(product.id_producto, productData);
+            if (result.success) {
+                if (result2.success){
+                    await refetchProducts();
+                    setSuccsessMessage('Cambios guardados exitosamente.');
+                    closeCard();
+                }
+                else {
+                    setErrorMessage('Hubo un error al guardar los cambios.');
+                }
+            } else {
+            setErrorMessage('Hubo un error al guardar los cambios.');
+            }
+        }
+        else{
+            const result = await updateProduct(product.id_producto, productData);
+            if (result.success) {
+                    await refetchProducts();
+                    setSuccsessMessage('Cambios guardados exitosamente.');
+                    closeCard();
+            } else {
+            setErrorMessage('Hubo un error al guardar los cambios.');
+            }
         }
       } catch (error) {
         console.error('Error al guardar los cambios:', error);
@@ -155,7 +177,7 @@ const EditProdCard = ({ isOpen, closeCard, product, refetchProducts, setSuccsess
                                 className="table-cell inputdes"
                                 value={descripción}
                                 placeholder={product.descripción}
-                                maxlength="100"
+                                maxLength="100"
                                 onChange={(e) => setDescripción(e.target.value)}
                             />
                         </div>
@@ -253,7 +275,7 @@ const EditProdCard = ({ isOpen, closeCard, product, refetchProducts, setSuccsess
                         onChange={handleImageChange}
                         accept=".png"
                     />
-                    <label for="upload_btn" className='upload_image'>Subir Imagen</label>
+                    <label htmlFor="upload_btn" className='upload_image'>Subir Imagen</label>
                     <p>Solo archivos .png</p>
                 
                 </div>
