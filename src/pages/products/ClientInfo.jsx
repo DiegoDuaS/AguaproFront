@@ -107,7 +107,7 @@ const ClientInfo = () => {
     <div className="client-page">
       <div className="user-info-container">
 
-        {!client && !showAdditionalForm && (
+        {!showAdditionalForm && (
           <>
            <h2>Bienvenido, {username}</h2>
             <form className="form-unit-client" onSubmit={handleSubmit2}>
@@ -144,7 +144,7 @@ const ClientInfo = () => {
           </>
         )}
 
-        {(client || showAdditionalForm) && (
+        {(showAdditionalForm) && (
           <div className="client-info-container">
             <h2>Mi información</h2>
             <form onSubmit={handleSubmit}>
