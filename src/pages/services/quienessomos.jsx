@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import FormsSer from '../../components/forms/formsSer';
 import { AiFillEdit } from "react-icons/ai";
 
-function Perforacion() {
+function QuienesSomos() {
     const [showForms, setShowForms] = useState(false);
     
     return (
@@ -50,4 +50,4 @@ function Perforacion() {
     );
 }
 
-export default Perforacion
+export default QuienesSomos

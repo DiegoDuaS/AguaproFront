@@ -3,10 +3,8 @@ import './index.css';
 import menuIcon from './image/menuIcon.png';
 import Header from './components/headers/header';
 import BombasAgua from './pages/products/bombasagua';
-import Mantenimiento from './pages/services/mantenimiento';
-import Perforacion from './pages/services/perforacion';
-import ServicioTecnico from './pages/services/tecnico';
-import ServicioAforo from './pages/services/aforo';
+import NuestrosServicios from './pages/services/nuestrosservicios';
+import QuienesSomos from './pages/services/quienessomos';
 import CustomNav from './components/CustomNav.jsx';
 import Cart from './components/cart';
 import UserMenu from './components/UserMenu';
@@ -170,7 +168,7 @@ const { role, loading, error } = useUserRole(userId);
             <CustomNav
               items={[
                 { name: 'Productos', subItems: ['Bombas de agua'] },
-                { name: 'Servicios', subItems: ['Perforación de Pozos', 'Mantenimiento de Pozos', 'Servicio Técnico', 'Servicio de Aforo'] }
+                { name: 'Sobre Nosotros', subItems: ['Quienes Somos', 'Nuestros Servicios'] }
               ]}
               onOptionSelect={handleOptionSelect}
               isOpen={isSidebarOpen}
@@ -194,10 +192,8 @@ const { role, loading, error } = useUserRole(userId);
               cartItems={cartItems}
               setCartItems={setCartItems}
               setSuccessMessage={setSuccessMessage}/>}
-          {activePage === 'Perforación de Pozos' && <Perforacion />}
-          {activePage === 'Mantenimiento de Pozos' && <Mantenimiento />}
-          {activePage === 'Servicio Técnico' && <ServicioTecnico />}
-          {activePage === 'Servicio de Aforo' && <ServicioAforo />}
+          {activePage === 'Quienes Somos' && <QuienesSomos />}
+          {activePage === 'Nuestros Servicios' && <NuestrosServicios />}
           {activePage === 'ClientInfoPage' && (<ClientInfoPage onRouteChange={setActivePage}/>)}
         </>
       )}

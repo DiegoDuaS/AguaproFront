@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import FormsSer from '../../components/forms/formsSer';
 import { AiFillEdit } from "react-icons/ai";
 
-function Mantenimiento() {
+function NuestrosServicios() {
     const [showForms, setShowForms] = useState(false);
 
     return (
@@ -62,4 +62,4 @@ function Mantenimiento() {
     );
 }
 
-export default Mantenimiento
+export default NuestrosServicios

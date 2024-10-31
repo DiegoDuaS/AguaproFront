@@ -12,7 +12,7 @@ const CustomNav = ({ items, onOptionSelect, isOpen, setIsSidebarOpen, setActiveP
     } else {
       setSelectedOption(option); // Open the dropdown for the clicked option
     }
-    if (option.name === "Servicios" || option.name === "Productos") {
+    if (option.name === "Sobre Nosotros" || option.name === "Productos") {
       setIsSidebarOpen(true); // Open the sidebar if "Servicios" or "Productos" are clicked
     } else {
       setIsSidebarOpen(false); // Close the sidebar for other options
