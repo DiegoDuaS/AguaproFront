@@ -9,6 +9,7 @@
     margin-bottom: 20px;
     margin-top: 20px;
     background-color: #F5F4F1;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .forms_input{
@@ -164,5 +165,12 @@
 .dropdown-forms-select {
     max-height: 150px; /* Ajusta este valor según lo que necesites */
     overflow-y: auto;
+}
+.close-butt{
+    border-radius: 40px;
+    height: 40px;
+    margin-top: 10px;
+    background-color: #d2d2d2;
+    color: #000000;
 }
 

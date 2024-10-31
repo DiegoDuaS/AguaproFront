@@ -8,31 +8,44 @@ function QuienesSomos() {
     
     return (
         <main className="main-content-ser">
-            <h2>Perforación de Pozos</h2>
+            <h2>¿Quiénes somos?</h2>
             <p className="textservice">
-                Consiste en la perforación del terreno y trituración de la roca, para la extracción de aguas subterráneas.
-                Contamos con maquinaria de rotación totalmente operativas, con una capacidad de perforar hasta de 1,000 pies 
-                de profundidad y una ampliación hasta de 30" de diámetro. Con la perforación de los pozos no se ven afectados 
-                árboles, plantas de ningún tipo, quebradas, ríos, etc. Las áreas Municipales tampoco se ven afectadas puesto 
-                a que los escombros son retirados de la obra a medida que se vayan produciendo.       
+            Somos AGUATESA S.A., una empresa guatemalteca especializada en soluciones integrales para la gestión y aprovechamiento eficiente 
+            del agua. Nos dedicamos a la perforación de pozos mecánicos, mantenimiento de estos pozos, venta de equipos de bombeo de 
+            alta calidad, pruebas de bombeo, y ofrecemos servicios técnicos especializados en sistemas hidroneumáticos. Nuestro compromiso es 
+            brindar a nuestros clientes soluciones efectivas que aseguren un suministro de agua confiable y adaptado a sus necesidades.
             </p>
+            <h3 className='subtitle'>Nuestra Historia</h3>
             <p className='textservice'>
-                Una vez realizados los trabajos de perforación se verifican las muestras, se corrobora que existen posibilidades 
-                de buenos acuíferos y se procede al entubado o encamisado y engravado del pozo; posteriormente la explotación del 
-                mismo.   
+            Con más de 25 años de experiencia comprobable en el sector, en AGUATESA S.A. hemos crecido al lado de nuestros clientes y nos hemos 
+            consolidado como un referente en proyectos relacionados con agua. Gracias a nuestro equipo técnico especializado y a nuestro rol 
+            como importadores directos, ofrecemos un amplio inventario de equipos de bombeo y repuestos de calidad. Además, contamos con 
+            grúas hidráulicas 4x4 y perforadoras de alta capacidad, como la Ingersoll Rand T4W Rotopercusión y Chicago Pneumatic, así 
+            como vehículos de apoyo especializados para aforos. Nuestros servicios están disponibles los 365 días del año y 24 horas al día, 
+            para responder a cualquier necesidad con equipos y asistencia de primera calidad. 
             </p>
+            <div className='mision-vision-sect'>
+                <div className='side-mv'>
+                    <h3 className='subtitle'>Misión</h3>
+                    <p className='textservice'>
+                    Proveer soluciones efectivas para el manejo del agua, con una gama completa de productos y servicios de alto rendimiento en las 
+                    áreas donde nos especializamos. Nos esforzamos por brindar un servicio integral, combinando la calidad de nuestros productos y la 
+                    experiencia de nuestro equipo para alcanzar la satisfacción y confianza de nuestros clientes.
+                    </p>
+                </div>
+                <div className='side-mv'>
+                    <h3 className='subtitle'>Visión</h3>
+                    <p className='textservice'>
+                    Queremos ser la empresa de referencia en Guatemala en la venta de equipos de bombeo y la prestación de servicios de agua. Trabajamos 
+                    para ser una marca reconocida por la excelencia en la atención al cliente, la innovación en soluciones y la confiabilidad, asegurando 
+                    que nuestros clientes siempre nos vean como su primera opción.
+                    </p>
+                </div>
+            </div>
+            
             <div className='imagescontainer'>
                 <img className='per' src="src\image\perforacion.jpg" alt="Imagen Servicios Mant 1"/>
             </div>
-            <h3 className='subtitle'>Solicitud de Servicios</h3>
-            {showForms ? (
-                <FormsSer type={1} />
-            ) : (
-                <div className="fill_the_service" onClick={() => setShowForms(true)}>
-                <p>Llena un formulario con tu información</p>
-                <AiFillEdit color="black" size={25} />
-                </div>
-            )}
             <h3 className='subtitle'>Contacténos</h3>
             <p className='textservice'>
                 <strong>Dirección:</strong> 10 Calle 5-28 Zona 6, Villa Nueva, Residenciales Catalina

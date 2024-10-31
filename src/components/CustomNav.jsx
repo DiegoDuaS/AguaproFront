@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from 'prop-types';
 import './CustomNav.css';
-import menuIcon from '../image/menuIcon.png';
 
 const CustomNav = ({ items, onOptionSelect, isOpen, setIsSidebarOpen, setActivePage }) => {
   const [selectedOption, setSelectedOption] = React.useState(null); 
@@ -22,6 +21,7 @@ const CustomNav = ({ items, onOptionSelect, isOpen, setIsSidebarOpen, setActiveP
   const handleSubMenuClick = (subItem) => {
     onOptionSelect(subItem);
     setIsSidebarOpen(false); // Close the sidebar when a submenu item is clicked
+    isOpen(false)
   };
 
   return (

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import './formsSer.css';
 import { Button } from 'react-bootstrap';
 
-const FormsSer = ({type}) => {
+const FormsSer = ({type, setShowForms}) => {
     const [name, setName] = useState("");
     const [telefono, setTelefono] = useState("");
     const [correo, setCorreo] = useState("");
@@ -14,7 +14,8 @@ const FormsSer = ({type}) => {
 
     if (type === 1){
         return(
-            <div className="forms">           
+            <div className="forms">    
+            <button className="close-butt" onClick={() => setShowForms(false)}>X</button>       
                 <div className='inputsect'>
                     <label className='labelforms_ser2'><strong>Nombre Completo</strong></label>
                     <input

@@ -55,4 +55,16 @@ h3{
     justify-content: space-between;
     border-radius: 10px;
     cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.mision-vision-sect{
+    display: flex;
+    flex-direction: row;
+}
+
+.side-mv{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
