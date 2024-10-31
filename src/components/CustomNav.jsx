@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from 'prop-types';
-import './CustomNav.css'
+import './CustomNav.css';
 import menuIcon from '../image/menuIcon.png';
 
 const CustomNav = ({ items, onOptionSelect, isOpen, setIsSidebarOpen, setActivePage }) => {
@@ -24,15 +24,18 @@ const CustomNav = ({ items, onOptionSelect, isOpen, setIsSidebarOpen, setActiveP
     setIsSidebarOpen(false); // Close the sidebar when a submenu item is clicked
   };
 
-const sidebarHeight = selectedOption && selectedOption.subItems ? selectedOption.subItems.length * 43 + 120 : 120;
-
   return (
     <nav className="navbar-menu" style={{ width: isOpen ? 250 : 0 }}>
       <ul className="navbar__list" style={{ display: isOpen ? "block" : "none" }}>
         {items.map((item, index) => (
-          <div className="navbar__li-box"  key={index}>
-            <li className="navbar__li" >
-              <div onClick={() => handleOptionClick(item)}>{item.name}</div>
+          <div
+            className={`navbar__li-box ${
+              index === 1 && selectedOption?.name === "Productos" ? "second-item-moved" : ""
+            }`}
+            key={index}
+          >
+            <li className="navbar__li" onClick={() => handleOptionClick(item)}>
+              {item.name}
               {selectedOption === item && isOpen && item.subItems && (
                 <ul className={`submenu ${selectedOption.name === item.name ? 'open' : ''}`}>
                   {item.subItems.map((subItem, subIndex) => (
@@ -62,3 +65,4 @@ CustomNav.propTypes = {
 };
 
 export default CustomNav;
+

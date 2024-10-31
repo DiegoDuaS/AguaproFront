@@ -11,9 +11,7 @@
   list-style-type: none;
   
 }
-.navbar__li-box:nth-child(2){
-  margin-top:63px;
-}
+
 .navbar__li {
   display: inline-block;
   padding:0px 0px 0px 12px;
@@ -38,7 +36,7 @@
 }
 .navbar__li-box {
   height: 43px;
-  margin-top:15px;
+  margin-top: 15px;
   left:0;
 }
 
@@ -46,9 +44,11 @@
   border-left: 7px solid #58b5fc;
   cursor: point;
 }
-.navbar__li-box:nth-child(2).open-submenu {
-  margin-top: 63px;
+
+.navbar__li-box.second-item-moved {
+  margin-top: 58px; /* Adjust based on submenu height */
 }
+
 .submenu {
   position: relative;
   width: 200px; /* Ancho del submenu */
