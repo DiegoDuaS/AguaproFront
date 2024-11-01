@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './formsSer.css';
 import { Button } from 'react-bootstrap';
+import useRegisterSolicitud from '../../hooks/useRegisterSolicitud';
 
 const FormsSer = ({type, setShowForms}) => {
     const [name, setName] = useState("");
@@ -10,37 +11,82 @@ const FormsSer = ({type, setShowForms}) => {
     const [departamento, setDepartamento] = useState("");
     const [tipoServicio, setTipoServicio] = useState("");
     const [mensaje, setMensaje] = useState("");
+    const [servicios, setServicios] = useState([]); // State for services
+    const [loadingServices, setLoadingServices] = useState(true); // Loading state for services
+    const [errorServices, setErrorServices] = useState(null);
 
+    const { registerSolicitud, loading, error, response } = useRegisterSolicitud();
+    
+    useEffect(() => {
+        const fetchServices = async () => {
+            try {
+                const response = await fetch('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/servicios'); // Replace with your actual endpoint
+                const data = await response.json();
+                if (data.status === "success") {
+                    setServicios(data.data);
+                } else {
+                    setErrorServices("Error fetching services");
+                }
+            } catch (error) {
+                setErrorServices("Error fetching services");
+            } finally {
+                setLoadingServices(false);
+            }
+        };
+        fetchServices();
+    }, []);
 
-    if (type === 1){
-        return(
-            <div className="forms">    
-            <button className="close-butt" onClick={() => setShowForms(false)}>X</button>       
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const solicitudData = {
+            nombre: name,
+            telefono,
+            correo,
+            empresa,
+            departamento: parseInt(departamento),
+            tipo_servicio: parseInt(tipoServicio),
+            mensaje,
+        };
+        console.log("Sending data:", solicitudData); // Log data for debugging
+
+        await registerSolicitud(solicitudData);
+        if (!error && response) {
+            alert("Solicitud enviada con éxito");
+            setShowForms(false);
+        }
+    };
+
+    if (type === 1) {
+        return (
+            <form onSubmit={handleSubmit} className="forms">
+                <button className="close-butt" onClick={() => setShowForms(false)}>X</button>
                 <div className='inputsect'>
                     <label className='labelforms_ser2'><strong>Nombre Completo</strong></label>
                     <input
-                        type="text" 
+                        type="text"
                         className="forms_input"
                         value={name}
                         placeholder="Nombre Completo"
                         onChange={(e) => setName(e.target.value)}
+                        required
                     />
                 </div>
                 <div className='inputsect'>
                     <label className='labelforms_ser2'><strong>Correo Electrónico</strong></label>
                     <input
-                        type="text" 
+                        type="email"
                         className="forms_input"
                         value={correo}
                         placeholder="Correo Electrónico"
                         onChange={(e) => setCorreo(e.target.value)}
+                        required
                     />
                 </div>
                 <div className='inputsect'>
                     <label className='labelforms_ser2'><strong>Número de Teléfono</strong></label>
                     <input
                         className="forms_input"
-                        type="tel" 
+                        type="tel"
                         pattern="[0-9]{4}-[0-9]{4}"
                         value={telefono}
                         placeholder="1234-5678"
@@ -51,21 +97,21 @@ const FormsSer = ({type, setShowForms}) => {
                 <div className='inputsect'>
                     <label className='labelforms_ser2'><strong>Empresa</strong></label>
                     <input
-                        type="text" 
+                        type="text"
                         className="forms_input"
                         value={empresa}
                         placeholder="Nombre Empresa"
                         onChange={(e) => setEmpresa(e.target.value)}
+                        required
                     />
                 </div>
                 <div className="dropdown-forms">
                     <label className="labelforms_ser3">Departamento</label>
                     <select
-                        id="tipoMaterial"
-                        name="tipoMaterial"
                         className="dropdown-forms-select"
                         value={departamento}
                         onChange={(e) => setDepartamento(e.target.value)}
+                        required
                     >
                         <option value="">Seleccione una opción</option>
                         <option value="1">Guatemala</option>
@@ -95,33 +141,42 @@ const FormsSer = ({type, setShowForms}) => {
                 <div className="dropdown-forms">
                     <label className="labelforms_ser3">Tipo de Servicio</label>
                     <select
-                    id="estudioHidrogeologico"
-                    name="estudioHidrogeologico"
-                    className="dropdown-forms-select"
-                    value={tipoServicio}
-                    onChange={(e) => setTipoServicio(e.target.value)}
+                        className="dropdown-forms-select"
+                        value={tipoServicio}
+                        onChange={(e) => setTipoServicio(e.target.value)}
+                        required
                     >
-                    <option value="">Seleccione una opción</option>
-                    <option value="Servicio 1">Servicio 1</option>
-                    <option value="Servicio 2">Servicio 2</option>
+                        <option value="">Seleccione una opción</option>
+                        {loadingServices ? (
+                            <option>Loading...</option>
+                        ) : errorServices ? (
+                            <option>Error loading services</option>
+                        ) : (
+                            servicios.map((servicio) => (
+                                <option key={servicio.id_tipo} value={servicio.id_tipo}>
+                                    {servicio.nombre}
+                                </option>
+                            ))
+                        )}
                     </select>
                 </div>
                 <div className='inputsect'>
                     <label className='labelforms_ser2'><strong>Deja un mensaje</strong></label>
                     <textarea
-                        type="text" 
                         className="forms_input2"
                         value={mensaje}
                         placeholder="..."
-                        maxlength="500"
+                        maxLength="500"
                         onChange={(e) => setMensaje(e.target.value)}
                     />
                 </div>
-                <button className='sendforms'>Enviar</button>
-        </div>
+                <Button type="submit" className='sendforms' disabled={loading}>
+                    {loading ? "Enviando..." : "Enviar"}
+                </Button>
+            </form>
         );
     }
-
+    return null;
 };
 
 export default FormsSer;
