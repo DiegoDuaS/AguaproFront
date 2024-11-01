@@ -285,7 +285,7 @@ const ProductosPage = () => {
               <p className='table-text'>#{producto.id_producto}</p>
               <p className='table-text'>{producto.nombre}</p>
               <p className='table-text descriptionprod'>{producto.descripción}</p>
-              <p className='table-text'>Q.{producto.precio.toFixed(2)}</p>
+              <p className='table-text'>Q.{producto.precio !== null ? producto.precio.toFixed(2) : "N/A"}</p>
               <div className='units_sec'>
                 <p className='table-text'>{producto.disponibilidad} Unidades</p>
                 <IoMdAdd color='#00668C'className='add_more_prod_icon'onClick={() => openCard('more', producto)}/>

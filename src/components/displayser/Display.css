@@ -8,6 +8,9 @@
     border: 1px solid #ddd;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    height:  auto; /* O un valor que funcione bien para tu diseño */
+    width: 90%; /* Para que el ancho sea adaptable */
+    max-width: 70rem;
 
     /* Animación inicial */
     opacity: 0;
@@ -22,20 +25,30 @@
 }
 
 .display-image {
-    width: 150px;
-    height: auto;
+    width: 20rem;
+    height: 30vh;
     border-radius: 8px;
     object-fit: cover;
     margin-right: 20px;
 }
 
 .display-image.right {
-    margin-left: 20px;
+    margin-top: 10px;
+    margin-left: 70px;
     margin-right: 0;
+    margin-bottom: 10px;
+}
+
+.display-image.left {
+    margin-top: 10px;
+    margin-right: 70px;
+    margin-bottom: 10px;
 }
 
 .display-content {
+    margin-top: 20px;
     max-width: 60%;
+    margin-bottom: 20px;
 }
 
 .display-content h2 {

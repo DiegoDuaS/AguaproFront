@@ -19,7 +19,7 @@ const FormsSer = ({type, setShowForms}) => {
                 <div className='inputsect'>
                     <label className='labelforms_ser2'><strong>Nombre Completo</strong></label>
                     <input
-                        type="number" 
+                        type="text" 
                         className="forms_input"
                         value={name}
                         placeholder="Nombre Completo"
@@ -68,28 +68,28 @@ const FormsSer = ({type, setShowForms}) => {
                         onChange={(e) => setDepartamento(e.target.value)}
                     >
                         <option value="">Seleccione una opción</option>
-                        <option value="Guatemala">Guatemala</option>
-                        <option value="Alta Verapaz">Alta Verapaz</option>
-                        <option value="Baja Verapaz">Baja Verapaz</option>
-                        <option value="Chimaltenango">Chimaltenango</option>
-                        <option value="Chiquimula">Chiquimula</option>
-                        <option value="El Progreso">El Progreso</option>
-                        <option value="Escuintla">Escuintla</option>
-                        <option value="Huehuetenango">Huehuetenango</option>
-                        <option value="Izabal">Izabal</option>
-                        <option value="Jalapa">Jalapa</option>
-                        <option value="Jutiapa">Jutiapa</option>
-                        <option value="Petén">Petén</option>
-                        <option value="Quetzaltenango">Quetzaltenango</option>
-                        <option value="Quiché">Quiché</option>
-                        <option value="Retalhuleu">Retalhuleu</option>
-                        <option value="Sacatepéquez">Sacatepéquez</option>
-                        <option value="San Marcos">San Marcos</option>
-                        <option value="Santa Rosa">Santa Rosa</option>
-                        <option value="Sololá">Sololá</option>
-                        <option value="Suchitepéquez">Suchitepéquez</option>
-                        <option value="Totonicapán">Totonicapán</option>
-                        <option value="Zacapa">Zacapa</option>
+                        <option value="1">Guatemala</option>
+                        <option value="2">El Progreso</option>
+                        <option value="3">Sacatepéquez</option>
+                        <option value="4">Chimaltenango</option>
+                        <option value="5">Escuintla</option>
+                        <option value="6">Santa Rosa</option>
+                        <option value="7">Sololá</option>
+                        <option value="8">Totonicapán</option>
+                        <option value="9">Quetzaltenango</option>
+                        <option value="10">Suchitepéquez</option>
+                        <option value="11">Retalhuleu</option>
+                        <option value="12">San Marcos</option>
+                        <option value="13">Huehuetenango</option>
+                        <option value="14">Quiché</option>
+                        <option value="15">Baja Verapaz</option>
+                        <option value="16">Alta Verapaz</option>
+                        <option value="17">Petén</option>
+                        <option value="18">Izabal</option>
+                        <option value="19">Zacapa</option>
+                        <option value="20">Chiquimula</option>
+                        <option value="21">Jalapa</option>
+                        <option value="22">Jutiapa</option>
                     </select>
                 </div>
                 <div className="dropdown-forms">

@@ -47,7 +47,7 @@ const LargeCard = ({ isOpen, closeCard, product, addToCart, imageRef}) => {
         <div className='photo-title'>
           <img className='imagecard' src={imageRef} alt={product.nombre} />
           <div className="product-title">{product.nombre}</div>
-          <p className='price'>Q {product.precio.toFixed(2)}</p>
+          <p className='price'>Q {product.precio !== null ? product.precio.toFixed(2) : "N/A"}</p>
         </div>
       </div>
       <div className="right-section">
@@ -56,8 +56,12 @@ const LargeCard = ({ isOpen, closeCard, product, addToCart, imageRef}) => {
           <p className='info'><strong>Marca:</strong> {product.marca}</p>
           <p className='info'><strong>Material:</strong> {product.material}</p>
           <p className='info'><strong>Modelo:</strong> {product.modelo} m</p>
-          <p className='info'><strong>Capacidad Mínima:</strong> {product.capacidadmin} g(L)</p>
-          <p className='info'><strong>Capacidad Máxima:</strong> {product.capacidadmax} g(L)</p>
+          {product.capacidadmin !== 0 && (
+            <p className='info'><strong>Capacidad Mínima:</strong> {product.capacidadmin} g(L)</p>
+          )}
+          {product.capacidadmax !== 0 && (
+            <p className='info'><strong>Capacidad Máxima:</strong> {product.capacidadmax} g(L)</p>
+          )}
         </div>
         <div className="add-to-cart">
           <div className='cuantity-box'>
