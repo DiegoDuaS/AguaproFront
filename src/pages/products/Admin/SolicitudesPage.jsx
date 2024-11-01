@@ -155,9 +155,9 @@ const SolicitudesPage = () => {
               >
               {[
                 { label: 'Pendiente', value: 'pendiente' },
-                { label: 'En seguimiento', value: 'seguimiento' },
-                { label: 'Completada', value: 'completada' },
-                { label: 'Cancelada por cliente', value: 'cancelada_por_cliente' },
+                { label: 'En seguimiento', value: 'enviado' },
+                { label: 'Completada', value: 'entregado' },
+                { label: 'Cancelada por cliente', value: 'cancelado' },
               ].map((estado, index) => (
                 <option className="option" value={estado.value} key={index + 1}>
                   {estado.label}
