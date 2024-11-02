@@ -4,6 +4,7 @@ import useApiP from '../../hooks/useAPIProducts';
 import './NewProdCard.css';
 import { CircularProgress } from '@mui/material';
 import uploadImage from '../../image/upload.png'
+import useUploadImage from '../../hooks/useUploadImage';
 
 const NewProdCard = ({ isOpen, closeCard, refetchProducts, setSuccsessMessage, setErrorMessage }) => {
   const { data: tipos, errorMessage, isLoading } = useApiP('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/tipos_producto');
@@ -22,11 +23,12 @@ const NewProdCard = ({ isOpen, closeCard, refetchProducts, setSuccsessMessage, s
   const [precio, setPrecio] = useState(''); // Se manda paso 4
   const [disponibilidad, setDisponibilidad] = useState(''); // Se manda paso 4
   const [image, setImage] = useState(null);
+  const [productId, setProductId] = useState(null);
+  const [file, setFile] = useState(null);   
 
-   
   if (!isOpen) return null;
 
-  const handleImageChange = (e) => {
+  /*const handleImageChange = (e) => {
     const file = e.target.files[0]; // Get the selected file
     if (file) {
         const reader = new FileReader();
@@ -35,7 +37,22 @@ const NewProdCard = ({ isOpen, closeCard, refetchProducts, setSuccsessMessage, s
         };
         reader.readAsDataURL(file); // Read the file as a data URL
     }
- };
+ };*/
+
+  const handleImageChange = (e) => {
+        const selectedFile = e.target.files[0];
+        if (selectedFile) {
+            setFile(selectedFile);
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setImage(reader.result); // Set the image state to the data URL for preview
+            };
+            reader.readAsDataURL(selectedFile); // Read the file as a data URL
+        }
+    };  
+    
+    const { uploadImage, loading, error, response } = useUploadImage();
+
 
   const handleTipoChange = (e) => {
     setTipoProducto(e.target.value);
@@ -94,8 +111,13 @@ const NewProdCard = ({ isOpen, closeCard, refetchProducts, setSuccsessMessage, s
           setErrorMessage("No se pudo crear el producto.")
           return;
         }
-      
+        
         setSuccsessMessage("Se agregó el producto correctamente.")
+ 
+        if (file) {
+          const response= await uploadImage(createdProduct.id_producto, file);
+          console.log(response);
+        }
         await refetchProducts();
         closeCard();
       }
