@@ -14,7 +14,7 @@ const useModifyImage = (url) => {
       console.log(file);
       formData.append('file', file);
 
-      const response = await fetch(`${url}/images/replace/${itemId}`, {
+      const response = await fetch(`${url}/images/replace/${itemId}.PNG`, {
         method: 'POST',
         body: formData,
       });
