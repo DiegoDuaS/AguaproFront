@@ -9,6 +9,7 @@ const SolicitudesPage = () => {
   const { data: solicitudes, errorMessage, isLoading, refetch } = useApiP('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/solicitudes');
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessageState, setErrorMessageState] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
   const departamentos = {
     1: "Guatemala",
     2: "El Progreso",
@@ -33,6 +34,18 @@ const SolicitudesPage = () => {
     21: "Jalapa",
     22: "Jutiapa"
   };
+
+  const handlePageChange = (newPage) => {
+    if (newPage >= 1 && newPage <= totalPages) {
+      setCurrentPage(newPage);
+    }
+  };
+
+  const totalPages = Math.ceil(solicitudes.length / 10);
+  const startIndex = (currentPage - 1) * 10;
+  const endIndex = startIndex + 10;
+  const SolicitudesEnPagina = solicitudes.slice(startIndex, endIndex);
+
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -66,12 +79,13 @@ const SolicitudesPage = () => {
   if (isLoading) {
     return(
       <div className="container">
+        <div className="text">Solicitudes</div>
         <div className='filter-section'>
           <div className="search-bar">
             <input
               className="searchbar"
               type="text"
-              placeholder="Buscar ID, Nombre, Descripción, Precio, Disponibilidad o Marca..."
+              placeholder="Buscar Solicitudes..."
             />
             <button className="search-btn">
               <img src={searchIcon} alt="Search" />
@@ -81,7 +95,7 @@ const SolicitudesPage = () => {
         <div className='space' />
         <div className='loadingcontainer'>
           <CircularProgress />
-          <p className='loading'>Cargando productos...</p>
+          <p className='loading'>Cargando solicitudes...</p>
         </div>
       </div>
     ) ;
@@ -90,12 +104,12 @@ const SolicitudesPage = () => {
   if (errorMessage) {
     return (
       <div className="container">
-        <div className="text">Productos</div>
+        <div className="text">Solicitudes</div>
         <div className="search-bar">
           <input
             className="searchbar"
             type="text"
-            placeholder="Buscar Productos..."
+            placeholder="Buscar Solicitudes..."
           />
           <button className="search-btn" >
             <img src={searchIcon} alt="Search" />
@@ -104,7 +118,7 @@ const SolicitudesPage = () => {
         <div className='space' />
         <div className='error-container'>
           <BiError color='black' size={80}/>
-          <p className='loading'>Error Cargando Productos - {errorMessage}</p>
+          <p className='loading'>Error Cargando Solicitudes - {errorMessage}</p>
         </div>
       </div>
     );
@@ -128,21 +142,21 @@ const SolicitudesPage = () => {
 
         <div className="table">
         <div className="table-grid table-header">
-          <h3>Id</h3>
           <h3>Nombre</h3>
           <h3>Correo</h3>
+          <h3>Teléfono</h3>
           <h3>Empresa</h3>
           <h3>Departamento</h3>
           <h3>Servicio</h3>
           <h3>Fecha de Solicitud</h3>
           <h3>Estado</h3>
         </div>
-        {solicitudes.map((solicitud) => {
+        {SolicitudesEnPagina.map((solicitud) => {
           return(
             <div className="table-grid table-row">
-              <p className='table-text'>#{solicitud.id_solicitud}</p>
               <p className='table-text'>{solicitud.nombre}</p>
               <p className='table-text'>{solicitud.correo}</p>
+              <p className='table-text'>{solicitud.telefono}</p>
               <p className='table-text'>{solicitud.empresa}</p>
               <p className='table-text'>{departamentos[solicitud.departamento]}</p>
               <p className='table-text'>{solicitud.tipo_servicio}</p>
@@ -168,6 +182,23 @@ const SolicitudesPage = () => {
           )
       })}
       </div>
+      <div className="pagination-controls">
+          <div className='change-page'>
+            <button 
+              onClick={() => handlePageChange(currentPage - 1)} 
+              disabled={currentPage === 1}
+            >
+              Anterior
+            </button>
+            <span>Página {currentPage} de {totalPages}</span>
+            <button 
+              onClick={() => handlePageChange(currentPage + 1)} 
+              disabled={currentPage === totalPages}
+            >
+              Siguiente
+            </button>
+          </div>
+        </div>
       <StateCard message={successMessage} isOpen={!!successMessage} type={1}/>
       <StateCard message={errorMessageState} isOpen={!!errorMessageState} type={2}/>
     </div>
