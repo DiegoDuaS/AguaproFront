@@ -2,8 +2,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import './formsSer.css';
 import { Button } from 'react-bootstrap';
 import useRegisterSolicitud from '../../hooks/useRegisterSolicitud';
+import useSolicitud from '../../hooks/email/useSolicitud';
 
-const FormsSer = ({type, setShowForms}) => {
+const FormsSer = ({type, setShowForms, setSuccessMessage, setErrorMessage}) => {
     const [name, setName] = useState("");
     const [telefono, setTelefono] = useState("");
     const [correo, setCorreo] = useState("");
@@ -16,6 +17,8 @@ const FormsSer = ({type, setShowForms}) => {
     const [errorServices, setErrorServices] = useState(null);
 
     const { registerSolicitud, loading, error, response } = useRegisterSolicitud();
+    const { emailSolicitud, loading2, error2, response2 } = useSolicitud();
+    
     
     useEffect(() => {
         const fetchServices = async () => {
@@ -38,6 +41,9 @@ const FormsSer = ({type, setShowForms}) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setSuccessMessage("");  // Reset success message
+        setErrorMessage("");    // Reset error message
+        
         const solicitudData = {
             nombre: name,
             telefono,
@@ -47,12 +53,25 @@ const FormsSer = ({type, setShowForms}) => {
             tipo_servicio: parseInt(tipoServicio),
             mensaje,
         };
-        console.log("Sending data:", solicitudData); // Log data for debugging
-
+        
+        // Primera solicitud: registrar solicitud principal
         await registerSolicitud(solicitudData);
-        if (!error && response) {
-            alert("Solicitud enviada con éxito");
-            setShowForms(false);
+        
+        // Si hubo un error en registerSolicitud, no continuar y mostrar error
+        if (error) {
+            setErrorMessage("Error al enviar la solicitud");
+            return;
+        }
+        
+        // Segunda solicitud: enviar correo de confirmación
+        await emailSolicitud(correo);
+    
+        // Verificar resultado de emailSolicitud
+        if (error2) {
+            setErrorMessage("Error al enviar el correo de confirmación");
+        } else {
+            setSuccessMessage("Solicitud y correo de confirmación enviados con éxito");
+            setShowForms(false); // Cerrar el formulario solo si ambas solicitudes fueron exitosas
         }
     };
 

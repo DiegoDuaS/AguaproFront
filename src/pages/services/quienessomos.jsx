@@ -4,7 +4,6 @@ import FormsSer from '../../components/forms/formsSer';
 import { AiFillEdit } from "react-icons/ai";
 
 function QuienesSomos() {
-    const [showForms, setShowForms] = useState(false);
     
     return (
         <main className="main-content-ser">

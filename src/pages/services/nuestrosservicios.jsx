@@ -1,5 +1,5 @@
 import './services.css'
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import FormsSer from '../../components/forms/formsSer';
 import { AiFillEdit } from "react-icons/ai";
 import DisplayLeft from '../../components/displayser/displayleft';
@@ -12,9 +12,21 @@ import panelesImg from '../../image/paneles.jpg';
 import bombeoImg from '../../image/bombeo.jpg';
 import camaraImg from '../../image/camara.jpg';
 import limpiezaCImg from '../../image/limpiezaC.jpg';
+import StateCard from '../../components/cards/stateCard';
 
 function NuestrosServicios() {
     const [showForms, setShowForms] = useState(false);
+    const [successMessage, setSuccessMessage] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+          setSuccessMessage('');
+          setErrorMessage('');
+        }, 5000);
+    
+        return () => clearTimeout(timer);
+      }, [successMessage, errorMessage]);
 
     return (
         <main className="main-content-ser">
@@ -57,6 +69,7 @@ function NuestrosServicios() {
             <DisplayRight
                 titulo={"Aforo / Pruebas de bombeo"} 
                 texto={"Nuestro servicio de aforo o prueba de bombeo está diseñado para determinar la producción de un pozo en galones por minuto (GPM), lo que nos permite calcular la potencia necesaria del equipo de bombeo para aprovechar de manera óptima dicha producción. Esta prueba implica la instalación de un equipo sumergible, el cual opera durante un período de 12 a 36 horas. Durante este tiempo, se evalúa la capacidad del pozo, así como los niveles dinámico y estático del agua, proporcionando datos esenciales para el cálculo preciso del equipo de bombeo a instalar. Así garantizamos una solución efectiva y eficiente para satisfacer las necesidades de suministro de agua de nuestros clientes."}
+                imagen={bombeoImg}
             />
             <DisplayLeft 
                 titulo={"Inspección con Cámara"} 
@@ -74,7 +87,7 @@ function NuestrosServicios() {
             />
             <h3 className='subtitle'>¿Quieres solicitar un servicio?</h3>
             {showForms ? (
-                <FormsSer type={1} setShowForms={setShowForms}/>
+                <FormsSer type={1} setShowForms={setShowForms} setSuccessMessage={setSuccessMessage} setErrorMessage={setErrorMessage}/>
             ) : (
                 <div className="fill_the_service" onClick={() => setShowForms(true)}>
                 <p>Llena un formulario con tu información</p>
@@ -94,7 +107,8 @@ function NuestrosServicios() {
             <p className='textservice'>
              ventas2@aguatesa.com
             </p>
-
+            <StateCard message={successMessage} isOpen={!!successMessage} type={1}/>
+            <StateCard message={errorMessage} isOpen={!!errorMessage} type={2}/>
              
       </main>
     );
