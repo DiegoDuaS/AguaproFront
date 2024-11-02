@@ -25,6 +25,8 @@ const NewProdCard = ({ isOpen, closeCard, refetchProducts, setSuccsessMessage, s
   const [image, setImage] = useState(null);
   const [productId, setProductId] = useState(null);
   const [file, setFile] = useState(null);   
+ 
+  const { uploadImage, loading: uploading, error: uploadError, response } = useUploadImage();
 
   if (!isOpen) return null;
 
@@ -51,7 +53,7 @@ const NewProdCard = ({ isOpen, closeCard, refetchProducts, setSuccsessMessage, s
         }
     };  
     
-    const { uploadImage, loading, error, response } = useUploadImage();
+    //const { uploadImage, loading, error, response } = useUploadImage();
 
 
   const handleTipoChange = (e) => {
@@ -112,11 +114,16 @@ const NewProdCard = ({ isOpen, closeCard, refetchProducts, setSuccsessMessage, s
           return;
         }
         
-        setSuccsessMessage("Se agregó el producto correctamente.")
- 
         if (file) {
-          const response= await uploadImage(createdProduct.id_producto, file);
+          const response = await uploadImage(createdProduct.id_producto+".PNG", file);
           console.log(response);
+          if (uploadError) {
+            setErrorMessage(uploadError);
+            return;
+          }
+          if (response) {
+            setSuccsessMessage("Se agregó el producto correctamente.");
+          }
         }
         await refetchProducts();
         closeCard();

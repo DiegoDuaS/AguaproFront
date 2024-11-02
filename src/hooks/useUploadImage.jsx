@@ -25,6 +25,7 @@ const useUploadImage = () => {
 
             const data = await res.json();
             setResponse(data);
+            return data;
         } catch (err) {
             setError(err.message);
         } finally {
