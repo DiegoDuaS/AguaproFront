@@ -1,45 +1,73 @@
 import React, { useEffect, useRef, useState } from 'react';
-import useApiPr from '../../hooks/useAPIProduct';
+import { CircularProgress } from '@mui/material';
 import './EditProdCard.css';
-import ProductosPage from '../../pages/products/Admin/ProductosPage';
+import useModifyImage from '../../hooks/useModifyImage';
 import useUpdateProduct from '../../hooks/useUpdateProduct';
 import { getSizeIndex, getEnergiaIndex, getCondicionesIndex, getTipoIndex } from '../../hooks/useFetchs';
 
 const EditProdCard = ({ isOpen, closeCard, product, refetchProducts, setSuccsessMessage, setErrorMessage}) => {
     
     const cardRef = useRef(null);
+    const [imageSrc, setImageSrc] = useState('');
+    const [isLoadingIm, setIsLoadingIm] = useState(true);
+    const [error, setError] = useState(null);
 
     const { updateProduct, isLoading, errorMessage } = useUpdateProduct('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app');
+    const { modifyImage, isLoading2, errorMessage2, success} = useModifyImage('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app');
 
     const [nombre, setNombre] = useState(product.nombre);
     const [descripción, setDescripción] = useState(product.descripción);
-    const [sizeRange, setSizeRange] = useState(product.size_range);
-    const [tipoProducto, setTipoProducto] = useState(product.tipo_producto);
+    const [tipoProducto, setTipoProducto] = useState(product.tipoproducto);
     const [precio, setPrecio] = useState(product.precio);
     const [disponibilidad, setDisponibilidad] = useState(product.disponibilidad);
     const [marca, setMarca] = useState(product.marca);
+    const [modelo, setModelo] = useState(product.modelo);
     const [material, setMaterial] = useState(product.material);
-    const [profundidad, setProfundidad] = useState(product.profundidad);
-    const [temperaturaLiquidaMax, setTemperaturaLiquidaMax] = useState(product.temperatura_liquida_max);
-    const [conexionTuberia, setConexionTuberia] = useState(product.conexion_tuberia);
-    const [presionFuncional, setPresionFuncional] = useState(product.presion_funcional);
-    const [head, setHead] = useState(product.head);
-    const [aplicaciones, setAplicaciones] = useState(product.aplicaciones);
-    const [temperaturaMedia, setTemperaturaMedia] = useState(product.temperatura_media);
-    const [minGpm, setMinGpm] = useState(product.min_gpm);
-    const [maxGpm, setMaxGpm] = useState(product.max_gpm);
-    const [minHp, setMinHp] = useState(product.min_hp);
-    const [maxHp, setMaxHp] = useState(product.max_hp);
-    const [capacitor, setCapacitor] = useState(product.capacitor);
-    const [temperaturaLiquidaMin, setTemperaturaLiquidaMin] = useState(product.temperatura_liquida_min);
-    const [temperaturaAmbiente, setTemperaturaAmbiente] = useState(product.temperatura_ambiente);
-    const [presion, setPresion] = useState(product.presion);
-    const [flowRate, setFlowRate] = useState(product.flow_rate);
-
-    const [sizeIndex, setSizeIndex] = useState(null);
-    const [energiaIndex, setEnergiaIndex] = useState(null);
-    const [condicionesIndex, setCondicionesIndex] = useState(null);
     const [tipoIndex, setTipoIndex] = useState(null); 
+    const [image, setImage] = useState(null);
+    const [capacidadmin, setCapacidadmin] = useState(product.capacidadmin);
+    const [capacidadmax, setCapacidadmax] = useState(product.capacidadmax);
+    const [file, setFile] = useState(null)
+
+    const handleImageChange = (e) => {
+        const selectedFile = e.target.files[0]; // Obtén el archivo seleccionado
+        if (selectedFile) {
+            setFile(selectedFile); // Guarda el archivo en el estado `file`
+
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setImage(reader.result); // Establece el estado `image` con la vista previa
+            };
+            reader.readAsDataURL(selectedFile); // Lee el archivo como una URL de datos
+        }
+    };
+
+    useEffect(() => {
+        const fetchImage = async () => {
+
+          try {
+            const response = await fetch(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/images/visualize/${product.id_producto}.png`, {
+              method: 'GET',
+            });
+            console.log()
+    
+            if (response.ok) {
+              const blob = await response.blob();
+              const url = URL.createObjectURL(blob);
+              setImageSrc(url);
+            } else {
+              setError('Error al obtener la imagen');
+            }
+          } catch (error) {
+            console.error('Error al cargar la imagen:', error);
+            setError('Error al cargar la imagen');
+          } finally {
+            setIsLoadingIm(false);
+          }
+        };
+    
+        fetchImage();
+      });
 
 
     const handleClickOutside = (event) => {
@@ -66,15 +94,6 @@ const EditProdCard = ({ isOpen, closeCard, product, refetchProducts, setSuccsess
         if (isOpen) {
             const fetchIndices = async () => {
                 try {
-                    const sizeIdx = await getSizeIndex(minGpm, maxGpm, product.size_range);
-                    setSizeIndex(sizeIdx);
-
-                    const energiaIdx = await getEnergiaIndex(minHp, maxHp, capacitor);
-                    setEnergiaIndex(energiaIdx);
-
-                    const condicionesIdx = await getCondicionesIndex(temperaturaLiquidaMin, temperaturaLiquidaMax, temperaturaAmbiente, presion);
-                    setCondicionesIndex(condicionesIdx);
-
                     const tipoIdx = await getTipoIndex(tipoProducto);
                     setTipoIndex(tipoIdx);
                 } catch (error) {
@@ -85,93 +104,57 @@ const EditProdCard = ({ isOpen, closeCard, product, refetchProducts, setSuccsess
 
             fetchIndices();
         }
-    }, [isOpen, minGpm, maxGpm, minHp, maxHp, capacitor, temperaturaLiquidaMin, temperaturaLiquidaMax, temperaturaAmbiente, presion, tipoProducto, product.size_range]);
+    }, [isOpen, tipoProducto]);
 
     const handleSave = async () => {
-        try {
-            if (sizeIndex === null || energiaIndex === null || condicionesIndex === null || tipoIndex === null) {
-                setErrorMessage('Error: No se pudieron obtener todos los índices necesarios.');
-                return;
+      try {
+        const productData = {
+          nombre,
+          descripción,
+          tipo_producto: tipoIndex,
+          marca,
+          modelo,
+          material,
+          capacidad_min: parseFloat(capacidadmin),
+          capacidad_max: parseFloat(capacidadmax),
+          precio: parseFloat(precio),
+          disponibilidad: parseInt(disponibilidad)
+        }; 
+        if (file){
+            const result2 = await modifyImage(product.id_producto, file);
+            const result = await updateProduct(product.id_producto, productData);
+            if (result.success) {
+                if (result2.success){
+                    await refetchProducts();
+                    setSuccsessMessage('Cambios guardados exitosamente.');
+                    closeCard();
+                }
+                else {
+                    setErrorMessage('Hubo un error al guardar los cambios.');
+                }
+            } else {
+            setErrorMessage('Hubo un error al guardar los cambios.');
             }
-    
-            // Actualizar el producto principal
-            const response = await fetch(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/productos/${product.id_producto}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ nombre, descripción, tipo_producto: tipoIndex }),
-            });
-            if (!response.ok) {
-                throw new Error('Error al actualizar el producto');
-            }
-    
-            // Actualizar las características fijas
-            const responseCaracteristicas = await fetch(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/caracteristicas/${product.id_caracteristicas}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    marca,
-                    material,
-                    profundidad,
-                    conexion_tuberia: conexionTuberia,
-                    presion_funcional: presionFuncional,
-                    head,
-                    flow_rate: flowRate,
-                    aplicaciones,
-                    producto: product.id_producto,
-                    energia: energiaIndex,
-                    condiciones: condicionesIndex,
-                    temperatura_media: temperaturaMedia,
-                }),
-            });
-            if (!responseCaracteristicas.ok) {
-                throw new Error('Error al actualizar las características fijas');
-            }
-    
-            // Actualizar las características variables
-            const responseCaracteristicasVariables = await fetch(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/caracteristicas/variables/${product.id_caracteristicas}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    temperatura_liquida_max: temperaturaLiquidaMax,
-                    conexion_tuberia: conexionTuberia,
-                    presion_funcional: presionFuncional,
-                    head,
-                    flow_rate: flowRate,
-                    aplicaciones,
-                    temperatura_media: temperaturaMedia,
-                    min_gpm: minGpm,
-                    max_gpm: maxGpm,
-                    min_hp: minHp,
-                    max_hp: maxHp,
-                    capacitor,
-                    temperatura_liquida_min: temperaturaLiquidaMin,
-                    temperatura_ambiente: temperaturaAmbiente,
-                    presion,
-                }),
-            });
-    
-            if (!responseCaracteristicasVariables.ok) {
-                throw new Error('Error al actualizar las características variables');
-            }
-    
-            await refetchProducts();
-            setSuccsessMessage('Cambios guardados exitosamente.');
-            closeCard();
-        } catch (error) {
-            console.error('Error al guardar los cambios:', error);
-            setErrorMessage('Hubo un error al guardar los cambios. Inténtalo de nuevo.');
         }
+        else{
+            const result = await updateProduct(product.id_producto, productData);
+            if (result.success) {
+                    await refetchProducts();
+                    setSuccsessMessage('Cambios guardados exitosamente.');
+                    closeCard();
+            } else {
+            setErrorMessage('Hubo un error al guardar los cambios.');
+            }
+        }
+      } catch (error) {
+        console.error('Error al guardar los cambios:', error);
+        setErrorMessage('Hubo un error al guardar los cambios. Inténtalo de nuevo.');
+      }
     };
             
 
     return (
-        <div className="large-card-prod" ref={cardRef}>
+        <div className="large-card-edit" ref={cardRef}>
             <button className="close-button" onClick={closeCard}>X</button>
             <h2 className='text'>{product.nombre} - #{product.id_producto}</h2>
             <div className='tables-section'>
@@ -189,11 +172,12 @@ const EditProdCard = ({ isOpen, closeCard, product, refetchProducts, setSuccsess
                         </div>
                         <div className="table-row2">
                             <div className="table-cell title">Descripción</div>
-                            <input
+                            <textarea
                                 type="text"
-                                className="table-cell input"
+                                className="table-cell inputdes"
                                 value={descripción}
                                 placeholder={product.descripción}
+                                maxLength="100"
                                 onChange={(e) => setDescripción(e.target.value)}
                             />
                         </div>
@@ -210,23 +194,13 @@ const EditProdCard = ({ isOpen, closeCard, product, refetchProducts, setSuccsess
                         <div className="table-row2">
                             <div className="table-cell title">Precio</div>
                             <input
-                                type="text"
+                                type="number"
                                 className="table-cell input"
                                 value={precio}
                                 placeholder={product.precio}
                                 onChange={(e) => setPrecio(e.target.value)}
                             />
-                        </div>
-                        <div className="table-row2">
-                            <div className="table-cell title">Disponibilidad</div>
-                            <input
-                                type="text"
-                                className="table-cell input"
-                                value={disponibilidad}
-                                placeholder={product.disponibilidad}
-                                onChange={(e) => setDisponibilidad(e.target.value)}
-                            />
-                        </div>  
+                        </div> 
                         <div className="table-row2">
                             <div className="table-cell title">Marca</div>
                             <input
@@ -235,6 +209,16 @@ const EditProdCard = ({ isOpen, closeCard, product, refetchProducts, setSuccsess
                                 value={marca}
                                 placeholder={product.marca}
                                 onChange={(e) => setMarca(e.target.value)}
+                            />
+                        </div>
+                        <div className="table-row2">
+                            <div className="table-cell title">Modelo</div>
+                            <input
+                                type="text"
+                                className="table-cell input"
+                                value={modelo}
+                                placeholder={product.modelo}
+                                onChange={(e) => setModelo(e.target.value)}
                             />
                         </div>
                         <div className="table-row2">
@@ -248,187 +232,57 @@ const EditProdCard = ({ isOpen, closeCard, product, refetchProducts, setSuccsess
                             />
                         </div>
                         <div className="table-row2">
-                            <div className="table-cell title">Profundidad (mm)</div>
+                            <div className="table-cell title">Capacidad mínima</div>
                             <input
                                 type="text"
                                 className="table-cell input"
-                                value={profundidad}
-                                placeholder={product.profundidad}
-                                onChange={(e) => setProfundidad(e.target.value)}
+                                value={capacidadmin}
+                                placeholder={product.capacidadmin}
+                                onChange={(e) => setCapacidadmin(e.target.value)}
                             />
                         </div>
                         <div className="table-row2">
-                            <div className="table-cell title">Temperatura Líquida Máxima(°C)</div>
+                            <div className="table-cell title">Capacidad máxima</div>
                             <input
                                 type="text"
                                 className="table-cell input"
-                                value={temperaturaLiquidaMax}
-                                placeholder={product.temperatura_liquida_max}
-                                onChange={(e) => setTemperaturaLiquidaMax(e.target.value)}
+                                value={capacidadmax}
+                                placeholder={product.capacidadmax}
+                                onChange={(e) => setCapacidadmax(e.target.value)}
                             />
                         </div>
-                        <div className="table-row2">
-                            <div className="table-cell title">Conexión de Tubería</div>
-                            <input
-                                type="text"
-                                className="table-cell input"
-                                value={conexionTuberia}
-                                placeholder={product.conexio_tuberia}
-                                onChange={(e) => setConexionTuberia(e.target.value)}
-                            />
-                        </div>
-                        <div className="table-row2">
-                            <div className="table-cell title">Presión Funcional (bar)</div>
-                            <input
-                                type="text"
-                                className="table-cell input"
-                                value={presionFuncional}
-                                placeholder={product.presion_funcional}
-                                onChange={(e) => setPresionFuncional(e.target.value)}
-                            />
-                        </div>
-                         <div className="table-row2">
-                            <div className="table-cell title">Head</div>
-                            <input
-                                type="text"
-                                className="table-cell input"
-                                value={head}
-                                placeholder={product.head}
-                                onChange={(e) => setHead(e.target.value)}
-                            />
-                        </div>
-                       <div className="table-row2">
-                            <div className="table-cell title">Size Range</div>
-                            <input
-                                type="text"
-                                className="table-cell input"
-                                value={sizeRange}
-                                placeholder={product.size_range}
-                                onChange={(e) => setSizeRange(e.target.value)}
-                            />
-                        </div>
-
                     </div>
                 </div>
                 <div className='section'>
-                    <div className='vertical-table'>
-                        <div className="table-row2">
-                            <div className="table-cell title">Aplicaciones</div>
-                            <input
-                                type="text"
-                                className="table-cell input"
-                                value={aplicaciones}
-                                placeholder={product.aplicaciones}
-                                onChange={(e) => setAplicaciones(e.target.value)}
-                            />
-                        </div>
-                        <div className="table-row2">
-                            <div className="table-cell title">Temperatura Media (°C)</div>
-                            <input
-                                type="text"
-                                className="table-cell input"
-                                value={temperaturaMedia}
-                                placeholder={product.temperatura_media}
-                                onChange={(e) => setTemperaturaMedia(e.target.value)}
-                            />
-                        </div>
-                        <div className="table-row2">
-                            <div className="table-cell title">GPM Mínimo</div>
-                            <input
-                                type="text"
-                                className="table-cell input"
-                                value={minGpm}
-                                placeholder={product.min_gpm}
-                                onChange={(e) => setMinGpm(e.target.value)}
-                            />
-                        </div>
-                        <div className="table-row2">
-                            <div className="table-cell title">GPM Máximo</div>
-                            <input
-                                type="text"
-                                className="table-cell input"
-                                value={maxGpm}
-                                placeholder={product.max_gpm}
-                                onChange={(e) => setMaxGpm(e.target.value)}
-                            />
-                        </div>
-                        <div className="table-row2">
-                            <div className="table-cell title">HP Mínimo</div>
-                            <input
-                                type="text"
-                                className="table-cell input"
-                                value={minHp}
-                                placeholder={product.min_hp}
-                                onChange={(e) => setMinHp(e.target.value)}
-                            />
-                        </div>
-                        <div className="table-row2">
-                            <div className="table-cell title">HP Máximo</div>
-                            <input
-                                type="text"
-                                className="table-cell input"
-                                value={maxHp}
-                                placeholder={product.max_hp}
-                                onChange={(e) => setMaxHp(e.target.value)}
-                            />
-                        </div>
-                        <div className="table-row2">
-                            <div className="table-cell title">Capacitor</div>
-                            <input
-                                type="text"
-                                className="table-cell input"
-                                value={capacitor}
-                                placeholder={product.capacitor}
-                                onChange={(e) => setCapacitor(e.target.value)}
-                            />
-                        </div>
-                        <div className="table-row2">
-                            <div className="table-cell title">Temperatura Líquida Mínima(°C)</div>
-                            <input
-                                type="text"
-                                className="table-cell input"
-                                value={temperaturaLiquidaMin}
-                                placeholder={product.temperatura_liquida_min}
-                                onChange={(e) => setTemperaturaLiquidaMin(e.target.value)}
-                            />
-                        </div>
-                        <div className="table-row2">
-                            <div className="table-cell title">Temperatura Ambiente(°C)</div>
-                            <input
-                                type="text"
-                                className="table-cell input"
-                                value={temperaturaAmbiente}
-                                placeholder={product.temperatura_ambiente}
-                                onChange={(e) => setTemperaturaAmbiente(e.target.value)}
-                            />
-                        </div>
-                        <div className="table-row2">
-                            <div className="table-cell title">Presión (bar)</div>
-                            <input
-                                type="text"
-                                className="table-cell input"
-                                value={presion}
-                                placeholder={product.presion}
-                                onChange={(e) => setPresion(e.target.value)}
-                            />
-                        </div>
-                        <div className="table-row2">
-                            <div className="table-cell title">Caudal (L/min)</div>
-                            <input
-                                type="text"
-                                className="table-cell input"
-                                value={flowRate}
-                                placeholder={product.flow_rate}
-                                onChange={(e) => setFlowRate(e.target.value)}
-                            />
-                        </div>
-                    </div>
+                    <div className="table-cell title">Imagen del Producto</div>
+                    {image ? (
+                      <img src={image} alt="Preview" className='img_prod' />
+                    ) : (
+                        isLoadingIm ? (
+                            <>
+                                <p>Cargando imagen...</p>
+                                <CircularProgress/>
+                            </>  
+                        ) : error ? (
+                            <p>{error}</p>
+                        ) : (
+                         <img className='img_prod2' src={imageSrc} alt='Bomba de agua' />
+                        )
+                    )}
+                    <input
+                        id="upload_btn"
+                        type="file"
+                        onChange={handleImageChange}
+                        accept=".png"
+                    />
+                    <label htmlFor="upload_btn" className='upload_image'>Subir Imagen</label>
+                    <p>Solo archivos .png</p>
+                
                 </div>
             </div>
             <button className="save-button" onClick={handleSave} disabled={isLoading}>
                 {isLoading ? 'Guardando...' : 'Guardar'}
-            </button>
-            {errorMessage && <p className="error-message">{errorMessage}</p>}	    
+            </button>	    
         </div>
     );
 };

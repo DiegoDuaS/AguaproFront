@@ -39,7 +39,6 @@ const AnaliticaPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [fechaInicio, setFechaInicio] = useState('');
   const [fechaFin, setFechaFin] = useState('');
- 
   const [noSalesMessage, setNoSalesMessage] = useState('');
   const today = new Date();
   const oneMonthAgo = new Date();

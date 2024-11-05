@@ -10,6 +10,7 @@ const ClientesPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [isSearchActive, setIsSearchActive] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const handleSearch = useCallback(() => {
     if (!searchTerm.trim()) {
@@ -35,6 +36,19 @@ const ClientesPage = () => {
       handleSearch();
     }
   }, [handleSearch]);
+
+  const handlePageChange = (newPage) => {
+    if (newPage >= 1 && newPage <= totalPages) {
+      setCurrentPage(newPage);
+    }
+  };
+
+  const clientesToDisplay = isSearchActive ? searchResults : clientes;
+  const totalPages = Math.ceil(clientesToDisplay.length / 10);
+  const startIndex = (currentPage - 1) * 10;
+  const endIndex = startIndex + 10;
+
+  const clientesEnPagina = clientesToDisplay.slice(startIndex, endIndex);
 
   if (isLoading) {
     return (
@@ -87,8 +101,6 @@ const ClientesPage = () => {
     );
   }
 
-  const clientesToDisplay = isSearchActive ? searchResults : clientes;
-
   return (
     <div className="container">
       <div className="text">Clientes</div>
@@ -116,7 +128,7 @@ const ClientesPage = () => {
             <h3>Teléfono</h3>
             <h3>NIT</h3>
           </div>
-          {clientesToDisplay.map((cliente, index) => (
+          {clientesEnPagina.map((cliente, index) => (
             <div className="table2-grid table-row" key={index}>
               <p className='table-text'>#{cliente.id_cliente}</p>
               <p className='table-text'>{cliente.nombre}</p>
@@ -125,6 +137,23 @@ const ClientesPage = () => {
               <p className='table-text'>{cliente.nit}</p>
             </div>
           ))}
+        </div>
+        <div className="pagination-controls">
+          <div className='change-page'>
+            <button 
+              onClick={() => handlePageChange(currentPage - 1)} 
+              disabled={currentPage === 1}
+            >
+              Anterior
+            </button>
+            <span>Página {currentPage} de {totalPages}</span>
+            <button 
+              onClick={() => handlePageChange(currentPage + 1)} 
+              disabled={currentPage === totalPages}
+            >
+              Siguiente
+            </button>
+          </div>
         </div>
       </div>
     </div>

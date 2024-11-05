@@ -1,26 +1,44 @@
+.client-page{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-evenly;
+}
+
 .client-info-container {
-  max-width: 600px;
-  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  width: 30rem;
   padding: 20px;
   background-color: #f9f9f9;
-  border: 1px solid #ccc;
   border-radius: 10px;
+  align-items: center;
+}
+
+.user-info-container{
+  display: flex;
+  flex-direction: column;
+  width: 30rem;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  align-items: center;
 }
 
 .client-info-container h2 {
   text-align: center;
   margin-bottom: 20px;
-  color: #333;
 }
 
 .form-group-cf {
   display: flex;
   align-items: center;
   margin-bottom: 15px;
+  width: 25rem;
 }
 
 .form-group-cf label {
-  flex: 1;
+  flex: 0.5;
   text-align: right;
   margin-right: 10px;
   color: #555;
@@ -29,9 +47,10 @@
 .form-group-cf input {
   flex: 2;
   padding: 8px;
-  border: 1px solid #ccc;
+  border: 2px solid #acacac;
+  background-color:rgba(255, 255, 255, 0.87);
+  color: black;
   border-radius: 4px;
-  background-color: #ccc;
 }
 
 .button-container-cf {
@@ -50,4 +69,16 @@
 
 .button-container-cf button:hover {
   background-color: #004d66;
+}
+
+.form-unit-client{
+  display: flex;
+  flex-direction: column;
+}
+
+.button-section-2{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-around;
 }

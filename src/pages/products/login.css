@@ -100,7 +100,21 @@
 }
 
 .errorMessage{
-  color: black;
+  display: flex;
+  flex-direction: row;
+  color: #a30e0e;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  border: 2px solid #e11212;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border-radius: 10px;
+  background-color: #fedbdb;
+  align-items: center;
+  width: 370px;
+  justify-content: center;
 }
 
 .registerLink {
@@ -135,20 +149,28 @@
   border: 2px solid #acacac;
   height: 48px;
   margin-bottom: 8px;
+  
 }
 
 .passinputBox {
-  height: 48px;
+  height: 47px;
   width: 100%;
   font-size: large;
   border-radius: 8px;
+  border-bottom-right-radius: 0;
   border: 1px solid rgb(211, 209, 209);
   background-color:rgba(255, 255, 255, 0.87);
   padding-left: 8px;
+  padding-bottom: 0;
   font-size: 15px;
   color: black;
   border: 0;
   outline: 0;
+  border-bottom: 2px solid #acacac;
+}
+
+.inputError {
+  border: 2px solid rgb(198, 0, 0);
 }
 
 .inputError {

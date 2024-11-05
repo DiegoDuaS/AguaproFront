@@ -6,6 +6,7 @@ import { useApi } from '../../hooks/useApi';
 import { CircularProgress } from '@mui/material';
 import { MdOutlineVisibility } from "react-icons/md";
 import { MdOutlineVisibilityOff } from "react-icons/md";
+import { BiError } from "react-icons/bi";
 
 const LoginPage = ({ onRouteChange }) => {
   const { userLogin, loading} = useApi();
@@ -23,7 +24,7 @@ const LoginPage = ({ onRouteChange }) => {
     if (error) {
       const timer = setTimeout(() => {
         setError('');
-      }, 5000); 
+      }, 7000); 
 
       return () => clearTimeout(timer); 
     }
@@ -38,11 +39,10 @@ const LoginPage = ({ onRouteChange }) => {
         } else {
             onRouteChange('Bombas de agua');
         }
-
-        console.log('Logging in with', username, password);                 
-        console.log("token", localStorage.getItem('token'));
+        
     } catch (error) {
         setError(error.message); 
+        console.log(error.message)
     }
 };
   
@@ -81,7 +81,11 @@ return (
           </div>
         </div>
         {loading && (<div> <CircularProgress /> </div>)}
-        {error && <div className="errorMessage">{error}</div>}
+        {error && 
+          <div className="errorMessage">
+            <BiError color='#a30e0e' size={20}/>{error}
+          </div>
+        }
         <button className="inputButton" onClick={handleSubmitLogin}>
           Iniciar Sesión
         </button>

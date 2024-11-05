@@ -1,90 +1,220 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import './ClientInfo.css';
+import useUserInfo from '../../hooks/useGetUserInfo';
+import { useFetchClient } from '../../hooks/useFetchClient';
+import useUpdateUser from '../../hooks/useUpdateUser';
+import { useUpdateClient } from '../../hooks/useUpdateClient';
+import useRegisterClient from '../../hooks/useRegisterClient';
+import { CircularProgress } from '@mui/material';
+import StateCard from '../../components/cards/stateCard';
 
 const ClientInfo = () => {
-  const user = JSON.parse(localStorage.getItem('user')); 
+  const user = JSON.parse(localStorage.getItem('user'));
   const username = user?.username;
+  const userReference = localStorage.getItem('id');
 
-  const [formData, setFormData] = useState({
-    nombre: '',
-    correo: '',
-    telefono: '',
-    nit: '',
-    direccion: ''
-  });
+  const { getUserInfo, isLoading, errorMessage } = useUserInfo('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app');
+  const { client, loading: clientLoading } = useFetchClient(userReference);
+  
+  // Hooks for handling updates and registration
+  const { updateUser, isLoading: updatingUser, errorMessage: updateUserError } = useUpdateUser('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app');
+  const { updateClient, loading: updatingClient, success: updateClientSuccess, error: updateClientError } = useUpdateClient();
+  const { registerClient, loading: registeringClient, success: registerClientSuccess, error: registerClientError } = useRegisterClient('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app');
 
+  const [showAdditionalForm, setShowAdditionalForm] = useState(false);
+  const [formData2, setFormData2] = useState({ username: '', email: '', created_at: '' });
+  const [formData, setFormData] = useState({ nombre: '', correo: '', telefono: '', nit: '', direccion: '' });
+  const [successMessage, setSuccessMessage] = useState(false);
+  const [errorMessage2, setErrorMessage2] = useState(false);
+
+  const memoizedGetUserInfo = useCallback(getUserInfo, []);
+
+  // Fetch and set user info
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        const userInfo = await memoizedGetUserInfo(userReference);
+        const user = userInfo.data[0];
+        setFormData2({
+          username: user.username || '',
+          email: user.email || '',
+          created_at: user.created_at || '',
+        });
+      } catch (error) {
+        console.error("Error fetching user information:", error);
+      }
+    };
+
+    fetchUserInfo();
+  }, [memoizedGetUserInfo, userReference]);
+  
+  //console.log(user.username);
+  // Fetch and set client info if available
+  useEffect(() => {
+    if (client) {
+      setFormData({
+        nombre: client.data.nombre || '',
+        telefono: client.data.telefono || '',
+        nit: client.data.nit || '',
+        direccion: client.data.direccion || '',
+        user_reference: userReference
+      });
+    }
+  }, [client]);
+
+  // Handle form data changes
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value
-    });
+    setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Aquí puedes manejar la actualización de la información del cliente
-    console.log('Datos actualizados:', formData);
+  const handleChange2 = (e) => {
+    const { name, value } = e.target;
+    setFormData2({ ...formData2, [name]: value });
   };
+
+  // Update user information
+  const handleSubmit2 = async (e) => {
+    e.preventDefault();
+    const result = await updateUser(userReference, { username: formData2.username, email: formData2.email });
+    if (result.success) {
+      setSuccessMessage(true)
+    }
+  };
+  //console.log(client.data.id_cliente);
+  // Register or update client information
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (client==null) {
+      await registerClient(formData, userReference);
+      setShowAdditionalForm(false); // Hide the form after registration
+    } else {
+      const id = parseInt(client.data.id_cliente);
+      await updateClient(id, formData);
+      setSuccessMessage(true)
+    }
+  };
+ 
+
+  if (isLoading || clientLoading || updatingUser || registeringClient || updatingClient) {
+    return (
+      <div className="main-content-loading">
+        <CircularProgress />
+        <p className="loading">Loading Information...</p>
+        <div className="space" />
+      </div>
+    );
+  }
 
   return (
-    <div className="client-info-container">
-      <h2>Bienvenido {username}</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group-cf">
-          <label>Nombre:</label>
-          <input
-            type="text"
-            name="nombre"
-            value={formData.nombre}
-            onChange={handleChange}
-            placeholder="Nombre completo"
-          />
-        </div>
-        <div className="form-group-cf">
-          <label>Correo:</label>
-          <input
-            type="email"
-            name="correo"
-            value={formData.correo}
-            onChange={handleChange}
-            placeholder="Correo electrónico"
-          />
-        </div>
-        <div className="form-group-cf">
-          <label>Teléfono:</label>
-          <input
-            type="text"
-            name="telefono"
-            value={formData.telefono}
-            onChange={handleChange}
-            placeholder="Número de teléfono"
-          />
-        </div>
-        <div className="form-group-cf">
-          <label>NIT:</label>
-          <input
-            type="text"
-            name="nit"
-            value={formData.nit}
-            onChange={handleChange}
-            placeholder="NIT"
-          />
-        </div>
-        <div className="form-group-cf">
-          <label>Dirección:</label>
-          <input
-            type="text"
-            name="direccion"
-            value={formData.direccion}
-            onChange={handleChange}
-            placeholder="Dirección de entrega"
-          />
-        </div>
-        <div className="button-container-cf">
-          <button type="submit">Actualizar</button>
-        </div>
-      </form>
+    <div className="client-page">  
+      <div className="user-info-container">
+
+        {!showAdditionalForm && (
+          <>
+           <h2>Bienvenido, {username}</h2>
+            <form className="form-unit-client" onSubmit={handleSubmit2}>
+              <div className="form-group-cf">
+                <label>Usuario:</label>
+                <input
+                  type="text"
+                  name="username"
+                  value={formData2.username}
+                  onChange={handleChange2}
+                  placeholder="Username"
+                />
+              </div>
+              <div className="form-group-cf">
+                <label>Correo:</label>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData2.email}
+                  onChange={handleChange2}
+                  placeholder="Email"
+                />
+              </div>
+              <button type="submit">Actualizar</button>
+            </form>
+            <p>Usuario desde <strong>{formData2.created_at.slice(0, 10)}</strong></p>
+
+            {(client !== null) ? (
+              <>
+                <p>¡Encuentra tu información como cliente!{' '}</p>
+                <button onClick={() => setShowAdditionalForm(true)}>Haz click aquí</button>
+              
+              </>
+            ) : (
+              <>
+                <p>¿Quieres volverte un cliente frecuente?{' '}</p>
+                <button onClick={() => setShowAdditionalForm(true)}>Haz click aquí</button>
+              </>
+            )}
+          </>
+        )}
+
+        {(showAdditionalForm) && (
+          <div className="client-info-container">
+            <h2>Mi información</h2>
+            <form onSubmit={handleSubmit}>
+              <div className="form-group-cf">
+                <label>Nombre:</label>
+                <input
+                  type="text"
+                  name="nombre"
+                  value={formData.nombre}
+                  onChange={handleChange}
+                  placeholder="Nombre Completo"
+                />
+              </div>
+              <div className="form-group-cf">
+                <label>Teléfono:</label>
+                <input
+                  type="text"
+                  name="telefono"
+                  value={formData.telefono}
+                  onChange={handleChange}
+                  placeholder="Número de Teléfono"
+                />
+              </div>
+              <div className="form-group-cf">
+                <label>NIT:</label>
+                <input
+                  type="text"
+                  name="nit"
+                  value={formData.nit}
+                  onChange={handleChange}
+                  placeholder="NIT"
+                />
+              </div>
+              <div className="form-group-cf">
+                <label>Dirección:</label>
+                <input
+                  type="text"
+                  name="direccion"
+                  value={formData.direccion}
+                  onChange={handleChange}
+                  placeholder="Dirrección de Envio"
+                />
+              </div>
+              
+              <div className='button-section-2'>
+                <button type="button" onClick={() => setShowAdditionalForm(false)}>Regresar</button>
+                {(client !== null) ? (
+                  <>
+                    <button type="submit">Actualizar</button>
+                  </>
+                ) : (
+                  <>
+                    <button type="submit">Crear Información</button>
+                  </>
+                )}
+              </div>
+            </form>
+          </div>
+        )}
+      </div>
+      <StateCard message={"Información Actualizada Correctamente"} isOpen={!!successMessage} type={1}></StateCard>
     </div>
   );
 };

@@ -25,7 +25,7 @@ export async function fetchTypeId(tipo) {
 }
 
 // 2. crear producto
-export async function createProduct(nombre, descripcion, tipo_producto) {
+export async function createProduct(nombre, descripcion, tipo_producto, marca, modelo, material, capacidad_min, capacidad_max, precio, disponibilidad) {
   let typeId = null;
     if (tipo_producto) { // nombre del tipo
       typeId = await fetchTypeId(tipo_producto);
@@ -36,7 +36,14 @@ export async function createProduct(nombre, descripcion, tipo_producto) {
   const newProduct = {
     nombre: nombre,
     descripción: descripcion,
-    tipo_producto: typeId 
+    tipo_producto: typeId,
+    marca: marca,
+    modelo: modelo,
+    material: material,
+    capacidad_min: capacidad_min,
+    capacidad_max: capacidad_max,
+    precio: precio,
+    disponibilidad: disponibilidad
   };
 
   try {
