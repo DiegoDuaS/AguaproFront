@@ -1,9 +1,5 @@
 .forms{
-<<<<<<< HEAD
     width: 43rem;
-=======
-    width: auto;
->>>>>>> testing
     height: auto;
     border-radius: 10px;
     display: flex;
@@ -13,10 +9,7 @@
     margin-bottom: 20px;
     margin-top: 20px;
     background-color: #F5F4F1;
-<<<<<<< HEAD
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-=======
->>>>>>> testing
 }
 
 .forms_input{
@@ -31,7 +24,6 @@
     border: 2px solid #acacac;
 }
 
-<<<<<<< HEAD
 .forms_input2{
     padding-top: 10px;
     padding-right: 5px;
@@ -47,8 +39,6 @@
     resize: none;
 }
 
-=======
->>>>>>> testing
 .personalinfo{
     width: 20rem;
     margin-left: 0;
@@ -80,7 +70,6 @@
 }
 
 .labelforms_ser2{
-<<<<<<< HEAD
     padding-left: 20px;
     margin-bottom: 10px;
     font-weight: bold;
@@ -188,7 +177,3 @@
     justify-content: center;
 }
 
-=======
-    padding-left: 55px;
-}
->>>>>>> testing
