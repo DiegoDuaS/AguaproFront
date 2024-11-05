@@ -292,6 +292,14 @@ const optionsProducts = {
             ) : (
               <p className='table-text'>No hay clientes disponibles.</p> // Message when no clients are available
             )}
+            <div className="table4-grid table-row">
+              <p className='table-text'>test</p>
+              <p className='table-text'>test</p>
+            </div>
+            <div className="table4-grid table-row">
+              <p className='table-text'>test</p>
+              <p className='table-text'>test</p>
+            </div>
           </div>
         </div>
       </div>

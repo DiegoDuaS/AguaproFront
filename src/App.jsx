@@ -71,12 +71,14 @@ const { role, loading, error } = useUserRole(userId);
     if (!token) {
       setActivePage('Login');
     } else {
+      console.log("hay token");
       const isValid = await validateToken(token);
       if (isValid && role === 'admin') {
         setActivePage('AdminPage');
       } else if (isValid) {
         setIsUserMenuOpen(true);
       } else {
+        console.log("Token no valido");
         setActivePage('Login');
       }
     }

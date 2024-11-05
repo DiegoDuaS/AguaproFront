@@ -7,7 +7,6 @@ import { BiError } from "react-icons/bi";
 import searchIcon from './../../image/searchIcon.png';
 import './products.css';
 
-
 const BombasAgua = ({cartItems, setCartItems, setSuccessMessage }) => {
   const [isLargeCardOpen, setIsLargeCardOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
