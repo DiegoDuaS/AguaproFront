@@ -14,22 +14,6 @@ describe('InfoProdCard', () => {
         disponibilidad: 50,
         marca: 'Brand X',
         material: 'Plastic',
-        profundidad: 20,
-        temperatura_liquida_max: 80,
-        conexion_tuberia: 'Standard',
-        presion_funcional: 10,
-        head: 5,
-        aplicaciones: 'Application X',
-        temperatura_media: 60,
-        min_gpm: 1,
-        max_gpm: 5,
-        min_hp: 1,
-        max_hp: 3,
-        capacitor: 'Capacitor A',
-        temperatura_liquida_min: 5,
-        temperatura_ambiente: 25,
-        presion: 15,
-        flow_rate: 2,
     };
 
     beforeEach(() => {

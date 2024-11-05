@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import DeleteCard from '../cards/deleteCard'; // Adjust the import according to your file structure
+import HideCard from '../cards/hideCard';
 import '@testing-library/jest-dom'
 
 describe('DeleteCard', () => {
@@ -21,7 +21,7 @@ describe('DeleteCard', () => {
 
     test('renders correctly when open', () => {
         render(
-            <DeleteCard
+            <HideCard
                 isOpen={true}
                 closeCard={closeCardMock}
                 product={mockProduct}
@@ -31,7 +31,7 @@ describe('DeleteCard', () => {
             />
         );
 
-        expect(screen.getByText(`¿Seguro que quieres borrar '${mockProduct.nombre}'?`)).toBeInTheDocument();
+        expect(screen.getByText(`¿Seguro que quieres ocultar '${mockProduct.nombre}'?`)).toBeInTheDocument();
         expect(screen.getByText('Si')).toBeInTheDocument();
         expect(screen.getByText('No')).toBeInTheDocument();
     });
@@ -50,7 +50,7 @@ describe('DeleteCard', () => {
 
         fireEvent.click(screen.getByText('Si'));
         
-        expect(screen.getByText('Escribe el nombre del producto para eliminarlo:')).toBeInTheDocument();
+        expect(screen.getByText('Escribe el nombre del producto para ocultarlo:')).toBeInTheDocument();
     });
 
     test('deletes product when correct name is provided', async () => {
