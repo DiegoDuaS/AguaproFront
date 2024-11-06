@@ -3,8 +3,8 @@ import './index.css';
 import menuIcon from './image/menuIcon.png';
 import Header from './components/headers/header';
 import BombasAgua from './pages/products/bombasagua';
-import Mantenimiento from './pages/services/mantenimiento';
-import Perforacion from './pages/services/perforacion';
+import NuestrosServicios from './pages/services/nuestrosservicios';
+import QuienesSomos from './pages/services/quienessomos';
 import CustomNav from './components/CustomNav.jsx';
 import Cart from './components/cart';
 import UserMenu from './components/UserMenu';
@@ -17,7 +17,7 @@ import { AuthProvider } from './hooks/authProvider.jsx';
 import validateToken from './hooks/Auth';
 import useUserRole from './hooks/useUserRole';
 import StateCard from './components/cards/stateCard.jsx';
-import { AiOutlineConsoleSql } from 'react-icons/ai';
+import ScrollToTop from "react-scroll-to-top";
 
 function App() {
   const [activePage, setActivePage] = useState(null); // Estado inicial para la página activa
@@ -38,7 +38,7 @@ function App() {
   useEffect(() => {
     const storedPage = localStorage.getItem('activePage'); // Obtener la página almacenada
     if (storedPage) {
-      setActivePage(storedPage); // Establecer la página almacenada como activa
+      setActivePage(storedPage); 
     } else {
       setActivePage('Bombas de agua'); // Página por defecto si no hay ninguna en localStorage
     }
@@ -68,18 +68,14 @@ const { role, loading, error } = useUserRole(userId);
 
   const navigateToLogin = async () => {
     const token = localStorage.getItem('token');
-    console.log(token);
-    console.log(role);
     if (!token) {
       setActivePage('Login');
     } else {
       console.log("hay token");
       const isValid = await validateToken(token);
       if (isValid && role === 'admin') {
-        console.log("Es admin");
         setActivePage('AdminPage');
       } else if (isValid) {
-        console.log("No es admin");
         setIsUserMenuOpen(true);
       } else {
         console.log("Token no valido");
@@ -135,6 +131,10 @@ const { role, loading, error } = useUserRole(userId);
  
   return (
     <AuthProvider> 
+      <ScrollToTop smooth 
+            color='#00668C'
+            viewBox='0 0 400 300'
+            className='scroll'/>
       {activePage === 'Login' && (
         <LoginPage onRouteChange={setActivePage} />
       )}
@@ -159,6 +159,7 @@ const { role, loading, error } = useUserRole(userId);
       {activePage !== 'RegisterPage' && activePage !== 'CheckoutPage' && activePage !== 'Login' && activePage !== 'AdminPage' && (
         <>
           <Header toggleCart={toggleCart} navigateToLogin={navigateToLogin} cantItemscart={cartItems.length}/>
+          <StateCard message={successMessage} isOpen={!!successMessage} type={3}/>
           <div className="fixed-section">
             <img
               style={{ top: '20px', height: '20px', width: '30px', cursor: 'pointer' }}
@@ -169,14 +170,14 @@ const { role, loading, error } = useUserRole(userId);
             <CustomNav
               items={[
                 { name: 'Productos', subItems: ['Bombas de agua'] },
-                { name: 'Servicios', subItems: ['Perforación de Pozos', 'Mantenimiento de Pozos'] },
+                { name: 'Sobre Nosotros', subItems: ['Quienes Somos', 'Nuestros Servicios'] }
               ]}
               onOptionSelect={handleOptionSelect}
               isOpen={isSidebarOpen}
               setIsSidebarOpen={setIsSidebarOpen}
               setActivePage={setActivePage}
             />
-            <StateCard message={successMessage} isOpen={!!successMessage} type={3}/>
+            
           </div>
           
           {isCartOpen && (
@@ -193,8 +194,8 @@ const { role, loading, error } = useUserRole(userId);
               cartItems={cartItems}
               setCartItems={setCartItems}
               setSuccessMessage={setSuccessMessage}/>}
-          {activePage === 'Perforación de Pozos' && <Perforacion />}
-          {activePage === 'Mantenimiento de Pozos' && <Mantenimiento />}
+          {activePage === 'Quienes Somos' && <QuienesSomos />}
+          {activePage === 'Nuestros Servicios' && <NuestrosServicios />}
           {activePage === 'ClientInfoPage' && (<ClientInfoPage onRouteChange={setActivePage}/>)}
         </>
       )}

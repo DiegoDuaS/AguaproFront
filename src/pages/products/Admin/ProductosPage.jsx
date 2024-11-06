@@ -1,27 +1,27 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import './admin.css';
-import FilterSection from './FilterSectionProductos';
+import FilterSection from './Filtros/FilterSectionProductos';
 import searchIcon from './../../../image/searchIcon.png';
 import { CircularProgress } from '@mui/material';
 import useApiP from '../../../hooks/useAPIProducts';
 import { CiEdit } from "react-icons/ci";
 import { BiError } from "react-icons/bi";
-import { FaTrash } from "react-icons/fa6";
 import { IoMdAdd } from "react-icons/io";
 import InfoProdCard from '../../../components/cards/infoProdCard';
 import EditProdCard from '../../../components/cards/EditProdCard';
 import NewProdCard from '../../../components/cards/NewProdCard';
 import StateCard from '../../../components/cards/stateCard';
-import DeleteCard from '../../../components/cards/deleteCard';
+import HideCard from '../../../components/cards/hideCard';
 import MoreCard from '../../../components/cards/moreCard';
 import { FaFilter } from 'react-icons/fa';
+import { FaCircleCheck } from "react-icons/fa6";
 
 const ProductosPage = () => {
   const { data: productos, errorMessage, isLoading, refetch } = useApiP('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/catalogo');
   const [isInformationCardOpen, setIsInformationCardOpen] = useState(false);
   const [isNewCardOpen, setIsNewCardOpen] = useState(false);
   const [isEditCardOpen, setIsEditCardOpen] = useState(false);
-  const [isDeleteCardOpen, setIsDeleteCardOpen] = useState(false);
+  const [IsHideCardOpen, setIsHideCardOpen] = useState(false);
   const [isMoreCardOpen, setIsMoreCardOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [successMessage, setSuccessMessage] = useState('');
@@ -31,8 +31,16 @@ const ProductosPage = () => {
   const [isSearchActive, setIsSearchActive] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [filterAvailability, setFilterAvailability] = useState('');
+  const [filterVisibility, setFilterVisibility] = useState('');
   const [sortOrder, setSortOrder] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
 
+
+  const handlePageChange = (newPage) => {
+    if (newPage >= 1 && newPage <= totalPages) {
+      setCurrentPage(newPage);
+    }
+  };
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -79,8 +87,8 @@ const ProductosPage = () => {
       case 'new':
         setIsNewCardOpen(true);
         break;
-      case 'delete':
-        setIsDeleteCardOpen(true);
+      case 'hide':
+        setIsHideCardOpen(true);
         break;
       case 'more':
         setIsMoreCardOpen(true);
@@ -100,8 +108,8 @@ const ProductosPage = () => {
       case 'new':
         setIsNewCardOpen(false);
         break;
-      case 'delete':
-        setIsDeleteCardOpen(false);
+      case 'hide':
+        setIsHideCardOpen(false);
         break;
       case 'more':
         setIsMoreCardOpen(false);
@@ -121,17 +129,26 @@ const ProductosPage = () => {
   const handleSortChange = (order) => {
     setSortOrder(order);
   };
+  
+  
   const filteredAndSortedProducts = useCallback(() => {
     let result = isSearchActive ? searchResults : productos;
-
-    // Apply availability filter
+  
+    // Aplicar filtro de visibilidad
+    if (filterVisibility) {
+      result = result.filter(producto => 
+        filterVisibility === 'hidden' ? producto.estado === 'oculto' : producto.estado === 'en venta'
+      );
+    }
+  
+    // Aplicar filtro de disponibilidad
     if (filterAvailability) {
       result = result.filter(producto => 
         filterAvailability === 'available' ? producto.disponibilidad > 0 : producto.disponibilidad === 0
       );
     }
-
-    // Apply sorting
+  
+    // Aplicar ordenamiento
     if (sortOrder) {
       result.sort((a, b) => {
         if (sortOrder === 'asc') {
@@ -141,11 +158,21 @@ const ProductosPage = () => {
         }
       });
     }
-
+  
     return result;
-  }, [isSearchActive, searchResults, productos, filterAvailability, sortOrder]);
+  }, [isSearchActive, searchResults, productos, filterAvailability, filterVisibility, sortOrder]);
+  
+  const handleVisibilityChange = (e) => {
+    setFilterVisibility(e.target.value);
+  };
 
+  
   const productsToDisplay = filteredAndSortedProducts();
+
+  const totalPages = Math.ceil(productsToDisplay.length / 10);
+  const startIndex = (currentPage - 1) * 10;
+  const endIndex = startIndex + 10;
+  const productosEnPagina = productsToDisplay.slice(startIndex, endIndex);
 
   if (isLoading) {
     return (
@@ -187,6 +214,7 @@ const ProductosPage = () => {
             onKeyPress={handleKeyPress}
           />
           <button className="search-btn" onClick={handleSearch}>
+
             <img src={searchIcon} alt="Search" />
           </button>
         </div>
@@ -226,13 +254,16 @@ const ProductosPage = () => {
         <button className='addbutton' onClick={() => openCard('new')}> Agregar Producto +</button>
       </div>
       <FilterSection 
-            isFilterOpen={isFilterOpen}
-            toggleFilter={toggleFilter}
-            filterAvailability={filterAvailability}
-            handleFilterChange={handleFilterChange}
-            sortOrder={sortOrder}
-            handleSortChange={handleSortChange}
-          />
+          isFilterOpen={isFilterOpen}
+          toggleFilter={toggleFilter}
+          filterAvailability={filterAvailability}
+          handleFilterChange={handleFilterChange}
+          filterVisibility={filterVisibility}
+          handleVisibilityChange={handleVisibilityChange}
+          sortOrder={sortOrder}
+          handleSortChange={handleSortChange}
+        />
+      
       <div className="table">
         <div className="table3-grid table-header">
           <h3></h3>
@@ -245,22 +276,43 @@ const ProductosPage = () => {
           <h3>Mas Información</h3>
           <h3>Editar</h3>
         </div>
-        {productsToDisplay.map((producto) => (
-          <div className="table3-grid table-row" key={producto.id_producto}>
-            <FaTrash color='#00668C' className='trash_icon' onClick={() => openCard('delete', producto)} />
-            <p className='table-text'>#{producto.id_producto}</p>
-            <p className='table-text'>{producto.nombre}</p>
-            <p className='table-text descriptionprod'>{producto.descripción}</p>
-            <p className='table-text'>Q.{producto.precio}</p>
-            <div className='units_sec'>
-              <p className='table-text'>{producto.disponibilidad} Unidades</p>
-              <IoMdAdd color='#00668C'className='add_more_prod_icon'onClick={() => openCard('more', producto)}/>
+        {productosEnPagina.map((producto) => {
+          const iconColor = producto.estado !== "en venta" ? '#808080' : '#00668C';
+
+          return(
+            <div className="table3-grid table-row" key={producto.id_producto}>
+              <FaCircleCheck color={iconColor} className='trash_icon' onClick={() => openCard('hide', producto)} />
+              <p className='table-text'>#{producto.id_producto}</p>
+              <p className='table-text'>{producto.nombre}</p>
+              <p className='table-text descriptionprod'>{producto.descripción}</p>
+              <p className='table-text'>Q.{producto.precio !== null ? producto.precio.toFixed(2) : "N/A"}</p>
+              <div className='units_sec'>
+                <p className='table-text'>{producto.disponibilidad} Unidades</p>
+                <IoMdAdd color='#00668C'className='add_more_prod_icon'onClick={() => openCard('more', producto)}/>
+              </div>
+              <p className='table-text'>{producto.marca}</p>
+              <button className='more-edit' onClick={() => openCard('info', producto)}>...</button>
+              <button className='more-edit' onClick={() => openCard('edit', producto)}><CiEdit size={25}/></button>
             </div>
-            <p className='table-text'>{producto.marca}</p>
-            <button className='more-edit' onClick={() => openCard('info', producto)}>...</button>
-            <button className='more-edit' onClick={() => openCard('edit', producto)}><CiEdit size={25}/></button>
-          </div>
-        ))}
+          )
+      })}
+      </div>
+      <div className="pagination-controls">
+        <div className='change-page'>
+          <button 
+            onClick={() => handlePageChange(currentPage - 1)} 
+            disabled={currentPage === 1}
+          >
+            Anterior
+          </button>
+          <span>Página {currentPage} de {totalPages}</span>
+          <button 
+            onClick={() => handlePageChange(currentPage + 1)} 
+            disabled={currentPage === totalPages}
+          >
+            Siguiente
+          </button>
+        </div>
       </div>
       {selectedProduct && isInformationCardOpen && (
         <InfoProdCard
@@ -288,10 +340,10 @@ const ProductosPage = () => {
           setErrorMessage={setErrorMessageState}
         />
       )}
-      {isDeleteCardOpen && (
-        <DeleteCard
-          isOpen={isDeleteCardOpen}
-          closeCard={() => closeCard('delete')}
+      {IsHideCardOpen && (
+        <HideCard
+          isOpen={IsHideCardOpen}
+          closeCard={() => closeCard('hide')}
           product={selectedProduct}
           setSuccsessMessage={setSuccessMessage}
           setErrorMessage={setErrorMessageState}
@@ -303,6 +355,9 @@ const ProductosPage = () => {
           isOpen={isMoreCardOpen}
           closeCard={() => closeCard('more')}
           product={selectedProduct}
+          setSuccsessMessage={setSuccessMessage}
+          setErrorMessage={setErrorMessageState}
+          refetchProducts={refetch}
         />
       )}
       <StateCard message={successMessage} isOpen={!!successMessage} type={1}/>

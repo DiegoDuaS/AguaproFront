@@ -8,7 +8,7 @@ const useUpdateProduct = (url) => {
     setErrorMessage(null);
 
     try {
-      const response = await fetch(`${url}/${productId}`, {
+      const response = await fetch(`${url}/productos/${productId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

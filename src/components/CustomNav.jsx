@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from 'prop-types';
-import './CustomNav.css'
-import menuIcon from '../image/menuIcon.png';
+import './CustomNav.css';
 
 const CustomNav = ({ items, onOptionSelect, isOpen, setIsSidebarOpen, setActivePage }) => {
   const [selectedOption, setSelectedOption] = React.useState(null); 
@@ -12,7 +11,7 @@ const CustomNav = ({ items, onOptionSelect, isOpen, setIsSidebarOpen, setActiveP
     } else {
       setSelectedOption(option); // Open the dropdown for the clicked option
     }
-    if (option.name === "Servicios" || option.name === "Productos") {
+    if (option.name === "Sobre Nosotros" || option.name === "Productos") {
       setIsSidebarOpen(true); // Open the sidebar if "Servicios" or "Productos" are clicked
     } else {
       setIsSidebarOpen(false); // Close the sidebar for other options
@@ -22,17 +21,21 @@ const CustomNav = ({ items, onOptionSelect, isOpen, setIsSidebarOpen, setActiveP
   const handleSubMenuClick = (subItem) => {
     onOptionSelect(subItem);
     setIsSidebarOpen(false); // Close the sidebar when a submenu item is clicked
+    isOpen(false)
   };
-
-const sidebarHeight = selectedOption && selectedOption.subItems ? selectedOption.subItems.length * 43 + 120 : 120;
 
   return (
     <nav className="navbar-menu" style={{ width: isOpen ? 250 : 0 }}>
       <ul className="navbar__list" style={{ display: isOpen ? "block" : "none" }}>
         {items.map((item, index) => (
-          <div className="navbar__li-box"  key={index}>
-            <li className="navbar__li" >
-              <div onClick={() => handleOptionClick(item)}>{item.name}</div>
+          <div
+            className={`navbar__li-box ${
+              index === 1 && selectedOption?.name === "Productos" ? "second-item-moved" : ""
+            }`}
+            key={index}
+          >
+            <li className="navbar__li" onClick={() => handleOptionClick(item)}>
+              {item.name}
               {selectedOption === item && isOpen && item.subItems && (
                 <ul className={`submenu ${selectedOption.name === item.name ? 'open' : ''}`}>
                   {item.subItems.map((subItem, subIndex) => (
@@ -58,7 +61,8 @@ CustomNav.propTypes = {
     })
   ).isRequired,
   onOptionSelect: PropTypes.func.isRequired,
-  isOpen: PropTypes.bool.isRequired,
+  isOpen: PropTypes.func.isRequired,
 };
 
 export default CustomNav;
+

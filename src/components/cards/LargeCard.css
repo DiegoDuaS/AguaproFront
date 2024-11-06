@@ -96,10 +96,10 @@
   height: 250px;
   background-color: white;
   border-radius: 10px;
-  overflow-y: scroll;
   text-align: left;
   padding-top: 15px;
   padding-bottom: 20px;
+  overflow-y: auto;
 }
 
 .infobox::-webkit-scrollbar {

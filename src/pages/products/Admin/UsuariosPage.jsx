@@ -10,7 +10,7 @@ import EditUserCard from '../../../components/cards/editUsercard';
 import { BiError } from "react-icons/bi";
 import { FaTrash } from "react-icons/fa6";
 import { CiEdit } from "react-icons/ci";
-import FilterSectionUsuarios from './FilterSectionUsuarios';
+import FilterSectionUsuarios from './Filtros/FilterSectionUsuarios';
 import { FaFilter } from 'react-icons/fa';
 
 
@@ -30,6 +30,13 @@ const UsuariosPage = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [filterRole, setFilterRole] = useState('');
   const [sortOrder, setSortOrder] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const handlePageChange = (newPage) => {
+    if (newPage >= 1 && newPage <= totalPages) {
+      setCurrentPage(newPage);
+    }
+  };
 
   const openNewCard = () => {
     setisNewCardOpen(true);
@@ -140,6 +147,13 @@ const UsuariosPage = () => {
   }, [isSearchActive, searchResults, usuarios, filterRole, sortOrder]);
 
   const usuariosToDisplay = filteredAndSortedUsers();
+
+  const totalPages = Math.ceil(usuariosToDisplay.length / 10);
+  const startIndex = (currentPage - 1) * 10;
+  const endIndex = startIndex + 10;
+
+  const usersEnPagina = usuariosToDisplay.slice(startIndex, endIndex);
+
   if (isLoading) {
     return (
       <div className="container">
@@ -235,7 +249,7 @@ const UsuariosPage = () => {
             <h3>Fecha de Creación</h3>
             <h3>Editar</h3>
           </div>
-          {usuariosToDisplay.map((usuario, index) => {
+          {usersEnPagina.map((usuario, index) => {
             const iconColor = storedUser.id !== usuario.id ? '#00668C' : '#FF0000';
             const iconClass = storedUser.id !== usuario.id ? 'trash_icon' : 'trash_icon_undelteable';
             const handleClick = storedUser.id !== usuario.id ? () => openDeleteCard(usuario) : null;
@@ -258,6 +272,23 @@ const UsuariosPage = () => {
               </div>
             );
           })}
+        </div>
+        <div className="pagination-controls">
+          <div className='change-page'>
+            <button 
+              onClick={() => handlePageChange(currentPage - 1)} 
+              disabled={currentPage === 1}
+            >
+              Anterior
+            </button>
+            <span>Página {currentPage} de {totalPages}</span>
+            <button 
+              onClick={() => handlePageChange(currentPage + 1)} 
+              disabled={currentPage === totalPages}
+            >
+              Siguiente
+            </button>
+          </div>
         </div>
       </div>
       {isNewCardOpen && (
@@ -287,6 +318,7 @@ const UsuariosPage = () => {
           isOpen={isEditCardOpen}
           closeCard={closeEditCard}
           user={selectedUser}
+          refetchUsers={refetch}
         />
       )}
       <StateCard message={successMessage} isOpen={!!successMessage} type={1}/>

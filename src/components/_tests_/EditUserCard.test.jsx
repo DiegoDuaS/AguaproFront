@@ -8,6 +8,8 @@ describe('EditUserCard', () => {
     const mockUser = {
         id: 1,
         username: 'TestUser',
+        email: 'testuser@example.com',
+        role: 'admin',
     };
 
     beforeEach(() => {
@@ -20,11 +22,15 @@ describe('EditUserCard', () => {
                 isOpen={true}
                 closeCard={closeCardMock}
                 user={mockUser}
+                refetchUsers={jest.fn()}
             />
         );
 
-        expect(screen.getByText('prueba')).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: /X/i })).toBeInTheDocument();
+        expect(screen.getByText('TestUser - #1')).toBeInTheDocument(); // Check that username and id are displayed
+        expect(screen.getByRole('button', { name: /X/i })).toBeInTheDocument(); // Check that the close button is displayed
+        expect(screen.getByPlaceholderText('testuser@example.com')).toBeInTheDocument(); // Check the email placeholder
+        expect(screen.getByPlaceholderText('TestUser')).toBeInTheDocument(); // Check the username placeholder
+        expect(screen.getByPlaceholderText('admin')).toBeInTheDocument(); // Check the role placeholder
     });
 
     test('does not render when isOpen is false', () => {
@@ -33,6 +39,7 @@ describe('EditUserCard', () => {
                 isOpen={false}
                 closeCard={closeCardMock}
                 user={mockUser}
+                refetchUsers={jest.fn()}
             />
         );
 
@@ -45,6 +52,7 @@ describe('EditUserCard', () => {
                 isOpen={true}
                 closeCard={closeCardMock}
                 user={mockUser}
+                refetchUsers={jest.fn()}
             />
         );
 
@@ -53,3 +61,4 @@ describe('EditUserCard', () => {
         expect(closeCardMock).toHaveBeenCalled(); // Verify that closeCard was called
     });
 });
+

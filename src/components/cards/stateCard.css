@@ -12,7 +12,7 @@
     display: flex;
     align-items: center;
     transition: right 0.7s ease-in-out;
-    z-index: 1000; /* Asegura que esté sobre otros elementos */
+    z-index: 1100; /* Asegura que esté sobre otros elementos */
     justify-content: center;
   }
   

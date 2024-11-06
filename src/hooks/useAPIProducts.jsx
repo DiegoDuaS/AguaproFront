@@ -18,6 +18,7 @@ const useApiP = (url) => {
           setErrorMessage(null);
         } else {
           setErrorMessage('Respuesta inesperada del servidor.');
+          console.log("Error", errorMessage)
         }
       } else {
         setErrorMessage(`Error al obtener datos: ${response.status}`);

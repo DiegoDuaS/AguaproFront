@@ -3,7 +3,6 @@ import './cart.css'; // Import your CSS file
 import { IoCartOutline } from "react-icons/io5";
 
 const Cart = ({ cartItems, updateCartItem, removeCartItem, closeCart, checkout }) => {
- console.log('Cart items:', cartItems);
  const [total, setTotal] = useState(0);
  const cartRef = useRef(null);
  
@@ -26,7 +25,7 @@ const Cart = ({ cartItems, updateCartItem, removeCartItem, closeCart, checkout }
     };
   }, []);
 
-
+  console.log(cartItems);
   return (
     <div className="cart" ref={cartRef}>
       <h3>Carrito</h3>
@@ -40,7 +39,7 @@ const Cart = ({ cartItems, updateCartItem, removeCartItem, closeCart, checkout }
           <div className="cart-items">
             {cartItems.map((item) => (
               <div key={item.id_producto} className="cart-item">
-                <img src={item.imagen} alt={item.nombre} className="cart-item-image" />
+                <img src={item.image} alt={item.nombre} className="cart-item-image" />
                 <div className="cart-item-details">
                   <p>{item.nombre}</p>
                   <p>Q.{item.precio !== undefined ? parseFloat(item.precio* item.quantity).toFixed(2) : '0.00'}</p>

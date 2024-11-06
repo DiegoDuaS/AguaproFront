@@ -7,6 +7,7 @@
     transform: translate(-50%, -50%);
     width: 90%;
     max-width: 900px;
+    max-height: 500px;
     height:auto;
     background-color: #F5F4F1;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -17,6 +18,7 @@
     margin-top: 20px;
     color: #000000;
     align-items: center;
+    overflow-y: auto;
   }
 
   .text {
@@ -49,7 +51,7 @@
     border-radius: 4px;
     color: #000000;
     font-size: 15px;
-    border-color: rgb(192, 192, 192);
+    border-color: 2px solid rgb(192, 192, 192);
     
   }
 
@@ -60,7 +62,7 @@
     border-radius: 4px;
     color: #000000;
     font-size: 15px;
-    border-color: rgb(192, 192, 192);
+    border-color: 2px solid rgb(192, 192, 192);
     
   }
 
@@ -71,7 +73,7 @@
     border-radius: 4px;
     color: #000000;
     font-size: 15px;
-    border-color: rgb(192, 192, 192);
+    border-color: 2px solid rgb(192, 192, 192);
   }
 
   .writer2{
@@ -81,7 +83,7 @@
     border-radius: 4px;
     color: #000000;
     font-size: 15px;
-    border-color: rgb(192, 192, 192);
+    border-color: 2px solid rgb(192, 192, 192);
   }
 
   .past-description{
@@ -121,5 +123,31 @@
 
   .space2{
     height: 25px;
+  }
+
+  .img_prod_new{
+    width: 35%;
+    height: 25%;
+    border-radius: 10px;
+    margin-top: 20px;
+  }
+
+  .large-card-newprod::-webkit-scrollbar {
+    width: 12px;/* Ancho de la scrollbar vertical */
+  }
+  
+  .large-card-newprod::-webkit-scrollbar-track {
+    background: #D9D9D9; /* Color del fondo de la pista */
+    border-radius: 10px;
+  }
+  
+  .large-card-newprod::-webkit-scrollbar-thumb {
+    background: #00668C; /* Color del pulgar */
+    border-radius: 10px;
+    max-height: 10px;
+  }
+  
+  .large-card-newprod::-webkit-scrollbar-thumb:hover {
+    background: #00668C; /* Color del pulgar al pasar el mouse */
   }
 

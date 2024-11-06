@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import './admin.css';
-import './filters.css'
+import './Filtros/filters.css'
 import { CiEdit } from "react-icons/ci";
 import searchIcon from './../../../image/searchIcon.png';
 import { CircularProgress } from '@mui/material';
@@ -31,6 +31,7 @@ const PedidosPage = () => {
   const [isFilterOpenEstados, setIsFilterOpenEstados] = useState(false);
   const [isFilterOpenPrecios, setIsFilterOpenPrecios] = useState(false);
   const [sortOrder, setSortOrder] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
 
   const sortPedidos = (pedidosToSort) => {
     if (sortOrder === 'asc') {
@@ -46,6 +47,18 @@ const PedidosPage = () => {
       filterState === '' || pedido.estado === filterState
     )
   );
+
+  const totalPages = Math.ceil(pedidosToDisplay.length / 10);
+  const startIndex = (currentPage - 1) * 10;
+  const endIndex = startIndex + 10;
+
+  const pedidosEnPagina = pedidosToDisplay.slice(startIndex, endIndex);
+
+  const handlePageChange = (newPage) => {
+    if (newPage >= 1 && newPage <= totalPages) {
+      setCurrentPage(newPage);
+    }
+  };
 
   useEffect(() => {
     if (pedidos) {
@@ -304,6 +317,7 @@ const PedidosPage = () => {
       
       <StateCard message={successMessage} isOpen={!!successMessage} type={1}/>
       <StateCard message={errorMessageState} isOpen={!!errorMessageState} type={2}/>
+    
       <div className="table">
         <div className="table-grid table-header">
           <h3>Pedido Id</h3>
@@ -315,12 +329,14 @@ const PedidosPage = () => {
           <h3>Productos</h3>
           <h3>Estado</h3>
         </div>
-        {pedidosToDisplay.map((pedido) => (
+
+        
+        {pedidosEnPagina.map((pedido) => (
           <div className="table-grid table-row" key={pedido.id_pedido}>
             <p className='table-text'>#{pedido.id_pedido}</p>
             <p className='table-text'>{pedido.cliente}</p>
             <p className='table-text'>{pedido.nit_empresa}</p>
-            <p className='table-text'>Q.{pedido.monto_total}</p>
+            <p className='table-text'>Q.{pedido.monto_total.toFixed(2)}</p>
             {pedido.estatus >= 3 ? (
               <p className='table-text'>{pedido.direccion}</p>
             ) : (
@@ -339,7 +355,7 @@ const PedidosPage = () => {
               />
             )}
             <p className='table-text'>
-              {['N/A', '5%', '10%', '15%', '20%', '25%'][pedido.id_descuento] || 'Otro tipo de descuento'}
+              {['N/A', '5%', '10%', '15%', '20%', '25%'][pedido.id_descuento] || '0%'}
             </p>
             <button 
               className='more-edit'
@@ -368,7 +384,24 @@ const PedidosPage = () => {
             </select>
           </div>
         ))}
-        
+
+      </div>
+      <div className="pagination-controls">
+        <div className='change-page'>
+          <button 
+            onClick={() => handlePageChange(currentPage - 1)} 
+            disabled={currentPage === 1}
+          >
+            Anterior
+          </button>
+          <span>Página {currentPage} de {totalPages}</span>
+          <button 
+            onClick={() => handlePageChange(currentPage + 1)} 
+            disabled={currentPage === totalPages}
+          >
+            Siguiente
+          </button>
+        </div>
       </div>
     </div>
   );

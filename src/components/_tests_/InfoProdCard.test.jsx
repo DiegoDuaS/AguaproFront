@@ -1,7 +1,7 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, act } from '@testing-library/react';
 import InfoProdCard from '../cards/infoProdCard'; // Adjust the path according to your file structure
-import '@testing-library/jest-dom'
+import '@testing-library/jest-dom';
 
 describe('InfoProdCard', () => {
     let closeCardMock;
@@ -9,102 +9,109 @@ describe('InfoProdCard', () => {
         id_producto: 1,
         nombre: 'Test Product',
         descripción: 'This is a test product.',
-        tipo_producto: 'Type A',
+        tipoproducto: 'Type A', // Updated key name
         precio: 100,
         disponibilidad: 50,
         marca: 'Brand X',
         material: 'Plastic',
-        profundidad: 20,
-        temperatura_liquida_max: 80,
-        conexion_tuberia: 'Standard',
-        presion_funcional: 10,
-        head: 5,
-        aplicaciones: 'Application X',
-        temperatura_media: 60,
-        min_gpm: 1,
-        max_gpm: 5,
-        min_hp: 1,
-        max_hp: 3,
-        capacitor: 'Capacitor A',
-        temperatura_liquida_min: 5,
-        temperatura_ambiente: 25,
-        presion: 15,
-        flow_rate: 2,
+        capacidadmin: 10,
+        capacidadmax: 20,
     };
 
     beforeEach(() => {
+        global.fetch = jest.fn(() =>
+            Promise.resolve({
+                ok: true,
+                blob: () => Promise.resolve(new Blob()), // Mock blob response
+            })
+        );
+
+        global.URL.createObjectURL = jest.fn(); // Mock createObjectURL
         closeCardMock = jest.fn(); // Create a mock function for closeCard
     });
 
-    test('renders correctly when open', () => {
-        render(
-            <InfoProdCard
-                isOpen={true}
-                closeCard={closeCardMock}
-                product={mockProduct}
-            />
-        );
+    afterEach(() => {
+        jest.resetAllMocks(); // Reset mocks after each test
+    });
+
+    test('renders correctly when open', async () => {
+        await act(async () => {
+            render(
+                <InfoProdCard
+                    isOpen={true}
+                    closeCard={closeCardMock}
+                    product={mockProduct}
+                />
+            );
+        });
 
         expect(screen.getByText('Test Product - #1')).toBeInTheDocument();
         expect(screen.getByText('This is a test product.')).toBeInTheDocument();
-        expect(screen.getByText('$100')).toBeInTheDocument();
+        expect(screen.getByText('Type A')).toBeInTheDocument();
+        expect(screen.getByText('Q.100')).toBeInTheDocument(); // Updated price format
         expect(screen.getByText('50 en stock')).toBeInTheDocument();
         expect(screen.getByRole('button', { name: /X/i })).toBeInTheDocument();
     });
 
-    test('does not render when isOpen is false', () => {
-        const { container } = render(
-            <InfoProdCard
-                isOpen={false}
-                closeCard={closeCardMock}
-                product={mockProduct}
-            />
-        );
+    test('does not render when isOpen is false', async () => {
+        const { container } = await act(async () => {
+            return render(
+                <InfoProdCard
+                    isOpen={false}
+                    closeCard={closeCardMock}
+                    product={mockProduct}
+                />
+            );
+        });
 
         expect(container).toBeEmptyDOMElement(); // The component should not render anything
     });
 
-    test('calls closeCard when close button is clicked', () => {
-        render(
-            <InfoProdCard
-                isOpen={true}
-                closeCard={closeCardMock}
-                product={mockProduct}
-            />
-        );
+    test('calls closeCard when close button is clicked', async () => {
+        await act(async () => {
+            render(
+                <InfoProdCard
+                    isOpen={true}
+                    closeCard={closeCardMock}
+                    product={mockProduct}
+                />
+            );
+        });
 
         fireEvent.click(screen.getByRole('button', { name: /X/i })); // Click the close button
-
         expect(closeCardMock).toHaveBeenCalled(); // Verify that closeCard was called
     });
 
-    test('closes when clicking outside the card', () => {
-        render(
-            <InfoProdCard
-                isOpen={true}
-                closeCard={closeCardMock}
-                product={mockProduct}
-            />
-        );
+    test('closes when clicking outside the card', async () => {
+        await act(async () => {
+            render(
+                <InfoProdCard
+                    isOpen={true}
+                    closeCard={closeCardMock}
+                    product={mockProduct}
+                />
+            );
+        });
 
         // Simulate a click outside the card
         fireEvent.mouseDown(document);
-
         expect(closeCardMock).toHaveBeenCalled(); // Verify that closeCard was called
     });
 
-    test('does not close when clicking inside the card', () => {
-        render(
-            <InfoProdCard
-                isOpen={true}
-                closeCard={closeCardMock}
-                product={mockProduct}
-            />
-        );
+    test('does not close when clicking inside the card', async () => {
+        await act(async () => {
+            render(
+                <InfoProdCard
+                    isOpen={true}
+                    closeCard={closeCardMock}
+                    product={mockProduct}
+                />
+            );
+        });
 
         const card = screen.getByText('Test Product - #1');
         fireEvent.mouseDown(card); // Simulate a click inside the card
-
         expect(closeCardMock).not.toHaveBeenCalled(); // Verify that closeCard was not called
     });
 });
+
