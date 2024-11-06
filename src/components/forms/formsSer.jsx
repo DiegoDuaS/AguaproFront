@@ -77,7 +77,7 @@ const FormsSer = ({type, setShowForms, setSuccessMessage, setErrorMessage}) => {
 
     if (type === 1) {
         return (
-            <form onSubmit={handleSubmit} className="forms">
+            <form onSubmit={handleSubmit} className="forms" role="form">
                 <button className="close-butt" onClick={() => setShowForms(false)}>X</button>
                 <div className='inputsect'>
                     <label className='labelforms_ser2'><strong>Nombre Completo</strong></label>
@@ -125,11 +125,12 @@ const FormsSer = ({type, setShowForms, setSuccessMessage, setErrorMessage}) => {
                     />
                 </div>
                 <div className="dropdown-forms">
-                    <label className="labelforms_ser3">Departamento</label>
+                    <label className="labelforms_ser3" htmlFor="departamento">Departamento</label>
                     <select
                         className="dropdown-forms-select"
                         value={departamento}
                         onChange={(e) => setDepartamento(e.target.value)}
+                        id="departamento"
                         required
                     >
                         <option value="">Seleccione una opción</option>
@@ -158,11 +159,12 @@ const FormsSer = ({type, setShowForms, setSuccessMessage, setErrorMessage}) => {
                     </select>
                 </div>
                 <div className="dropdown-forms">
-                    <label className="labelforms_ser3">Tipo de Servicio</label>
+                    <label className="labelforms_ser3" htmlFor="tipo_servicio">Tipo de Servicio</label>
                     <select
                         className="dropdown-forms-select"
                         value={tipoServicio}
                         onChange={(e) => setTipoServicio(e.target.value)}
+                        id="tipo_servicio"
                         required
                     >
                         <option value="">Seleccione una opción</option>

@@ -61,7 +61,7 @@ CustomNav.propTypes = {
     })
   ).isRequired,
   onOptionSelect: PropTypes.func.isRequired,
-  isOpen: PropTypes.bool.isRequired,
+  isOpen: PropTypes.func.isRequired,
 };
 
 export default CustomNav;

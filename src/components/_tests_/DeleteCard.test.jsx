@@ -1,14 +1,15 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import HideCard from '../cards/hideCard';
-import '@testing-library/jest-dom'
+import '@testing-library/jest-dom';
 
-describe('DeleteCard', () => {
+describe('HideCard', () => {
     let closeCardMock, setSuccessMessageMock, setErrorMessageMock, refetchProductsMock;
 
     const mockProduct = {
         id_producto: 1,
         nombre: 'Test Product',
+        estado: "en venta" // Make sure to set the state as per the logic in the component
     };
 
     beforeEach(() => {
@@ -17,6 +18,8 @@ describe('DeleteCard', () => {
         setSuccessMessageMock = jest.fn();
         setErrorMessageMock = jest.fn();
         refetchProductsMock = jest.fn();
+        // Reset the fetch mock before each test
+        global.fetch = jest.fn();
     });
 
     test('renders correctly when open', () => {
@@ -38,7 +41,7 @@ describe('DeleteCard', () => {
 
     test('changes state when "Si" is clicked', () => {
         render(
-            <DeleteCard
+            <HideCard
                 isOpen={true}
                 closeCard={closeCardMock}
                 product={mockProduct}
@@ -53,13 +56,13 @@ describe('DeleteCard', () => {
         expect(screen.getByText('Escribe el nombre del producto para ocultarlo:')).toBeInTheDocument();
     });
 
-    test('deletes product when correct name is provided', async () => {
-        global.fetch = jest.fn().mockResolvedValue({
+    test('hides product when correct name is provided', async () => {
+        global.fetch.mockResolvedValueOnce({
             ok: true,
         });
 
         render(
-            <DeleteCard
+            <HideCard
                 isOpen={true}
                 closeCard={closeCardMock}
                 product={mockProduct}
@@ -74,12 +77,12 @@ describe('DeleteCard', () => {
         // Input the correct product name
         fireEvent.change(screen.getByPlaceholderText('Nombre'), { target: { value: 'Test Product' } });
 
-        // Click the delete button
-        fireEvent.click(screen.getByText('Eliminar'));
+        // Click the hide button
+        fireEvent.click(screen.getByText('Ocultar'));
 
         // Wait for assertions
         await waitFor(() => {
-            expect(setSuccessMessageMock).toHaveBeenCalledWith('Producto eliminado correctamente.');
+            expect(setSuccessMessageMock).toHaveBeenCalledWith('Producto ocultado correctamente.');
             expect(setErrorMessageMock).toHaveBeenCalledWith('');
             expect(refetchProductsMock).toHaveBeenCalled();
             expect(closeCardMock).toHaveBeenCalled();
@@ -88,7 +91,7 @@ describe('DeleteCard', () => {
 
     test('shows error message when the names do not match', async () => {
         render(
-            <DeleteCard
+            <HideCard
                 isOpen={true}
                 closeCard={closeCardMock}
                 product={mockProduct}
@@ -103,8 +106,8 @@ describe('DeleteCard', () => {
         // Input an incorrect product name
         fireEvent.change(screen.getByPlaceholderText('Nombre'), { target: { value: 'Wrong Product' } });
 
-        // Click the delete button
-        fireEvent.click(screen.getByText('Eliminar'));
+        // Click the hide button
+        fireEvent.click(screen.getByText('Ocultar'));
 
         // Wait for assertions
         await waitFor(() => {
@@ -112,13 +115,13 @@ describe('DeleteCard', () => {
         });
     });
 
-    test('handles fetch error during deletion', async () => {
-        global.fetch = jest.fn().mockResolvedValue({
+    test('handles fetch error during hiding', async () => {
+        global.fetch.mockResolvedValueOnce({
             ok: false,
         });
 
         render(
-            <DeleteCard
+            <HideCard
                 isOpen={true}
                 closeCard={closeCardMock}
                 product={mockProduct}
@@ -133,8 +136,8 @@ describe('DeleteCard', () => {
         // Input the correct product name
         fireEvent.change(screen.getByPlaceholderText('Nombre'), { target: { value: 'Test Product' } });
 
-        // Click the delete button
-        fireEvent.click(screen.getByText('Eliminar'));
+        // Click the hide button
+        fireEvent.click(screen.getByText('Ocultar'));
 
         // Wait for assertions
         await waitFor(() => {
@@ -143,3 +146,4 @@ describe('DeleteCard', () => {
         });
     });
 });
+
