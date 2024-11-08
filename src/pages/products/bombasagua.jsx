@@ -6,6 +6,7 @@ import { CircularProgress } from '@mui/material';
 import { BiError } from "react-icons/bi";
 import searchIcon from './../../image/searchIcon.png';
 import './products.css';
+import FilterCatalogo from './FitersCatalogo';
 
 const BombasAgua = ({cartItems, setCartItems, setSuccessMessage }) => {
   const [isLargeCardOpen, setIsLargeCardOpen] = useState(false);
@@ -15,6 +16,14 @@ const BombasAgua = ({cartItems, setCartItems, setSuccessMessage }) => {
   const [loadingImages, setLoadingImages] = useState(false);
   const [imageError, setImageError] = useState(null);
   const imageCache = useRef({});
+  const [searchTerm, setSearchTerm] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const [isSearchActive, setIsSearchActive] = useState(false);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [filterMarca, setFilterMarca] = useState('');
+  const [filterMaterial, setFilterMaterial] = useState('');
+  const [sortOrder, setSortOrder] = useState('');
+  const [sortName, setSortName] = useState('');
 
   useEffect(() => {
     if (productos && productos.length > 0) {
@@ -72,9 +81,6 @@ const BombasAgua = ({cartItems, setCartItems, setSuccessMessage }) => {
     }
   }, [productos]);
 
-  const [searchTerm, setSearchTerm] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
-  const [isSearchActive, setIsSearchActive] = useState(false);
 
   const handleSearch = useCallback(() => {
     const trimmedSearchTerm = searchTerm.trim().toLowerCase();
@@ -133,6 +139,73 @@ const BombasAgua = ({cartItems, setCartItems, setSuccessMessage }) => {
     setSuccessMessage("Tu producto se añadió al carrito")
   };
 
+  const getMarcas = useCallback(() => {
+    if (!productos) return [];
+    return [...new Set(productos.map(p => p.marca))].sort();
+  }, [productos]);
+
+  const getMateriales = useCallback(() => {
+    if (!productos) return [];
+    return [...new Set(productos.map(p => p.material))].sort();
+  }, [productos]);
+
+  const handleMarcaChange = (e) => {
+    setFilterMarca(e.target.value);
+  };
+
+  const handleMaterialChange = (e) => {
+    setFilterMaterial(e.target.value);
+  };
+
+  const handleSortChange = (order) => {
+    setSortOrder(order);
+    setSortName(''); // Reset name sort when price sort is selected
+  };
+
+  const handleNameSort = (order) => {
+    setSortName(order);
+    setSortOrder(''); // Reset price sort when name sort is selected
+  };
+
+  // Filter and sort products
+  const getFilteredProducts = useCallback(() => {
+    let filtered = [...(productos || [])];
+
+    // Apply marca filter
+    if (filterMarca) {
+      filtered = filtered.filter(p => p.marca === filterMarca);
+    }
+
+    // Apply material filter
+    if (filterMaterial) {
+      filtered = filtered.filter(p => p.material === filterMaterial);
+    }
+
+    // Apply price sorting
+    if (sortOrder) {
+      filtered.sort((a, b) => {
+        if (sortOrder === 'asc') {
+          return a.precio - b.precio;
+        } else {
+          return b.precio - a.precio;
+        }
+      });
+    }
+
+    // Apply name sorting
+    if (sortName) {
+      filtered.sort((a, b) => {
+        if (sortName === 'asc') {
+          return a.nombre.localeCompare(b.nombre);
+        } else {
+          return b.nombre.localeCompare(a.nombre);
+        }
+      });
+    }
+
+    return filtered;
+  }, [productos, filterMarca, filterMaterial, sortOrder, sortName]);
+
   if (isLoading || loadingImages) {
     return (
       <main className="main-content-loading">
@@ -176,10 +249,26 @@ const BombasAgua = ({cartItems, setCartItems, setSuccessMessage }) => {
           <img src={searchIcon} alt="Search" />
         </button>
       </div>
+
+      <FilterCatalogo
+        isFilterOpen={isFilterOpen}
+        toggleFilter={() => setIsFilterOpen(!isFilterOpen)}
+        marcas={getMarcas()}
+        materiales={getMateriales()}
+        filterMarca={filterMarca}
+        filterMaterial={filterMaterial}
+        handleMarcaChange={handleMarcaChange}
+        handleMaterialChange={handleMaterialChange}
+        sortOrder={sortOrder}
+        handleSortChange={handleSortChange}
+        sortName={sortName}
+        handleNameSort={handleNameSort}
+      />
+
       <div className='space2' />
 
       <ul className="small-card-list">
-        {productsToDisplay.map(product => (
+        {getFilteredProducts().map(product => (
           <Card
             key={product.id_producto}
             nombre={product.nombre}

@@ -1,0 +1,90 @@
+.filter-sort-section {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+    flex-wrap: wrap;
+    justify-content: flex-start; 
+    width: 100%;
+  }
+
+  
+  .filter-button {
+    display: flex;
+    align-items: left;
+    background-color: #00668C;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-left: 15px;
+  }
+  
+  .filter-button:hover {
+    background-color: #0182b1;
+  }
+  
+  .filter-button svg {
+    margin-right: 5px;
+  }
+  
+  .filter-dropdown {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+  
+  .filter-dropdown select {
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    background-color: white;
+    color: #000000;
+    font-size: 16px;
+  }
+  
+  .filter-dropdown select:focus {
+    outline: none;
+    border-color: #00668C;
+  }
+
+  .sort-controls {
+    display: flex;
+    align-items: center;
+    margin-left: 5px;
+    border: none;
+  }
+
+  .sort-button {
+    display: flex;
+    align-items: center;
+    background-color: #F3F3F4;
+    color: #000000;
+    border: 1px solid #ddd;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-left: 5px;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  .sort-button:hover {
+    background-color: #E0E0E0;
+  }
+  
+  .sort-button.active {
+    background-color: #00668C;
+    color: white;
+  }
+  
+  .sort-button svg {
+    margin-right: 5px;
+  }
+
+  .filter-section {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  
