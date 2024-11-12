@@ -1,90 +1,52 @@
+.filter-button, .filter-dropdown-button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  border: none;
+  font-size: 1rem;
+}
+
+.filter-button:hover, .filter-dropdown-button:hover {
+  background-color: #0056b3;
+}
+
 .filter-sort-section {
-    display: flex;
-    align-items: center;
-    margin-top: 20px;
-    flex-wrap: wrap;
-    justify-content: flex-start; 
-    width: 100%;
-  }
+  position: relative;
+}
 
-  
-  .filter-button {
-    display: flex;
-    align-items: left;
-    background-color: #00668C;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    margin-left: 15px;
-  }
-  
-  .filter-button:hover {
-    background-color: #0182b1;
-  }
-  
-  .filter-button svg {
-    margin-right: 5px;
-  }
-  
-  .filter-dropdown {
-    margin-left: 10px;
-    margin-right: 10px;
-  }
-  
-  .filter-dropdown select {
-    padding: 8px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    background-color: white;
-    color: #000000;
-    font-size: 16px;
-  }
-  
-  .filter-dropdown select:focus {
-    outline: none;
-    border-color: #00668C;
-  }
+.filter-dropdown-content {
+  display: none;
+  position: absolute;
+  left: 0;
+  background-color: white;
+  border: 1px solid #ddd;
+  z-index: 10;
+  min-width: 200px;
+  padding: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease;
+}
 
-  .sort-controls {
-    display: flex;
-    align-items: center;
-    margin-left: 5px;
-    border: none;
-  }
+.filter-dropdown-content.open {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
 
-  .sort-button {
-    display: flex;
-    align-items: center;
-    background-color: #F3F3F4;
-    color: #000000;
-    border: 1px solid #ddd;
-    padding: 8px 12px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    margin-left: 5px;
-    transition: background-color 0.3s, color 0.3s;
-  }
-  
-  .sort-button:hover {
-    background-color: #E0E0E0;
-  }
-  
-  .sort-button.active {
-    background-color: #00668C;
-    color: white;
-  }
-  
-  .sort-button svg {
-    margin-right: 5px;
-  }
+.sort-controls button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 5px 10px;
+  background: none;
+  border: none;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
 
-  .filter-section {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-  }
-  
+.sort-controls button:hover {
+  background-color: #f1f1f1;
+}
+

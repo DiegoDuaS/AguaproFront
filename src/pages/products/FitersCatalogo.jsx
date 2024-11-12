@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { FaFilter, FaSortAmountDown, FaSortAmountUp } from 'react-icons/fa';
 import { BsSortAlphaDown, BsSortAlphaUp } from 'react-icons/bs';
+import FilterNav from './FilterNav';  // Import the FilterNav component
 import './filterscatalogo.css';
 
-const FilterCatalogo = ({ 
-  isFilterOpen, 
+const FilterCatalogo = ({
+  isFilterOpen,
   toggleFilter,
   marcas,
   materiales,
@@ -17,10 +18,44 @@ const FilterCatalogo = ({
   sortName,
   handleNameSort
 }) => {
-  const [isFilterOpenMarca, setIsFilterOpenMarca] = useState(false);
-  const [isFilterOpenMaterial, setIsFilterOpenMaterial] = useState(false);
-  const [isFilterOpenName, setIsFilterOpenName] = useState(false);
-  const [isFilterOpenPrice, setIsFilterOpenPrice] = useState(false);
+  const filters = [
+    {
+      name: 'Marca',
+      options: ['Todas las marcas', ...marcas],
+    },
+    {
+      name: 'Material',
+      options: ['Todos los materiales', ...materiales],
+    },
+    {
+      name: 'Ordenar por Nombre',
+      options: ['A-Z', 'Z-A'],
+    },
+    {
+      name: 'Ordenar por Precio',
+      options: ['Bajo a Alto', 'Alto a Bajo'],
+    }
+  ];
+
+  const handleFilterSelect = (selectedOption) => {
+    if (selectedOption === 'A-Z') {
+      handleNameSort('asc');  // Sort by name A-Z
+    } else if (selectedOption === 'Z-A') {
+      handleNameSort('desc'); // Sort by name Z-A
+    } else if (selectedOption === 'Bajo a Alto') {
+      handleSortChange('asc'); // Sort by price from low to high
+    } else if (selectedOption === 'Alto a Bajo') {
+      handleSortChange('desc'); // Sort by price from high to low
+    } else if (selectedOption === 'Todas las marcas') {
+      handleMarcaChange('');
+    } else if (selectedOption === 'Todos los materiales') {
+      handleMaterialChange(''); 
+    } else if (marcas.includes(selectedOption)) {
+      handleMarcaChange(selectedOption); // Apply marca filter
+    } else if (materiales.includes(selectedOption)) {
+      handleMaterialChange(selectedOption); // Apply material filter
+    }
+  };
 
   return (
     <div>
@@ -29,98 +64,17 @@ const FilterCatalogo = ({
       </button>
 
       {isFilterOpen && (
-        <div className='filter-sort-section'>
-          {/* Marca Filter */}
-          <button 
-            onClick={() => setIsFilterOpenMarca(!isFilterOpenMarca)} 
-            className="filter-dropdown"
-          >
-            Marca
-          </button>
-          {isFilterOpenMarca && (
-            <div className="filter-dropdown">
-              <select value={filterMarca} onChange={handleMarcaChange}>
-                <option value="">Todas las marcas</option>
-                {marcas.map(marca => (
-                  <option key={marca} value={marca}>{marca}</option>
-                ))}
-              </select>
-            </div>
-          )}
-
-          {/* Material Filter */}
-          <button 
-            onClick={() => setIsFilterOpenMaterial(!isFilterOpenMaterial)} 
-            className="filter-dropdown"
-          >
-            Material
-          </button>
-          {isFilterOpenMaterial && (
-            <div className="filter-dropdown">
-              <select value={filterMaterial} onChange={handleMaterialChange}>
-                <option value="">Todos los materiales</option>
-                {materiales.map(material => (
-                  <option key={material} value={material}>{material}</option>
-                ))}
-              </select>
-            </div>
-          )}
-
-          {/* Name Sort */}
-          <button 
-            onClick={() => setIsFilterOpenName(!isFilterOpenName)} 
-            className="filter-dropdown"
-          >
-            Ordenar por Nombre
-          </button>
-          {isFilterOpenName && (
-            <div className="sort-controls">
-              <div className='filter-dropdown'>
-                <button 
-                  onClick={() => handleNameSort('asc')} 
-                  className={`sort-button ${sortName === 'asc' ? 'active' : ''}`}
-                >
-                  <BsSortAlphaDown /> A-Z
-                </button>
-                <button 
-                  onClick={() => handleNameSort('desc')} 
-                  className={`sort-button ${sortName === 'desc' ? 'active' : ''}`}
-                >
-                  <BsSortAlphaUp /> Z-A
-                </button>
-              </div>
-            </div>
-          )}
-
-          {/* Price Sort */}
-          <button 
-            onClick={() => setIsFilterOpenPrice(!isFilterOpenPrice)} 
-            className="filter-dropdown"
-          >
-            Ordenar por Precio
-          </button>
-          {isFilterOpenPrice && (
-            <div className="sort-controls">
-              <div className='filter-dropdown'>
-                <button 
-                  onClick={() => handleSortChange('asc')} 
-                  className={`sort-button ${sortOrder === 'asc' ? 'active' : ''}`}
-                >
-                  <FaSortAmountUp /> Precio: Bajo a Alto
-                </button>
-                <button 
-                  onClick={() => handleSortChange('desc')} 
-                  className={`sort-button ${sortOrder === 'desc' ? 'active' : ''}`}
-                >
-                  <FaSortAmountDown /> Precio: Alto a Bajo
-                </button>
-              </div>
-            </div>
-          )}
+        <div className="filter-sort-section">
+          <FilterNav
+            filters={filters}
+            onFilterSelect={handleFilterSelect}
+            isOpen={isFilterOpen}
+            setIsSidebarOpen={toggleFilter}
+          />
         </div>
       )}
     </div>
   );
 };
 
-export default FilterCatalogo;
+export default FilterCatalogo;  

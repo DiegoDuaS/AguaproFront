@@ -1,0 +1,94 @@
+.navbar-menu-fi {
+  position: fixed;
+  top: 120px; /* Altura de la sección fija (ajustar según sea necesario) */
+  bottom: 0;
+  left:0;
+  background-color:white;
+  box-shadow: 1px 1px 7px rgba(0,0,0,0.15);
+  transition: 0.3s ease;
+  overflow-y: auto;  
+}
+.navbar__list-fi {
+  list-style-type: none;
+  
+}
+
+.navbar__li-fi {
+  display: inline-block;
+  padding:0px 0px 0px 12px;
+  position: relative;
+  top:2.5px;
+  font-size: 16px;
+  font-weight: bold;
+  letter-spacing: 0px;
+  line-height: 38px;
+  color: #000000;
+  vertical-align: middle;
+  left:0;
+  border: none;
+  margin-left: 10px;
+  box-shadow: none;
+  height: auto;
+  cursor: pointer;
+  background-color:white;  
+}
+.navbar__li-fi:hover {
+  background-color: 7px solid #58b5fc; /* Apply hover effect to navbar__li */
+}
+.navbar__li-box-fi {
+  height: 43px;
+  margin-top: 15px;
+  left:0;
+}
+
+.navbar__li-box-fi:hover {
+  border-left: 7px solid #58b5fc;
+  cursor: point;
+}
+
+.navbar__li-box-fi.second-item-moved {
+  margin-top: 638px; /* Adjust based on submenu height */
+}
+
+.navbar__li-box-fi.third-item-moved {
+  margin-top: 406px; /* Adjust based on submenu height */
+}
+
+.navbar__li-box-fi.fourth-item-moved {
+  margin-top: 116px; /* Adjust based on submenu height */
+}
+
+.submenu-fi {
+  position: relative;
+  width: 200px; /* Ancho del submenu */
+  background-color: white; /* Color de fondo del submenu */
+  border: none; /* Borde del submenu */
+  list-style: none; /* Quita los estilos de la lista */
+  padding: 0;
+  margin: 0;
+  display: none; /* Oculta el submenu inicialmente */
+  right:0;
+}
+
+.submenu-fi.open {
+  display: block;
+}
+
+.submenu-fi li {
+  position:relative;
+  padding: 10px 15px;
+  cursor: pointer;
+  background-color: white;
+  border: none;
+  height: auto;
+  box-shadow:none;
+  margin:0;
+  width:170px;
+  border-radius:0;
+  right:0;
+  font-weight: 400;
+}
+
+.submenu-fi li:hover {
+  background-color: #f0f0f0;
+}

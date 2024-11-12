@@ -150,11 +150,11 @@ const BombasAgua = ({cartItems, setCartItems, setSuccessMessage }) => {
   }, [productos]);
 
   const handleMarcaChange = (e) => {
-    setFilterMarca(e.target.value);
+    setFilterMarca(e);
   };
 
   const handleMaterialChange = (e) => {
-    setFilterMaterial(e.target.value);
+    setFilterMaterial(e);
   };
 
   const handleSortChange = (order) => {
@@ -248,22 +248,22 @@ const BombasAgua = ({cartItems, setCartItems, setSuccessMessage }) => {
         <button className="search-btn" onClick={handleSearch}>
           <img src={searchIcon} alt="Search" />
         </button>
+        <FilterCatalogo
+          isFilterOpen={isFilterOpen}
+          toggleFilter={() => setIsFilterOpen(!isFilterOpen)}
+          marcas={getMarcas()}
+          materiales={getMateriales()}
+          filterMarca={filterMarca}
+          filterMaterial={filterMaterial}
+          handleMarcaChange={handleMarcaChange}
+          handleMaterialChange={handleMaterialChange}
+          sortOrder={sortOrder}
+          handleSortChange={handleSortChange}
+          sortName={sortName}
+          handleNameSort={handleNameSort}
+        />
       </div>
 
-      <FilterCatalogo
-        isFilterOpen={isFilterOpen}
-        toggleFilter={() => setIsFilterOpen(!isFilterOpen)}
-        marcas={getMarcas()}
-        materiales={getMateriales()}
-        filterMarca={filterMarca}
-        filterMaterial={filterMaterial}
-        handleMarcaChange={handleMarcaChange}
-        handleMaterialChange={handleMaterialChange}
-        sortOrder={sortOrder}
-        handleSortChange={handleSortChange}
-        sortName={sortName}
-        handleNameSort={handleNameSort}
-      />
 
       <div className='space2' />
 
