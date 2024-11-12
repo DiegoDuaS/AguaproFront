@@ -3,57 +3,59 @@ import PropTypes from 'prop-types';
 import './FilterNav.css';
 
 const FilterNav = ({ filters, onFilterSelect, isOpen, setIsSidebarOpen }) => {
-  const [selectedFilter, setSelectedFilter] = React.useState(null);
+  const [selectedFilter, setSelectedFilter] = useState(null);
+  const [selectedOptions, setSelectedOptions] = useState({});
   
-  const menuRef = useRef(null); // Ref for the menu container
+  const menuRef = useRef(null);
 
-  // Close the menu if click happens outside of the menu
+  // Close the menu if clicking outside, without clearing selectedOptions
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
-        setIsSidebarOpen(false); // Close the menu
+        setIsSidebarOpen(false); // Close the menu only
       }
     };
 
-    // Attach the event listener to the document
     document.addEventListener('click', handleClickOutside);
-
-    // Clean up the event listener when the component unmounts
     return () => {
       document.removeEventListener('click', handleClickOutside);
     };
   }, [setIsSidebarOpen]);
 
   const handleFilterClick = (filter) => {
-    if (selectedFilter === filter) {
-      setSelectedFilter(null); // Close if clicked again
-    } else {
-      setSelectedFilter(filter);
-    }
+    setSelectedFilter((prevFilter) => (prevFilter === filter ? null : filter));
   };
 
-  const handleSubMenuClick = (subFilter) => {
-    onFilterSelect(subFilter);
-    //setIsSidebarOpen(false); // Close sidebar after selection
+  const handleSubMenuClick = (filterName, option) => {
+    // Set selected option for the specific submenu
+    setSelectedOptions((prevOptions) => ({
+      ...prevOptions,
+      [filterName]: option,
+    }));
+    onFilterSelect(option);
   };
 
   return (
     <nav className="navbar-menu-fi" style={{ width: isOpen ? 250 : 0 }}>
       <ul className="navbar__list-fi" style={{ display: isOpen ? "block" : "none" }}>
         {filters.map((filter, index) => (
-           <div
-             className={`navbar__li-box-fi 
-                 ${index === 1 && selectedFilter?.name === "Marca" ? "second-item-moved": ""} 
-                 ${index === 2 && selectedFilter?.name === "Material" ? "third-item-moved" : ""} 
-                 ${index === 3 && selectedFilter?.name === "Ordenar por Nombre" ? "fourth-item-moved" : ""}`}
-               key={index}
-            >
+          <div
+            className={`navbar__li-box-fi 
+              ${index === 1 && selectedFilter?.name === "Marca" ? "second-item-moved" : ""} 
+              ${index === 2 && selectedFilter?.name === "Material" ? "third-item-moved" : ""} 
+              ${index === 3 && selectedFilter?.name === "Ordenar por Nombre" ? "fourth-item-moved" : ""}`}
+            key={index}
+          >
             <li className="navbar__li-fi" onClick={() => handleFilterClick(filter)}>
               {filter.name}
               {selectedFilter === filter && isOpen && filter.options && (
                 <ul className={`submenu-fi ${selectedFilter.name === filter.name ? 'open' : ''}`}>
                   {filter.options.map((option, subIndex) => (
-                    <li key={subIndex} onClick={() => handleSubMenuClick(option)}>
+                    <li
+                      key={subIndex}
+                      onClick={() => handleSubMenuClick(filter.name, option)}
+                      className={selectedOptions[filter.name] === option ? "selected-option" : ""}
+                    >
                       {option}
                     </li>
                   ))}
@@ -75,8 +77,9 @@ FilterNav.propTypes = {
     })
   ).isRequired,
   onFilterSelect: PropTypes.func.isRequired,
-  isOpen: PropTypes.func.isRequired,
+  isOpen: PropTypes.bool.isRequired,
   setIsSidebarOpen: PropTypes.func.isRequired,
 };
 
 export default FilterNav;
+

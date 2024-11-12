@@ -61,7 +61,7 @@
 .submenu-fi {
   position: relative;
   width: 200px; /* Ancho del submenu */
-  background-color: white; /* Color de fondo del submenu */
+  /*background-color: white;*/ /* Color de fondo del submenu */
   border: none; /* Borde del submenu */
   list-style: none; /* Quita los estilos de la lista */
   padding: 0;
@@ -78,7 +78,7 @@
   position:relative;
   padding: 10px 15px;
   cursor: pointer;
-  background-color: white;
+  /*background-color: white;*/
   border: none;
   height: auto;
   box-shadow:none;
@@ -91,4 +91,9 @@
 
 .submenu-fi li:hover {
   background-color: #f0f0f0;
+}
+
+.selected-option {
+  background-color: #f0f0f0; /* Highlight selected option */
+   /* Change text color for contrast */
 }
