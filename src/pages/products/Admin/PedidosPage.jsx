@@ -11,6 +11,7 @@ import InfoProdPedidoCard from '../../../components/cards/InfoProdPedidoCard';
 import { color } from 'chart.js/helpers';
 import { FaFilter } from 'react-icons/fa';
 import { FaSortAmountDown, FaSortAmountUp } from 'react-icons/fa';
+import CancelCard from '../../../components/cards/cancelcard';
 
 const API_BASE_URL = 'https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app';
 
@@ -21,6 +22,7 @@ const PedidosPage = () => {
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessageState, setErrorMessageState] = useState('');
   const [isCardOpen, setIsCardOpen] = useState(false);
+  const [isCancelCardOpen, setIsCancelCardOpen] = useState(false);
   const [productos, setProductos] = useState([]);
   const [isLoadingProductos, setIsLoadingProductos] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -109,22 +111,27 @@ const PedidosPage = () => {
     const estadoMap = { "Pendiente": 1, "Procesando": 2, "Enviado": 3, "Entregado": 4, "Cancelado": 5 };
     const idEstado = estadoMap[newEstado] || 0;
 
-    try {
-      const response = await fetch(`${API_BASE_URL}/pedidos/${pedidoId}/status`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ pedidoId, estatus: idEstado }),
-      });
-
-      if (response.ok) {
-        showMessage('Estado actualizado correctamente');
-        refetch();
-      } else {
-        throw new Error('Error al actualizar el estado del pedido');
+    if (newEstado === "Cancelado"){
+      setIsCancelCardOpen(true)
+    }
+    else{
+      try {
+        const response = await fetch(`${API_BASE_URL}/pedidos/${pedidoId}/status`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ pedidoId, estatus: idEstado }),
+        });
+  
+        if (response.ok) {
+          showMessage('Estado actualizado correctamente');
+          refetch();
+        } else {
+          throw new Error('Error al actualizar el estado del pedido');
+        }
+      } catch (error) {
+        showMessage('Error al conectar con el servidor. Intente nuevamente.', true);
+        console.error(error);
       }
-    } catch (error) {
-      showMessage('Error al conectar con el servidor. Intente nuevamente.', true);
-      console.error(error);
     }
   }, [refetch, showMessage]);
 
@@ -317,6 +324,7 @@ const PedidosPage = () => {
       
       <StateCard message={successMessage} isOpen={!!successMessage} type={1}/>
       <StateCard message={errorMessageState} isOpen={!!errorMessageState} type={2}/>
+      <CancelCard isOpen={isCancelCardOpen} closeCard={setIsCancelCardOpen}/>
     
       <div className="table">
         <div className="table-grid table-header">
