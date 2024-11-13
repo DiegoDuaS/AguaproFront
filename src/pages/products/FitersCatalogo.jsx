@@ -64,7 +64,7 @@ const FilterCatalogo = ({
       </button>
 
       {isFilterOpen && (
-        <div className="filter-sort-section">
+        <div className="filter-sort-section2">
           <FilterNav
             filters={filters}
             onFilterSelect={handleFilterSelect}

@@ -3,6 +3,7 @@ import './stateCard.css';
 import { FaRegCircleCheck } from "react-icons/fa6";
 import { MdOutlineErrorOutline } from "react-icons/md";
 import { IoCartOutline } from "react-icons/io5";
+import { IoWarningOutline } from "react-icons/io5";
 
 const StateCard = ({ message, isOpen, type }) => {
   const [showCard, setShowCard] = useState(false);
@@ -44,6 +45,17 @@ const StateCard = ({ message, isOpen, type }) => {
       <div className={`success-card ${showCard ? 'slide-in' : 'slide-out'}`}>
         <div className="success-message2">
           <IoCartOutline  size={24} />
+          {message}
+        </div>
+      </div>
+    )
+  }
+
+  if (type === 4){
+    return(
+      <div className={`success-card ${showCard ? 'slide-in' : 'slide-out'}`}>
+        <div className="success-message2">
+          <IoWarningOutline size={24} />
           {message}
         </div>
       </div>

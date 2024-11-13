@@ -7,9 +7,11 @@
   box-shadow: 1px 1px 7px rgba(0,0,0,0.15);
   transition: 0.3s ease;
   overflow-y: auto;  
+  transition: 0.3s ease;
 }
 .navbar__list-fi {
   list-style-type: none;
+  transition: 0.3s ease;
   
 }
 
@@ -31,12 +33,13 @@
   height: auto;
   cursor: pointer;
   background-color:white;  
+  transition: 0.3s ease;
 }
 .navbar__li-fi:hover {
   background-color: 7px solid #58b5fc; /* Apply hover effect to navbar__li */
 }
 .navbar__li-box-fi {
-  height: 43px;
+  height: auto;
   margin-top: 15px;
   left:0;
 }
@@ -47,19 +50,20 @@
 }
 
 .navbar__li-box-fi.second-item-moved {
-  margin-top: 638px; /* Adjust based on submenu height */
+  margin-top: auto; /* Adjust based on submenu height */
 }
 
 .navbar__li-box-fi.third-item-moved {
-  margin-top: 406px; /* Adjust based on submenu height */
+  margin-top: auto; /* Adjust based on submenu height */
 }
 
 .navbar__li-box-fi.fourth-item-moved {
-  margin-top: 116px; /* Adjust based on submenu height */
+  margin-top: auto; /* Adjust based on submenu height */
 }
 
 .submenu-fi {
   position: relative;
+  height: 30px;
   width: 200px; /* Ancho del submenu */
   /*background-color: white;*/ /* Color de fondo del submenu */
   border: none; /* Borde del submenu */
@@ -68,15 +72,17 @@
   margin: 0;
   display: none; /* Oculta el submenu inicialmente */
   right:0;
+  font-size: 0.9rem;
 }
 
 .submenu-fi.open {
   display: block;
+  height: auto;
 }
 
 .submenu-fi li {
   position:relative;
-  padding: 10px 15px;
+  padding-left: 10px;
   cursor: pointer;
   /*background-color: white;*/
   border: none;

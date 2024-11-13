@@ -24,6 +24,7 @@ const BombasAgua = ({cartItems, setCartItems, setSuccessMessage }) => {
   const [filterMaterial, setFilterMaterial] = useState('');
   const [sortOrder, setSortOrder] = useState('');
   const [sortName, setSortName] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     if (productos && productos.length > 0) {
@@ -206,6 +207,20 @@ const BombasAgua = ({cartItems, setCartItems, setSuccessMessage }) => {
     return filtered;
   }, [productos, filterMarca, filterMaterial, sortOrder, sortName]);
 
+  const handlePageChange = (newPage) => {
+    if (newPage >= 1 && newPage <= totalPages) {
+      setCurrentPage(newPage);
+    }
+  };
+
+  // Determinar qué productos mostrar basado en la búsqueda
+  const productsToDisplay = isSearchActive ? searchResults : productos;
+  const totalPages = Math.ceil(productsToDisplay.length / 16);
+  const startIndex = (currentPage - 1) * 16;
+  const endIndex = startIndex + 16;
+
+  const productosEnPagina = productsToDisplay.slice(startIndex, endIndex);
+
   if (isLoading || loadingImages) {
     return (
       <main className="main-content-loading">
@@ -230,9 +245,7 @@ const BombasAgua = ({cartItems, setCartItems, setSuccessMessage }) => {
     )
   }
 
-  // Determinar qué productos mostrar basado en la búsqueda
-  const productsToDisplay = isSearchActive ? searchResults : productos;
-
+  
   return (
     <main className="main-content-prod">
       <h2>Bombas de Agua</h2>
@@ -268,7 +281,7 @@ const BombasAgua = ({cartItems, setCartItems, setSuccessMessage }) => {
       <div className='space2' />
 
       <ul className="small-card-list">
-        {getFilteredProducts().map(product => (
+        {productosEnPagina.map(product => (
           <Card
             key={product.id_producto}
             nombre={product.nombre}
@@ -287,6 +300,25 @@ const BombasAgua = ({cartItems, setCartItems, setSuccessMessage }) => {
           imageRef={images[selectedProduct.id_producto]}
         />
       )}
+      <div className='space2' />
+      <div className="pagination-controls">
+          <div className='change-page'>
+            <button 
+              onClick={() => handlePageChange(currentPage - 1)} 
+              disabled={currentPage === 1}
+            >
+              Anterior
+            </button>
+            <span>Página {currentPage} de {totalPages}</span>
+            <button 
+              onClick={() => handlePageChange(currentPage + 1)} 
+              disabled={currentPage === totalPages}
+            >
+              Siguiente
+            </button>
+          </div>
+      </div>
+      <div className='space2' />
     </main>
   );
 };

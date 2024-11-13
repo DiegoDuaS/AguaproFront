@@ -1,15 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import CheckoutHeader from '../../components/headers/checkoutHeader';
 import './checkout.css';
+import StateCard from '../../components/cards/stateCard';
 
 const Checkout = ({ onRouteChange, cartItems, navigateToLogin }) => {
   const subtotal = cartItems.reduce((acc, item) => acc + item.precio * item.quantity, 0);
   const [checkoutStep, setCheckoutStep] = useState('entrega'); // Nuevo estado para controlar el paso
+  const [successMessage, setSuccessMessage] = useState('');
+  const [warningMessage, setWarningMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setSuccessMessage('');
+      setErrorMessage('');
+      setWarningMessage('');
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, [successMessage, errorMessage, warningMessage]);
+
+  const hasEmptyFields1 = () => (
+    formData.nombre === '' || formData.direccion === '' || formData.telefono === '' || formData.nit === ''
+  );
 
   const handleNextStep = () => {
     // Cambia al siguiente paso cuando se confirma la información
     if (checkoutStep === 'entrega') {
-      setCheckoutStep('pago');
+      if(hasEmptyFields1()){
+        setWarningMessage("Completa todos los campos")
+      }
+      else{
+        setCheckoutStep('pago');
+      }
     } else {
       // Aquí puedes manejar la confirmación final
       console.log("Orden confirmada");
@@ -51,7 +74,7 @@ const Checkout = ({ onRouteChange, cartItems, navigateToLogin }) => {
             <h2>Orden #ENEZ025AAA</h2>
             <div className='title_check_side' onClick={ (e) => setCheckoutStep('entrega')}>
                   <h3 className='checkout'>Información de entrega</h3>
-                  <div className='circle'></div>
+                  <div className={`circle ${hasEmptyFields1() ? '' : 'active'}`}></div>
             </div>
             {/* Render condicional basado en el estado checkoutStep */}
             {checkoutStep === 'entrega' && (
@@ -104,7 +127,7 @@ const Checkout = ({ onRouteChange, cartItems, navigateToLogin }) => {
               </>
             )}
 
-            <div className='title_check_side' onClick={(e) => setCheckoutStep('pago')}>
+            <div className='title_check_side' onClick={handleNextStep}>
               <h3 className='checkout'>Información de pago</h3>
               <div className='circle'></div>
             </div>
@@ -121,6 +144,15 @@ const Checkout = ({ onRouteChange, cartItems, navigateToLogin }) => {
                         checked={formData.paymentMethod === 'tarjeta'} 
                         onChange={handleInputChange} 
                       /> Tarjeta
+                    </label>
+                    <label>
+                      <input 
+                        type="radio" 
+                        name="paymentMethod" 
+                        value="transferencia" 
+                        checked={formData.paymentMethod === 'transferencia'} 
+                        onChange={handleInputChange} 
+                      /> Transferencia
                     </label>
                     <label>
                       <input 
@@ -189,6 +221,25 @@ const Checkout = ({ onRouteChange, cartItems, navigateToLogin }) => {
                       </div>
                     </div>
                   )}
+
+                  {formData.paymentMethod === 'transferencia' && (
+                    <div className="tarjeta-info">
+                      <div className="form-group">
+                        <label>Cantidad Pago</label>
+                        <input 
+                          type="text" 
+                          name="cantidadPago" 
+                          value={formData.cantidadPago} 
+                          onChange={handleInputChange} 
+                          placeholder="Cantidad en Efectivo" 
+                        />
+                      </div>
+                      <p className='info_extra_contra'>Esta información se utiliza para poder proveer la cantidad de vuelto necesario.</p>
+                      <div className="confirm-btn">
+                        <button onClick={handleNextStep}>Confirmar Información de Pago</button>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </>
             )}
@@ -239,6 +290,9 @@ const Checkout = ({ onRouteChange, cartItems, navigateToLogin }) => {
           </div>
         </div>
       </div>
+      <StateCard message={successMessage} isOpen={!!successMessage} type={1}/>
+      <StateCard message={errorMessage} isOpen={!!errorMessage} type={2}/>
+      <StateCard message={warningMessage} isOpen={!!warningMessage} type={4}/>
     </div>
   );
 };
