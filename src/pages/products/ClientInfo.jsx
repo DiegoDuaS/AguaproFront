@@ -23,7 +23,7 @@ const ClientInfo = () => {
 
   const [showAdditionalForm, setShowAdditionalForm] = useState(false);
   const [formData2, setFormData2] = useState({ username: '', email: '', created_at: '' });
-  const [formData, setFormData] = useState({ nombre: '', correo: '', telefono: '', nit: '', direccion: '' });
+  const [formData, setFormData] = useState({ nombre: '', telefono: '', nit: '', direccion: '', email: formData2.email || '' , user_reference: '' });
   const [successMessage, setSuccessMessage] = useState(false);
   const [errorMessage2, setErrorMessage2] = useState(false);
 
@@ -57,7 +57,8 @@ const ClientInfo = () => {
         telefono: client.data.telefono || '',
         nit: client.data.nit || '',
         direccion: client.data.direccion || '',
-        user_reference: userReference
+        user_reference: userReference,
+        email: formData2.email,
       });
     }
   }, [client]);
@@ -79,21 +80,26 @@ const ClientInfo = () => {
     const result = await updateUser(userReference, { username: formData2.username, email: formData2.email });
     if (result.success) {
       setSuccessMessage(true)
+      setFormData((prev) => ({ ...prev, email: formData2.email }));
     }
   };
-  //console.log(client.data.id_cliente);
+  console.log(formData);
+  console.log(userReference);
+  console.log(formData2);
   // Register or update client information
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (client==null) {
-      await registerClient(formData, userReference);
-      setShowAdditionalForm(false); // Hide the form after registration
-    } else {
-      const id = parseInt(client.data.id_cliente);
-      await updateClient(id, formData);
-      setSuccessMessage(true)
-    }
-  };
+  e.preventDefault();
+  setFormData((prev) => ({ ...prev, email: formData2.email }));
+  setFormData((prev) => ({ ...prev, user_reference: parseInt(userReference, 10) }));
+  if (client == null) {
+    await registerClient(formData, userReference);
+    setShowAdditionalForm(false); // Hide the form after registration
+  } else {
+    const id = parseInt(client.data.id_cliente);
+    await updateClient(id, formData);
+    setSuccessMessage(true);
+  }
+};
  
 
   if (isLoading || clientLoading || updatingUser || registeringClient || updatingClient) {
