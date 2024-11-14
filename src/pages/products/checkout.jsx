@@ -12,7 +12,7 @@ const Checkout = ({ onRouteChange, cartItems, navigateToLogin }) => {
   const [errorMessage, setErrorMessage] = useState('');
   const userReference = localStorage.getItem('id');
   const { client, loading: clientLoading, refetch: refetchClient } = useFetchClient(userReference);
-  console.log(client);
+  //console.log(client);
   useEffect(() => {
     const timer = setTimeout(() => {
       setSuccessMessage('');
@@ -56,7 +56,9 @@ const Checkout = ({ onRouteChange, cartItems, navigateToLogin }) => {
     numeroTarjeta: '',
     fechaVencimiento: '',
     cvv: '',
-    cantidadPago: ''
+    cantidadPago: '',
+    banco: '',
+    numeroAutorizacion: '',
   });
 
 useEffect(() => {
@@ -66,9 +68,15 @@ useEffect(() => {
         telefono: client.data.telefono || '',
         nit: client.data.nit || '',
         direccion: client.data.direccion || '',
+        paymentMethod: 'tarjeta',
+        numeroTarjeta: '',
+        fechaVencimiento: '',
+        cvv: '',
+        cantidadPago: ''
       });
     }
   }, [client]);
+
   console.log(formData);
   // Manejar cambios en los inputs
   const handleInputChange = (e) => {
@@ -217,38 +225,40 @@ useEffect(() => {
                     </div>
                   )}
 
-                  {formData.paymentMethod === 'deposito' && (
-                    <div className="tarjeta-info">
-                      <div className="form-group">
-                        <label>Cantidad Pago</label>
-                        <input 
-                          type="text" 
-                          name="cantidadPago" 
-                          value={formData.cantidadPago} 
-                          onChange={handleInputChange} 
-                          placeholder="Cantidad en Efectivo" 
-                        />
-                      </div>
-                      <p className='info_extra_contra'>Esta información se utiliza para poder proveer la cantidad de vuelto necesario.</p>
-                      <div className="confirm-btn">
-                        <button onClick={handleNextStep}>Confirmar Información de Pago</button>
-                      </div>
+                 
+                {(formData.paymentMethod === 'deposito' || formData.paymentMethod === 'transferencia') && (
+                  <div className="tarjeta-info">
+                    <div className="form-group">
+                      <label>Monto</label>
+                      <input 
+                        type="text" 
+                        name="monto"
+                        value={`Q ${subtotal.toFixed(2)}`} 
+                        disabled
+                        placeholder="Monto total" 
+                      />
                     </div>
-                  )}
-
-                  {formData.paymentMethod === 'transferencia' && (
-                    <div className="tarjeta-info">
-                      <div className="form-group">
-                        <label>Cantidad Pago</label>
-                        <input 
-                          type="text" 
-                          name="cantidadPago" 
-                          value={formData.cantidadPago} 
-                          onChange={handleInputChange} 
-                          placeholder="Cantidad en Efectivo" 
-                        />
-                      </div>
-                      <p className='info_extra_contra'>Esta información se utiliza para poder proveer la cantidad de vuelto necesario.</p>
+                    <div className="form-group">
+                      <label>Banco</label>
+                      <input 
+                        type="text" 
+                        name="banco" 
+                        value={formData.banco} 
+                        onChange={handleInputChange} 
+                        placeholder="Nombre del banco donde fue realizado el pago" 
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label>Número de autorización</label>
+                      <input 
+                        type="text" 
+                        name="numeroAutorizacion" 
+                        value={formData.numeroAutorizacion} 
+                        onChange={handleInputChange} 
+                        placeholder="Número de autorización" 
+                      />
+                    </div>
+                      
                       <div className="confirm-btn">
                         <button onClick={handleNextStep}>Confirmar Información de Pago</button>
                       </div>
