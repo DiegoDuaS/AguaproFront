@@ -1,17 +1,23 @@
 import './services.css'
 import React from 'react';
 
+import logoImg from '../../image/logo2.jpg';
+import presentacionImg from '../../image/perforacion.jpg';
+import historia1 from '../../image/perforacion2.jpg';
+import historia2 from '../../image/incendio.jpg';
+import historia3 from '../../image/bombeo.jpg';
+
 function QuienesSomos() {
     
     return (
         <main className="main-content-ser">
             <div class="top-banner">
                 <div class="image-wrapper">
-                    <img class="per-about" src="src/image/perforacion.jpg" alt="Imagen Servicios Mant 1"/>
+                    <img class="per-about" src={presentacionImg} alt="Imagen Servicios Mant 1"/>
                 </div>
                 <div class="quienes-somos">
                     <div class="title-logo">
-                        <img class="logo-about" src="src/image/logo2.jpg" alt="Imagen Logo Aguatesa 1"/>
+                        <img class="logo-about" src={logoImg} alt="Imagen Logo Aguatesa 1"/>
                         <h2>¿Quiénes somos?</h2>
                     </div>
                     <p class="textservice">
@@ -39,13 +45,13 @@ function QuienesSomos() {
 
             <div className='history-images'>
                 <div class="img-historia-wrapper">
-                    <img class="img-historia" src="src/image/perforacion2.jpg" alt="Imagen Servicios Mant 1"/>
+                    <img class="img-historia" src={historia1} alt="Imagen Servicios Mant 1"/>
                 </div>
                 <div class="img-historia-wrapper">
-                    <img class="img-historia" src="src/image/incendio.jpg" alt="Imagen Servicios Mant 1"/>
+                    <img class="img-historia" src={historia2} alt="Imagen Servicios Mant 1"/>
                 </div>
                 <div class="img-historia-wrapper">
-                    <img class="img-historia" src="src/image/bombeo.jpg" alt="Imagen Servicios Mant 1"/>
+                    <img class="img-historia" src={historia3} alt="Imagen Servicios Mant 1"/>
                 </div>
             </div>
             
