@@ -34,3 +34,18 @@
 .space2{
     height: 50px;
 }
+
+.filter-reset-btn {
+    padding: 8px;
+    border-radius: 4px;
+    background: #f0f0f0;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    margin-left: 8px;
+  }
+  
+  .filter-reset-btn:hover {
+    background: #e0e0e0;
+  }

@@ -13,8 +13,11 @@
 }
 
 .filter-sort-section2 {
-  position: relative;
-  margin-top: 0;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 8px;
+  z-index: 10;
 }
 
 .filter-dropdown-content {
@@ -51,3 +54,30 @@
   background-color: #f1f1f1;
 }
 
+.filter-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+}
+
+.filter-reset-btn {
+  padding: 8px;
+  border-radius: 4px;
+  background: #f0f0f0;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.3s;
+}
+
+.filter-reset-btn:hover {
+  background: #b64040;
+}
+
+.filter-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}

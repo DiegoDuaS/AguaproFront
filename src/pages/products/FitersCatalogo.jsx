@@ -3,6 +3,7 @@ import { FaFilter, FaSortAmountDown, FaSortAmountUp } from 'react-icons/fa';
 import { BsSortAlphaDown, BsSortAlphaUp } from 'react-icons/bs';
 import FilterNav from './FilterNav';  // Import the FilterNav component
 import './filterscatalogo.css';
+import { MdFilterAltOff } from "react-icons/md";
 
 const FilterCatalogo = ({
   isFilterOpen,
@@ -56,25 +57,47 @@ const FilterCatalogo = ({
       handleMaterialChange(selectedOption); // Apply material filter
     }
   };
+  const handleResetFilters = () => {
+    handleMarcaChange('');
+    handleMaterialChange('');
+    handleSortChange('');
+    handleNameSort('');
+    toggleFilter();
+  };
+
+  
+  const hasActiveFilters = filterMarca || filterMaterial || sortOrder || sortName;
+
 
   return (
-    <div>
+    <div className="filter-container">
+    <div className="filter-controls">
       <button onClick={toggleFilter} className="filter-button">
         <FaFilter /> Filtros
       </button>
-
-      {isFilterOpen && (
-        <div className="filter-sort-section2">
-          <FilterNav
-            filters={filters}
-            onFilterSelect={handleFilterSelect}
-            isOpen={isFilterOpen}
-            setIsSidebarOpen={toggleFilter}
-          />
-        </div>
+      {isFilterOpen && hasActiveFilters && (
+        <button 
+          onClick={handleResetFilters}
+          className="filter-reset-btn"
+          title="Reset all filters"
+        >
+          <MdFilterAltOff />
+        </button>
       )}
     </div>
-  );
+
+    {isFilterOpen && (
+      <div className="filter-sort-section2">
+        <FilterNav
+          filters={filters}
+          onFilterSelect={handleFilterSelect}
+          isOpen={isFilterOpen}
+          setIsSidebarOpen={toggleFilter}
+        />
+      </div>
+    )}
+  </div>
+);
 };
 
 export default FilterCatalogo;  
