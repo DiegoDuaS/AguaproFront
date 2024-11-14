@@ -1,7 +1,6 @@
-// Page where the usuario filter will be, the usuario filter should just order on the date of the creation and the rols of the person 
-
 import React, { useState } from 'react';
 import { FaSortAmountDown, FaSortAmountUp } from 'react-icons/fa';
+import { MdFilterAltOff } from "react-icons/md";
 
 const FilterSectionUsuarios = ({ 
   isFilterOpen, 
@@ -12,6 +11,7 @@ const FilterSectionUsuarios = ({
 }) => {
   const [isFilterOpenRole, setIsFilterOpenRole] = useState(false);
   const [isFilterOpenDate, setIsFilterOpenDate] = useState(false);
+
   const toggleSort = (order) => {
     if (sortOrder === order) {
       handleSortChange('');
@@ -19,6 +19,14 @@ const FilterSectionUsuarios = ({
       handleSortChange(order);
     }
   };
+
+  const handleResetFilters = () => {
+    handleFilterChange({ target: { value: '' } });
+    handleSortChange('');
+  };
+
+  const hasActiveFilters = filterRole || sortOrder;
+
   return (
     <div>
       {isFilterOpen && (
@@ -63,11 +71,20 @@ const FilterSectionUsuarios = ({
               </div>
             </div>
           )}
+
+          {hasActiveFilters && (
+            <button 
+              onClick={handleResetFilters}
+              className="filter-reset-btn"
+              title="Reset all filters"
+            >
+              <MdFilterAltOff />
+            </button>
+          )}
         </div>
       )}
     </div>
   );
 };
-
 
 export default FilterSectionUsuarios;
