@@ -196,7 +196,7 @@ useEffect(() => {
                         checked={formData.paymentMethod === 'deposito'} 
                         onChange={handleInputChange} 
                       /> Deposito
-                    </label>
+                    </label>  
                   </div>
 
                   {formData.paymentMethod === 'tarjeta' && (
@@ -270,7 +270,7 @@ useEffect(() => {
                         placeholder="Número de autorización" 
                       />
                     </div>
-                      
+                    
                       <div className="confirm-btn">
                         <button onClick={handleNextStep}>Confirmar Información de Pago</button>
                       </div>
