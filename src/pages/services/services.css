@@ -125,6 +125,21 @@ h3{
     width: 50%;
     padding: 20px;
     box-sizing: border-box;
+    align-items: left;
+}
+
+.title-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: fit-content;
+    box-sizing: border-box;
+    flex-direction: row;
+}
+
+.logo-about {
+    height: 10vh;
+    padding-right: 3%;
 }
 
 .history-images {

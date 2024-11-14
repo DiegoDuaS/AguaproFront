@@ -1,7 +1,5 @@
 import './services.css'
-import React, { useState } from 'react';
-import FormsSer from '../../components/forms/formsSer';
-import { AiFillEdit } from "react-icons/ai";
+import React from 'react';
 
 function QuienesSomos() {
     
@@ -12,13 +10,17 @@ function QuienesSomos() {
                     <img class="per-about" src="src/image/perforacion.jpg" alt="Imagen Servicios Mant 1"/>
                 </div>
                 <div class="quienes-somos">
-                    <h2>¿Quiénes somos?</h2>
+                    <div class="title-logo">
+                        <img class="logo-about" src="src/image/logo2.jpg" alt="Imagen Logo Aguatesa 1"/>
+                        <h2>¿Quiénes somos?</h2>
+                    </div>
                     <p class="textservice">
                         Somos AGUATESA S.A., una empresa guatemalteca especializada en soluciones integrales para la gestión y aprovechamiento eficiente 
                         del agua. Nos dedicamos a la perforación de pozos mecánicos, mantenimiento de estos pozos, venta de equipos de bombeo de 
                         alta calidad, pruebas de bombeo, y ofrecemos servicios técnicos especializados en sistemas hidroneumáticos. Nuestro compromiso es 
                         brindar a nuestros clientes soluciones efectivas que aseguren un suministro de agua confiable y adaptado a sus necesidades.
                     </p>
+                    
                 </div>
             </div>
 
