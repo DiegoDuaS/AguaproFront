@@ -21,6 +21,7 @@ const PedidosPage = () => {
   const [selectedPedido, setSelectedPedido] = useState(null);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessageState, setErrorMessageState] = useState('');
+  const [warningMessage, setWarningMessage] = useState('');
   const [isCardOpen, setIsCardOpen] = useState(false);
   const [isCancelCardOpen, setIsCancelCardOpen] = useState(false);
   const [productos, setProductos] = useState([]);
@@ -34,6 +35,8 @@ const PedidosPage = () => {
   const [isFilterOpenPrecios, setIsFilterOpenPrecios] = useState(false);
   const [sortOrder, setSortOrder] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
+  const [userMail, setUserMail] = useState('');
+  const [idCancel, setIdCancel] = useState(0);
 
   const sortPedidos = (pedidosToSort) => {
     if (sortOrder === 'asc') {
@@ -107,11 +110,12 @@ const PedidosPage = () => {
     fetchProductos(pedidoId);
   }, [fetchProductos]);
   
-  const handleEstadoChange = useCallback(async (pedidoId, newEstado) => {
+  const handleEstadoChange = useCallback(async (pedidoId, newEstado, clientMail) => {
     const estadoMap = { "Pendiente": 1, "Procesando": 2, "Enviado": 3, "Entregado": 4, "Cancelado": 5 };
     const idEstado = estadoMap[newEstado] || 0;
-
     if (newEstado === "Cancelado"){
+      setIdCancel(pedidoId)
+      setUserMail(clientMail);
       setIsCancelCardOpen(true)
     }
     else{
@@ -324,7 +328,8 @@ const PedidosPage = () => {
       
       <StateCard message={successMessage} isOpen={!!successMessage} type={1}/>
       <StateCard message={errorMessageState} isOpen={!!errorMessageState} type={2}/>
-      <CancelCard isOpen={isCancelCardOpen} closeCard={setIsCancelCardOpen}/>
+      <StateCard message={warningMessage} isOpen={!!warningMessage} type={4}/>
+      <CancelCard isOpen={isCancelCardOpen} closeCard={setIsCancelCardOpen} userMail={userMail} pedidoId={idCancel} setSuccessMessage={setSuccessMessage} setErrorMessage={setErrorMessageState} setWarningMessage={setWarningMessage} refetch={refetch} />
     
       <div className="table">
         <div className="table-grid table-header">
@@ -382,7 +387,7 @@ const PedidosPage = () => {
             )}
             <select
               value={pedido.estado} 
-              onChange={(e) => handleEstadoChange(pedido.id_pedido, e.target.value)}
+              onChange={(e) => handleEstadoChange(pedido.id_pedido, e.target.value, pedido.contacto)}
               className={`state ${pedido.estado.toLowerCase()}`}
               aria-label={`Estado para pedido ${pedido.id_pedido}`}
             >
