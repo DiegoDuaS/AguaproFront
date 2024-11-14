@@ -11,7 +11,7 @@
     font-size: 14px;
     display: flex;
     align-items: center;
-    transition: right 0.7s ease-in-out;
+    /*transition: right 0.7s ease-in-out;*/
     z-index: 1100; /* Asegura que esté sobre otros elementos */
     justify-content: center;
   }
@@ -25,13 +25,21 @@
     margin-left: 20px;
     margin-right: 20px;
   }
-  
-  /* Clase para mostrar la tarjeta con animación de entrada */
+
   .slide-in {
-    right: 20px; /* Muestra la tarjeta al lado derecho */
+    right: 20px; 
   }
   
-  /* Clase para ocultar la tarjeta con animación de salida */
+ 
   .slide-out {
-    right: -550px; /* Oculta la tarjeta fuera de la pantalla */
+    right: -550px; 
+  }
+
+
+
+  @media (max-width: 768px) {
+    .success-message2 {
+      font-size: medium; /* Adjust font size for smaller screens */
+      justify-content: space-evenly;
+    }
   }

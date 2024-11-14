@@ -126,3 +126,11 @@
   align-items: center;
 
 }
+
+@media (max-width: 768px) {
+  .cart {
+    width: 90%; /* Ocupa un ancho mayor en pantallas pequeñas */
+    left: 50%; /* Centrado */
+    transform: translateX(-50%); /* Centrado horizontal */
+  }
+}

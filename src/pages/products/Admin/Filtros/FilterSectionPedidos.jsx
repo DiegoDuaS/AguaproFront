@@ -2,72 +2,53 @@ import React, { useState } from 'react';
 import { FaFilter, FaSortAmountDown, FaSortAmountUp } from 'react-icons/fa';
 import { MdFilterAltOff } from "react-icons/md";
 
-const FilterSection = ({ 
+const FilterSectionPedidos = ({ 
   isFilterOpen, 
-  toggleFilter, 
-  filterAvailability, 
+  filterState, 
   handleFilterChange,
-  filterVisibility,
-  handleVisibilityChange, 
   sortOrder, 
   handleSortChange 
 }) => {
-  const [isFilterOpenAvailability, setIsFilterOpenAvailability] = useState(false);
-  const [isFilterOpenVisibility, setIsFilterOpenVisibility] = useState(false);
-  const [isFilterOpenPrice, setIsFilterOpenPrice] = useState(false);
+  const [isFilterOpenEstados, setIsFilterOpenEstados] = useState(false);
+  const [isFilterOpenPrecios, setIsFilterOpenPrecios] = useState(false);
 
   const handleResetFilters = () => {
     handleFilterChange({ target: { value: '' } });
-    handleVisibilityChange({ target: { value: '' } });
     handleSortChange('');
   };
 
-  const hasActiveFilters = filterAvailability || filterVisibility || sortOrder;
+  const hasActiveFilters = filterState || sortOrder;
 
   return (
     <div>
       {isFilterOpen && (
-        <>
         <div className='filter-sort-section'>
           <button 
-            onClick={() => setIsFilterOpenVisibility(!isFilterOpenVisibility)} 
+            onClick={() => setIsFilterOpenEstados(!isFilterOpenEstados)} 
             className="filter-dropdown"
           >
-            Visibilidad
+            Estado
           </button>
-          {isFilterOpenVisibility && (
+          {isFilterOpenEstados && (
             <div className="filter-dropdown">
-              <select value={filterVisibility} onChange={handleVisibilityChange}>
-                <option value="">Todos</option>
-                <option value="hidden">Ocultos</option>
-                <option value="visible">En venta</option>
+              <select value={filterState} onChange={handleFilterChange}>
+                <option value="">Todos los estados</option>
+                <option value="Pendiente">Pendiente</option>
+                <option value="Procesando">Procesando</option>
+                <option value="Enviado">Enviado</option>
+                <option value="Entregado">Entregado</option>
+                <option value="Cancelado">Cancelado</option>
               </select>
             </div>
           )}
 
           <button 
-            onClick={() => setIsFilterOpenAvailability(!isFilterOpenAvailability)} 
-            className="filter-dropdown"
-          >
-            Disponibilidad
-          </button>
-          {isFilterOpenAvailability && (
-            <div className="filter-dropdown">
-              <select value={filterAvailability} onChange={handleFilterChange}>
-                <option value="">Todos</option>
-                <option value="available">Disponible</option>
-                <option value="unavailable">No Disponible</option>
-              </select>
-            </div>
-          )}
-
-          <button 
-            onClick={() => setIsFilterOpenPrice(!isFilterOpenPrice)} 
+            onClick={() => setIsFilterOpenPrecios(!isFilterOpenPrecios)} 
             className="filter-dropdown"
           >
             Precio
           </button>
-          {isFilterOpenPrice && (
+          {isFilterOpenPrecios && (
             <div className="sort-controls">
               <div className='filter-dropdown'>
                 <button 
@@ -96,10 +77,9 @@ const FilterSection = ({
             </button>
           )}
         </div>
-        </>
       )}
     </div>
   );
 };
 
-export default FilterSection;
+export default FilterSectionPedidos;

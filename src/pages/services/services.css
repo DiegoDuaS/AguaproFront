@@ -173,6 +173,9 @@ h3{
 
 /* Responsive: Cambiar a diseño en columna para pantallas más pequeñas */
 @media (max-width: 1000px) {
+    .textservice{
+        font-size: 0.9em; 
+    }
     .main-content-ser {
         padding-left: 3%;
         padding-right: 3%;
@@ -197,6 +200,7 @@ h3{
 
     .history-images {
         flex-wrap: wrap;
+        flex-direction: column;
     }
 
     .img-historia-wrapper {
