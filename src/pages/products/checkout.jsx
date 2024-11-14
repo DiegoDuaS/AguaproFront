@@ -4,6 +4,7 @@ import './checkout.css';
 import { useFetchClient } from '../../hooks/useFetchClient';
 import { useUpdateClient } from '../../hooks/useUpdateClient';
 import useRegisterClient from '../../hooks/useRegisterClient';
+import useCreatePedido from '../../hooks/useCreatePedido';
 import useUpdateUserEmail from '../../hooks/useUpdateUserEmail';
 import StateCard from '../../components/cards/stateCard';
 
@@ -16,7 +17,10 @@ const Checkout = ({ onRouteChange, cartItems, navigateToLogin }) => {
   const [warningMessage, setWarningMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const userReference = localStorage.getItem('id');
+  const [isOrderConfirmed, setIsOrderConfirmed] = useState(false);
+  //console.log(cartItems);
 
+  const { createPedido, loading: pedidoLoading, error: errorPedido, message, pedidoId } = useCreatePedido();
   const { userData, loading, error, success, updateUserEmail } = useUpdateUserEmail();
   const { updateClient, loading: updateLoading, success: updateSuccess, error: updateError } = useUpdateClient();
   const {updatedResult, registerClient, isLoading: registerLoading, successMessage: registerSuccess, errorMessage: registerError } = useRegisterClient("https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app");
@@ -86,9 +90,42 @@ const Checkout = ({ onRouteChange, cartItems, navigateToLogin }) => {
         }
         setCheckoutStep('pago');
       }
+    } else if (checkoutStep === 'pago') {
+      if (!isOrderConfirmed) {
+        setWarningMessage("Por favor confirma tu orden antes de proceder al pago.");
+      } else {
+        console.log("Pago confirmado");
+      }
+    } 
+    
+  };
+
+  const handleConfirmOrder = async () => {
+    const productos = cartItems.map((item) => ({
+      idProducto: item.id_producto,
+      cantidad: item.quantity,
+    }));
+    
+    const pedidoData = {
+      clienteId: client ? client.data.id_cliente : updatedResult.id_cliente,
+      productos,
+      nitEmpresa: formData.nit,
+      idDescuento: null, // Add discount ID if applicable
+      direccion: formData.direccion,
+    };
+
+    // Make the pedido
+    await createPedido(pedidoData);
+    //console.log(pedidoId);
+    // Handle success or error messaging
+    if (message) {
+      //console.log("pedido hecho");
+      setIsOrderConfirmed(true);
+      setSuccessMessage("Orden confirmada correctamente");
+      //setSuccessMessage(message);
+      //setCheckoutStep('confirmation'); // Go to the confirmation step
     } else {
-      // Aquí puedes manejar la confirmación final
-      console.log("Orden confirmada");
+      setErrorMessage("Hubo un problema al procesar el pedido");
     }
   };
 
@@ -364,9 +401,9 @@ useEffect(() => {
             <div className="center-container">
               <div className="subtotal">Subtotal: Q{subtotal.toFixed(2)}</div>
               <div className="total">Total (con envio): Q{total.toFixed(2)}</div>
-              {checkoutStep === 'pago' && (
+              { !isOrderConfirmed && checkoutStep === 'pago' && (
                 <div className="confirm-btn">
-                  <button onClick={handleNextStep}>Confirmar Orden</button>
+                  <button onClick={handleConfirmOrder}>Confirmar Orden</button>
                 </div>
               )}
               <p className='info_extra'>¿Te hizo falta algún producto?</p> 
