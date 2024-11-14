@@ -28,6 +28,17 @@ const ClientInfo = () => {
   const [errorMessage2, setErrorMessage2] = useState(false);
 
   const memoizedGetUserInfo = useCallback(getUserInfo, []);
+  useEffect(() => {
+    if (client && formData2.email) {
+      setFormData((prev) => ({ ...prev, email: formData2.email }));
+      // Update client information with the new email
+      const updateClientEmail = async () => {
+        const id = parseInt(client.data.id_cliente);
+        await updateClient(id, { ...formData, email: formData2.email });
+      };
+      updateClientEmail();
+    }
+  }, [formData2.email, client]);
 
   // Fetch and set user info
   useEffect(() => {
