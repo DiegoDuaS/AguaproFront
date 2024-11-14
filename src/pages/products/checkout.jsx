@@ -1,7 +1,10 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import CheckoutHeader from '../../components/headers/checkoutHeader';
 import './checkout.css';
 import { useFetchClient } from '../../hooks/useFetchClient';
+import { useUpdateClient } from '../../hooks/useUpdateClient';
+import useRegisterClient from '../../hooks/useRegisterClient';
+import useUpdateUserEmail from '../../hooks/useUpdateUserEmail';
 import StateCard from '../../components/cards/stateCard';
 
 const Checkout = ({ onRouteChange, cartItems, navigateToLogin }) => {
@@ -11,7 +14,12 @@ const Checkout = ({ onRouteChange, cartItems, navigateToLogin }) => {
   const [warningMessage, setWarningMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const userReference = localStorage.getItem('id');
+
+  const { userData, loading, error, success, updateUserEmail } = useUpdateUserEmail();
+  const { updateClient, loading: updateLoading, success: updateSuccess, error: updateError } = useUpdateClient();
+  const {updatedResult, registerClient, isLoading: registerLoading, successMessage: registerSuccess, errorMessage: registerError } = useRegisterClient("https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app");
   const { client, loading: clientLoading, refetch: refetchClient } = useFetchClient(userReference);
+
   //console.log(client);
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -27,13 +35,53 @@ const Checkout = ({ onRouteChange, cartItems, navigateToLogin }) => {
     formData.nombre === '' || formData.direccion === '' || formData.telefono === '' || formData.nit === ''
   );
 
-  const handleNextStep = () => {
+  const handleNextStep = async () => {
     // Cambia al siguiente paso cuando se confirma la información
     if (checkoutStep === 'entrega') {
       if(hasEmptyFields1()){
         setWarningMessage("Completa todos los campos")
       }
       else{
+        if (client) {
+          const cleanData = {
+            nombre: formData.nombre,
+            direccion: formData.direccion,
+            telefono: formData.telefono,
+            nit: formData.nit,
+            user_reference: userReference,
+            email: formData.email
+          };
+          // Update client information if client already exists
+          await updateClient(client.data.id_cliente, cleanData);
+          //console.log(userReference);
+          await updateUserEmail(userReference, cleanData.email);
+          console.log(success);
+          if (updateSuccess && success) {
+            setSuccessMessage("Información guardada correctamente");
+            refetchClient(); // Refresh client data after update
+          } else if (updateError) {
+            setErrorMessage(updateError);
+          }
+        } else {
+          const cleanData = {
+            nombre: formData.nombre,
+            direccion: formData.direccion,
+            telefono: formData.telefono,
+            nit: formData.nit,
+            user_reference: null,
+            email: formData.email
+          };
+          // Register a new client if no client exists
+          console.log(cleanData);
+          await registerClient(cleanData, null);
+          if (registerSuccess) {
+            console.log(updatedResult);
+            setSuccessMessage("Información guardada correctamente");
+            refetchClient(); // Fetch client data after registration
+          } else if (registerError) {
+            setErrorMessage(registerError);
+          }
+        }
         setCheckoutStep('pago');
       }
     } else {
@@ -79,7 +127,7 @@ useEffect(() => {
     }
   }, [client]);
 
-  console.log(formData);
+  //console.log(formData);
   // Manejar cambios en los inputs
   const handleInputChange = (e) => {
     const { name, value } = e.target;

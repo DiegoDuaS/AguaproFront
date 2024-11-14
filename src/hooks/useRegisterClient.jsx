@@ -3,9 +3,14 @@ const useRegisterClient = (url) => {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
+  const [updatedResult, setUpdatedResult] = useState(null);
+
   const registerClient = async (clientData, userReference) => {
     setIsLoading(true);
     setErrorMessage(null);
+    setUpdatedResult(null);
+
+    //console.log(clientData);
     try {
       // POST request to register the client
       const response = await fetch(`${url}/clientes`, {
@@ -17,12 +22,12 @@ const useRegisterClient = (url) => {
       });
       if (response.ok) {
         const result = await response.json();
-        
+        //console.log(result);
         if (result.status === 'success') {
           setSuccessMessage(result.message);
-          
+          //setUpdatedResult(result.data);
           // Secondary PUT request to update user_reference if available
-          if (userReference) {
+          if (userReference && userReference!= null) {
             const updateResponse = await fetch(`${url}/clientes/user/${result.data.id_cliente}`, {
               method: 'PUT',
               headers: {
@@ -34,10 +39,15 @@ const useRegisterClient = (url) => {
               throw new Error("Failed to update user reference.");
             }
             const updateResult = await updateResponse.json();
+            console.log(updateResult);
             if (updateResult.status === 'success') {
               setSuccessMessage(updateResult.message);
+              setUpdatedResult(updateResult.data);
             }
+          } else {
+             setUpdatedResult(result.data);
           }
+           
         } else {
           setErrorMessage('Unexpected response from server.');
         }
@@ -51,6 +61,6 @@ const useRegisterClient = (url) => {
       setIsLoading(false);
     }
   };
-  return { registerClient, isLoading, errorMessage, successMessage };
+  return {updatedResult, registerClient, isLoading, errorMessage, successMessage };
 };
 export default useRegisterClient;
