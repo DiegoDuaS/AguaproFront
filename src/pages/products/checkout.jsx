@@ -1,6 +1,7 @@
 import React, { useState, useEffect} from 'react';
 import CheckoutHeader from '../../components/headers/checkoutHeader';
 import './checkout.css';
+import { useFetchClient } from '../../hooks/useFetchClient';
 import StateCard from '../../components/cards/stateCard';
 
 const Checkout = ({ onRouteChange, cartItems, navigateToLogin }) => {
@@ -9,7 +10,9 @@ const Checkout = ({ onRouteChange, cartItems, navigateToLogin }) => {
   const [successMessage, setSuccessMessage] = useState('');
   const [warningMessage, setWarningMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-
+  const userReference = localStorage.getItem('id');
+  const { client, loading: clientLoading, refetch: refetchClient } = useFetchClient(userReference);
+  console.log(client);
   useEffect(() => {
     const timer = setTimeout(() => {
       setSuccessMessage('');
@@ -56,6 +59,17 @@ const Checkout = ({ onRouteChange, cartItems, navigateToLogin }) => {
     cantidadPago: ''
   });
 
+useEffect(() => {
+    if (client) {
+      setFormData({
+        nombre: client.data.nombre || '',
+        telefono: client.data.telefono || '',
+        nit: client.data.nit || '',
+        direccion: client.data.direccion || '',
+      });
+    }
+  }, [client]);
+  console.log(formData);
   // Manejar cambios en los inputs
   const handleInputChange = (e) => {
     const { name, value } = e.target;
