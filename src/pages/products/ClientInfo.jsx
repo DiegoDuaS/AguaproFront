@@ -19,7 +19,7 @@ const ClientInfo = () => {
   // Hooks for handling updates and registration
   const { updateUser, isLoading: updatingUser, errorMessage: updateUserError } = useUpdateUser('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app');
   const { updateClient, loading: updatingClient, success: updateClientSuccess, error: updateClientError } = useUpdateClient();
-  const { registerClient, loading: registeringClient, success: registerClientSuccess, error: registerClientError } = useRegisterClient('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app');
+  const {updatedResult, registerClient, loading: registeringClient, success: registerClientSuccess, error: registerClientError } = useRegisterClient('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app');
 
   const [showAdditionalForm, setShowAdditionalForm] = useState(false);
   const [formData2, setFormData2] = useState({ username: '', email: '', created_at: '' });
