@@ -78,7 +78,16 @@
     text-align: center;
     padding: 8px 0;
   }
-  
+
+  /* total */
+  .total {
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px 0;
+    font-weight: bold;
+    color: black;
+  }    
+
   /* Subtotal y botón */
   .subtotal {
     display: flex;

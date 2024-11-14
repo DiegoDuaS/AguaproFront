@@ -8,7 +8,9 @@ import useUpdateUserEmail from '../../hooks/useUpdateUserEmail';
 import StateCard from '../../components/cards/stateCard';
 
 const Checkout = ({ onRouteChange, cartItems, navigateToLogin }) => {
+  const shippingFee = 35.0;
   const subtotal = cartItems.reduce((acc, item) => acc + item.precio * item.quantity, 0);
+  const total = subtotal + shippingFee;
   const [checkoutStep, setCheckoutStep] = useState('entrega'); // Nuevo estado para controlar el paso
   const [successMessage, setSuccessMessage] = useState('');
   const [warningMessage, setWarningMessage] = useState('');
@@ -293,7 +295,7 @@ useEffect(() => {
                       <input 
                         type="text" 
                         name="monto"
-                        value={`Q ${subtotal.toFixed(2)}`} 
+                        value={`Q ${total.toFixed(2)}`} 
                         disabled
                         placeholder="Monto total" 
                       />
@@ -352,7 +354,7 @@ useEffect(() => {
                   <tr>
                     <td><strong>Envio</strong></td>
                     <td><strong>-</strong></td>
-                    <td><strong>Q. PH</strong></td>
+                    <td><strong>Q. {shippingFee}</strong></td>
                   </tr>
                 </tbody>
               </table>
@@ -361,6 +363,7 @@ useEffect(() => {
 
             <div className="center-container">
               <div className="subtotal">Subtotal: Q{subtotal.toFixed(2)}</div>
+              <div className="total">Total (con envio): Q{total.toFixed(2)}</div>
               {checkoutStep === 'pago' && (
                 <div className="confirm-btn">
                   <button onClick={handleNextStep}>Confirmar Orden</button>
