@@ -101,13 +101,11 @@ const ClientInfo = () => {
 
   // Ensure the form data is properly updated before submission
   setFormData({ ...formData, email: formData2.email, user_reference: parseInt(userReference, 10) });
-
+  console.log(client);
   try {
     if (client == null) {
       // Register the client
-      await registerClient(formData);
-      
-      // Refetch client info and reset the form or show success
+      await registerClient(formData, userReference);
       refetchClient();
       setShowAdditionalForm(false); // Hide the form after registration
      
@@ -115,6 +113,7 @@ const ClientInfo = () => {
       // Update existing client information
       const id = parseInt(client.data.id_cliente);
       await updateClient(id, formData);
+      setShowAdditionalForm(false);
       setSuccessMessage(true);
     }
   } catch (error) {
