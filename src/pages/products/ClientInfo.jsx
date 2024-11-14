@@ -98,21 +98,30 @@ const ClientInfo = () => {
   // Register or update client information
   const handleSubmit = async (e) => {
   e.preventDefault();
-  setFormData((prev) => ({ ...prev, email: formData2.email }));
-  setFormData((prev) => ({ ...prev, user_reference: parseInt(userReference, 10) }));
-  if (client == null) {
-    await registerClient(formData, userReference);
-    
-    refetchClient();
 
-    setShowAdditionalForm(false); // Hide the form after registration
-  } else {
-    const id = parseInt(client.data.id_cliente);
-    await updateClient(id, formData);
-    
-    setSuccessMessage(true);
+  // Ensure the form data is properly updated before submission
+  setFormData({ ...formData, email: formData2.email, user_reference: parseInt(userReference, 10) });
+
+  try {
+    if (client == null) {
+      // Register the client
+      await registerClient(formData);
+      
+      // Refetch client info and reset the form or show success
+      refetchClient();
+      setShowAdditionalForm(false); // Hide the form after registration
+     
+    } else {
+      // Update existing client information
+      const id = parseInt(client.data.id_cliente);
+      await updateClient(id, formData);
+      setSuccessMessage(true);
+    }
+  } catch (error) {
+    setErrorMessage2("An error occurred while submitting the form.");
   }
 };
+
  
 
   if (isLoading || clientLoading || updatingUser || registeringClient || updatingClient) {

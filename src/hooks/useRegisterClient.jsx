@@ -5,7 +5,7 @@ const useRegisterClient = (url) => {
   const [errorMessage, setErrorMessage] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
 
-  const registerClient = async (clientData, userReference) => {
+  const registerClient = async (clientData) => {
     setIsLoading(true);
     setErrorMessage(null);
 
@@ -24,26 +24,6 @@ const useRegisterClient = (url) => {
         
         if (result.status === 'success') {
           setSuccessMessage(result.message);
-          
-          // Secondary PUT request to update user_reference if available
-          if (userReference) {
-            const updateResponse = await fetch(`${url}/clientes/user/${result.data.id_cliente}`, {
-              method: 'PUT',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({ user_reference: userReference }),
-            });
-
-            if (!updateResponse.ok) {
-              throw new Error("Failed to update user reference.");
-            }
-
-            const updateResult = await updateResponse.json();
-            if (updateResult.status === 'success') {
-              setSuccessMessage(updateResult.message);
-            }
-          }
         } else {
           setErrorMessage('Unexpected response from server.');
         }
