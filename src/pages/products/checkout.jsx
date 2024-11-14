@@ -52,6 +52,7 @@ const Checkout = ({ onRouteChange, cartItems, navigateToLogin }) => {
     direccion: '',
     telefono: '',
     nit: '',
+    email:'',
     paymentMethod: 'tarjeta',
     numeroTarjeta: '',
     fechaVencimiento: '',
@@ -68,6 +69,7 @@ useEffect(() => {
         telefono: client.data.telefono || '',
         nit: client.data.nit || '',
         direccion: client.data.direccion || '',
+        email: client.data.email || '',
         paymentMethod: 'tarjeta',
         numeroTarjeta: '',
         fechaVencimiento: '',
@@ -140,6 +142,16 @@ useEffect(() => {
                       value={formData.nit} 
                       onChange={handleInputChange} 
                       placeholder="NIT" 
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Correo</label>
+                    <input
+                      type="text"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      placeholder="Correo electrónico"
                     />
                   </div>
                   <div className="confirm-btn">
