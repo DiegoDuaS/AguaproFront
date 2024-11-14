@@ -12,6 +12,7 @@ import { color } from 'chart.js/helpers';
 import { FaFilter } from 'react-icons/fa';
 import { FaSortAmountDown, FaSortAmountUp } from 'react-icons/fa';
 import CancelCard from '../../../components/cards/cancelcard';
+import FilterSectionPedidos from './Filtros/FilterSectionPedidos';
 
 const API_BASE_URL = 'https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app';
 
@@ -281,51 +282,13 @@ const PedidosPage = () => {
           <FaFilter /> Filter
         </button>
         </div>
-        
-        <div className='filter-sort-section'>
-        {isFilterOpen && (
-          <>
-            <button onClick={toggleFilterEstados} className="filter-dropdown">
-              Estado
-            </button>
-            {isFilterOpenEstados && (
-              <div className="filter-dropdown">
-                <select value={filterState} onChange={handleFilterChange}>
-                  <option value="">Todos los estados</option>
-                  <option value="Pendiente">Pendiente</option>
-                  <option value="Procesando">Procesando</option>
-                  <option value="Enviado">Enviado</option>
-                  <option value="Entregado">Entregado</option>
-                  <option value="Cancelado">Cancelado</option>
-                </select>
-              </div>
-            )}
-
-              <button onClick={toggleFilterPrecios} className="filter-dropdown">
-                Precio
-              </button>
-              {isFilterOpenPrecios && (
-                <div className="sort-controls">
-                  <div className='filter-dropdown'>
-                    <button 
-                      onClick={() => handleSortChange('asc')} 
-                      className={`sort-button ${sortOrder === 'asc' ? 'active' : ''}`}
-                    >
-                      <FaSortAmountUp /> Precio: Bajo a Alto
-                    </button>
-                    <button 
-                      onClick={() => handleSortChange('desc')} 
-                      className={`sort-button ${sortOrder === 'desc' ? 'active' : ''}`}
-                    >
-                      <FaSortAmountDown /> Precio: Alto a Bajo
-                    </button>
-                  </div>
-                </div>
-              )}
-            </>
-          )}
-        </div>
-      
+        <FilterSectionPedidos
+          isFilterOpen={isFilterOpen}
+          filterState={filterState}
+          handleFilterChange={handleFilterChange}
+          sortOrder={sortOrder}
+          handleSortChange={handleSortChange}
+        />
       <StateCard message={successMessage} isOpen={!!successMessage} type={1}/>
       <StateCard message={errorMessageState} isOpen={!!errorMessageState} type={2}/>
       <StateCard message={warningMessage} isOpen={!!warningMessage} type={4}/>
