@@ -127,37 +127,6 @@ h3{
     box-sizing: border-box;
 }
 
-/* Responsive: Cambiar a diseño en columna para pantallas más pequeñas */
-@media (max-width: 950px) {
-    .top-banner {
-        flex-direction: column;
-        height: auto;
-    }
-
-    .image-wrapper, .quienes-somos {
-        width: 100%;
-        padding: 10px;
-    }
-
-    .image-wrapper::before, .image-wrapper::after {
-        width: 15px;
-        height: 15px;
-    }
-}
-
-/* Responsive: Ajustes adicionales para pantallas móviles */
-@media (max-width: 480px) {
-    .image-wrapper::before, .image-wrapper::after {
-        width: 10px;
-        height: 10px;
-        border: 2px solid #ddd;
-    }
-
-    .quienes-somos p {
-        font-size: 0.9em; /* Reducir el tamaño de fuente del texto */
-    }
-}
-
 .history-images {
     display: flex;
     justify-content: space-between;
@@ -187,8 +156,30 @@ h3{
     transform: scale(1.05); /* Efecto de zoom al pasar el mouse */
 }
 
-/* Responsive: Para pantallas medianas, mostrar dos imágenes por fila */
-@media (max-width: 768px) {
+/* Responsive: Cambiar a diseño en columna para pantallas más pequeñas */
+@media (max-width: 1000px) {
+    .main-content-ser {
+        padding-left: 3%;
+        padding-right: 3%;
+        margin-top: 80px;
+    }
+
+    .top-banner {
+        flex-direction: column;
+        height: auto;
+        padding: 0%;
+    }
+
+    .image-wrapper, .quienes-somos {
+        width: 100%;
+        padding: 10px;
+    }
+
+    .image-wrapper::before, .image-wrapper::after {
+        width: 15px;
+        height: 15px;
+    }
+
     .history-images {
         flex-wrap: wrap;
     }
@@ -196,11 +187,29 @@ h3{
     .img-historia-wrapper {
         width: 48%; /* Dos imágenes por fila en pantallas medianas */
     }
+
+    .mision-vision-sect {
+        flex-direction: column;
+    }
 }
 
-/* Responsive: Para pantallas pequeñas, mostrar una imagen por fila */
+/* Responsive: Ajustes adicionales para pantallas móviles */
 @media (max-width: 480px) {
+    .image-wrapper::before, .image-wrapper::after {
+        width: 10px;
+        height: 10px;
+        border: 2px solid #ddd;
+    }
+
+    .quienes-somos p {
+        font-size: 0.9em; /* Reducir el tamaño de fuente del texto */
+    }
+
     .img-historia-wrapper {
         width: 100%; /* Una imagen por fila en pantallas pequeñas */
+    }
+
+    .mision-vision-sect {
+        flex-direction: column;
     }
 }

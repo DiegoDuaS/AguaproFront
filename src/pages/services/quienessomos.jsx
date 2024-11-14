@@ -72,7 +72,7 @@ function QuienesSomos() {
                 <strong>Dirección:</strong> 10 Calle 5-28 Zona 6, Villa Nueva, Residenciales Catalina
             </p>
             <p className='textservice'>
-                <strong>Teléfono:</strong> <span>(502) 6670-3030 / 6631-1845</span>
+                <strong>Teléfono:</strong> <span>(502) 6670-3030</span>
             </p>
             <p className='textservice'>
                 <strong>Correo:</strong> <span>ventas@aguatesa.com</span>
