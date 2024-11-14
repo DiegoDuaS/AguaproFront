@@ -19,7 +19,6 @@ function Header({ toggleCart, navigateToLogin, cantItemscart }) {
           )}
         </div>
         <FaUser size={32} onClick={navigateToLogin} color='black' className='icon' />
-        <IoIosNotifications size={38} color='black' className='icon' />
       </div>
     </header>
   );

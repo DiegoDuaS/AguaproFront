@@ -112,7 +112,7 @@ const PedidosPage = () => {
   }, [fetchProductos]);
   
   const handleEstadoChange = useCallback(async (pedidoId, newEstado, clientMail) => {
-    const estadoMap = { "Pendiente": 1, "Procesando": 2, "Enviado": 3, "Entregado": 4, "Cancelado": 5 };
+    const estadoMap = { "Pendiente": 1, "Aprobado": 2, "Procesando": 3, "Enviado": 4, "Entregado": 5, "Cancelado": 6 };
     const idEstado = estadoMap[newEstado] || 0;
     if (newEstado === "Cancelado"){
       setIdCancel(pedidoId)
@@ -354,7 +354,7 @@ const PedidosPage = () => {
               className={`state ${pedido.estado.toLowerCase()}`}
               aria-label={`Estado para pedido ${pedido.id_pedido}`}
             >
-              {['Pendiente', 'Procesando', 'Enviado', 'Entregado', 'Cancelado'].map((estado, index) => (
+              {['Pendiente', 'Aprobado', 'Procesando', 'Enviado', 'Entregado', 'Cancelado'].map((estado, index) => (
                 <option className="option" value={estado} key={index + 1}>{estado}</option>
               ))}
             </select>

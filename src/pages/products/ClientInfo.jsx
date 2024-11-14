@@ -183,7 +183,7 @@ const ClientInfo = () => {
         {(showAdditionalForm) && (
           <div className="client-info-container">
             <h2>Mi información</h2>
-            <form onSubmit={handleSubmit}>
+            <form className="form-unit-client" onSubmit={handleSubmit}>
               <div className="form-group-cf">
                 <label>Nombre:</label>
                 <input

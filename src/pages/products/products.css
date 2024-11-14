@@ -49,3 +49,10 @@
   .filter-reset-btn:hover {
     background: #e0e0e0;
   }
+
+
+  @media (max-width: 768px) {
+    .main-content-prod{
+        margin-top: 70px;
+    }
+  }

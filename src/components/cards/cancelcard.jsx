@@ -27,7 +27,7 @@ const CancelCard = ({ isOpen, closeCard, userMail, pedidoId, setSuccessMessage, 
           const response = await fetch(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/pedidos/${pedidoId}/status`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ pedidoId, estatus: 5 }),
+            body: JSON.stringify({ pedidoId, estatus: 6 }),
           });
     
           if (response.ok) {

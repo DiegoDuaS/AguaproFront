@@ -132,36 +132,6 @@
   white-space: normal
 }
 
-.size-section{
-  padding-top: 10px;
-  width: 100%;
-  text-align: left;
-  height: 100px;
-  display: flex;
-  flex-direction: column;
-}
-
-.selection{
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  padding-top: 10px;
-}
-
-.select-size{
-  list-style: none;
-  color: black;
-  border: 0.2px solid black;
-  width: 100px;
-  text-align: center;
-  font-size: 1.1em;
-  border-radius: 20px;
-  background-color: white;
-  cursor: pointer;
-  
-}
-
 .product-title{
   font-size: 1.5rem; /* Adjust font size as needed */
   font-weight: bold;
@@ -237,6 +207,126 @@
   background-color: #008ec1;
 }
 
+/* Para tablets y pantallas medianas */
+@media (max-width: 768px) {
+  .large-card {
+      width: 95%;
+      max-width: 700px;
+      height: 70%; /* Ajusta la altura para pantallas más pequeñas */
+      padding: 15px;
+  }
+
+  .left-section, .right-section {
+      width: 100%; /* Apila las secciones una encima de la otra */
+      margin: 10px 0;
+      text-align: center;
+      align-items: center;
+  }
+
+  .add-to-cart{
+    align-items: center;
+    margin-top: 10px;
+  }
+
+  .imagecard{
+    width: 150px;
+    height: 150px;
+  }
+
+  .infobox {
+      width: 90%;
+      height: 200px; /* Reduce la altura para tablets */
+  }
+
+  .price{
+    font-size: 1.2em;
+  }
+
+  .cuantity-box {
+      width: 140px; /* Ajusta el ancho de la caja de cantidad */
+      height: 40px; /* Ajusta la altura de la caja de cantidad */
+      margin-right: 0;
+  }
+
+  .brand2 {
+      font-size: 1.8rem; /* Ajusta el tamaño de la fuente para tablets */
+  }
+
+  .product-title {
+      font-size: 1.3rem; /* Ajusta el tamaño de la fuente del título */
+  }
+
+  .add{
+    margin-top: 10px;
+    font-size: 0.9rem;
+  }
+
+  .addq{
+    height: 30px;
+    width: 30px;
+    display: flex;
+    align-items: center;    
+    justify-content: center;
+  }
+
+  .remove{
+    height: 30px;
+    width: 30px;
+    display: flex;
+    align-items: center;    
+    justify-content: center;
+  }
+  
+  .quantity{
+    width: 40px;
+  }
+  
+}
+
+/* Para dispositivos móviles */
+@media (max-width: 480px) {
+  .large-card {
+      width: 100%;
+      max-width: 400px;
+      height: 80%; /* Aumenta la altura en pantallas más pequeñas */
+      padding: 10px;
+      flex-direction: column;
+  }
+
+  .left-section, .right-section {
+      width: 100%; /* Apila las secciones en una sola columna */
+      margin: 5px 0;
+      align-items: center;
+  }
+
+  
+
+  .infobox {
+      width: 100%;
+      height: 150px; /* Reduce aún más la altura para móviles */
+  }
+
+  .info{
+    font-size: 0.8rem;
+  }
+
+  .cuantity-box {
+      width: 100px; /* Ajusta el ancho de la caja de cantidad */
+      height: 35px; /* Ajusta la altura de la caja de cantidad */
+  }
+
+  .brand2 {
+      font-size: 1.5rem; /* Reduce aún más el tamaño de la fuente */
+  }
+
+  .product-title {
+      font-size: 1.2rem; /* Ajusta el tamaño de la fuente del título */
+  }
+
+  .add-to-cart {
+      flex-direction: column; /* Cambia la dirección a columna */
+  }
+}
 
 
 

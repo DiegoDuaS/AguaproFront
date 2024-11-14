@@ -200,6 +200,7 @@ h3{
 
     .history-images {
         flex-wrap: wrap;
+        flex-direction: column;
     }
 
     .img-historia-wrapper {

@@ -72,7 +72,7 @@ const FilterCatalogo = ({
   return (
     <div className="filter-container">
     <div className="filter-controls">
-      <button onClick={toggleFilter} className="filter-button">
+      <button onClick={toggleFilter} className="filter-button2">
         <FaFilter /> Filtros
       </button>
       {isFilterOpen && hasActiveFilters && (

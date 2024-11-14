@@ -83,3 +83,13 @@
 .submenu li:hover {
   background-color: #f0f0f0;
 }
+
+
+@media (max-width: 480px) {
+  .navbar-menu {
+    top: 90px;
+  }
+  .navbar__li{
+    font-size: 14px;
+  }
+}

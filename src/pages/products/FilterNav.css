@@ -103,3 +103,14 @@
   background-color: #f0f0f0; /* Highlight selected option */
    /* Change text color for contrast */
 }
+
+
+@media (max-width: 768px) {
+  .navbar-menu-fi {
+    top: 90px; 
+  }
+
+  .navbar__li-fi{
+    font-size: 14px;
+  }
+}

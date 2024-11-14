@@ -37,3 +37,9 @@
   background-color: #f0f0f0;
   padding: 5px;
 }
+@media (max-width: 768px) {
+  .user-menu {
+    left: 50%; /* Centrado */
+    transform: translateX(-50%); /* Centrado horizontal */
+  }
+}
