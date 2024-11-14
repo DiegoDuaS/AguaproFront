@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './EditProdCard.css';
+import './editUsercard.css';
 import useUpdateUser from '../../hooks/useUpdateUser';
 import useUpdateUserRole from '../../hooks/useUpdateUserRole';
 
@@ -55,11 +56,10 @@ const EditUserCard = ({ isOpen, closeCard, user, refetchUsers }) => {
   };
 
   return (
-    <div className="large-card-edit" ref={cardRef}>
+    <div className="edituser-card" ref={cardRef}>
       <button className="close-button" onClick={closeCard}>X</button>
       <h2 className='text'>{user.username} - #{user.id}</h2>
-      <div className='tables-section'>
-        <div className="section">
+     
           <div className="vertical-table">
             <div className="table-row2">
               <div className="table-cell title">Username</div>
@@ -82,7 +82,7 @@ const EditUserCard = ({ isOpen, closeCard, user, refetchUsers }) => {
               />
             </div>
             <div className="table-row2">
-              <div className="table-cell title">Role</div>
+              <div className="table-cell title">Rol</div>
               <input
                 type="text"
                 className="table-cell input"
@@ -91,8 +91,6 @@ const EditUserCard = ({ isOpen, closeCard, user, refetchUsers }) => {
                 onChange={(e) => setRole(e.target.value)}
               />
             </div>
-          </div>
-        </div>
       </div>
       <button className="save-button" onClick={handleSave} disabled={isUpdatingUser || isUpdatingRole}>
         {(isUpdatingUser || isUpdatingRole) ? 'Guardando...' : 'Guardar'}
