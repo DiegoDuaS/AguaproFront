@@ -14,7 +14,7 @@ const ClientInfo = () => {
   const userReference = localStorage.getItem('id');
 
   const { getUserInfo, isLoading, errorMessage } = useUserInfo('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app');
-  const { client, loading: clientLoading } = useFetchClient(userReference);
+  const { client, loading: clientLoading, refetch: refetchClient } = useFetchClient(userReference);
   
   // Hooks for handling updates and registration
   const { updateUser, isLoading: updatingUser, errorMessage: updateUserError } = useUpdateUser('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app');
@@ -94,9 +94,7 @@ const ClientInfo = () => {
       setFormData((prev) => ({ ...prev, email: formData2.email }));
     }
   };
-  console.log(formData);
-  console.log(userReference);
-  console.log(formData2);
+  
   // Register or update client information
   const handleSubmit = async (e) => {
   e.preventDefault();
@@ -104,10 +102,14 @@ const ClientInfo = () => {
   setFormData((prev) => ({ ...prev, user_reference: parseInt(userReference, 10) }));
   if (client == null) {
     await registerClient(formData, userReference);
+    
+    refetchClient();
+
     setShowAdditionalForm(false); // Hide the form after registration
   } else {
     const id = parseInt(client.data.id_cliente);
     await updateClient(id, formData);
+    
     setSuccessMessage(true);
   }
 };
