@@ -61,10 +61,146 @@ h3{
 .mision-vision-sect{
     display: flex;
     flex-direction: row;
+    margin: 20px;
+    margin-bottom: 50px;
 }
 
 .side-mv{
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+.top-banner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: fit-content;
+    padding: 20px;
+    box-sizing: border-box;
+    flex-direction: row;
+}
+
+.image-wrapper {
+    width: 50%;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.image-wrapper::before, .image-wrapper::after {
+    content: "";
+    position: absolute;
+    width: 20%;
+    height: 20%;
+    border: 3px solid #00668c;
+}
+
+.image-wrapper::before {
+    top: 0;
+    left: 0;
+    border-bottom: none;
+    border-right: none;
+}
+
+.image-wrapper::after {
+    bottom: 0;
+    right: 0;
+    border-top: none;
+    border-left: none;
+}
+
+.per-about {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    aspect-ratio: 1 / 1;
+    border-radius: 5px;
+}
+
+.quienes-somos {
+    width: 50%;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Responsive: Cambiar a diseño en columna para pantallas más pequeñas */
+@media (max-width: 950px) {
+    .top-banner {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .image-wrapper, .quienes-somos {
+        width: 100%;
+        padding: 10px;
+    }
+
+    .image-wrapper::before, .image-wrapper::after {
+        width: 15px;
+        height: 15px;
+    }
+}
+
+/* Responsive: Ajustes adicionales para pantallas móviles */
+@media (max-width: 480px) {
+    .image-wrapper::before, .image-wrapper::after {
+        width: 10px;
+        height: 10px;
+        border: 2px solid #ddd;
+    }
+
+    .quienes-somos p {
+        font-size: 0.9em; /* Reducir el tamaño de fuente del texto */
+    }
+}
+
+.history-images {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.img-historia-wrapper {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.img-historia {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px; /* Bordes redondeados */
+    aspect-ratio: 1 / 1; /* Asegura que la imagen sea cuadrada */
+    transition: transform 0.3s ease;
+}
+
+.img-historia-wrapper:hover .img-historia {
+    transform: scale(1.05); /* Efecto de zoom al pasar el mouse */
+}
+
+/* Responsive: Para pantallas medianas, mostrar dos imágenes por fila */
+@media (max-width: 768px) {
+    .history-images {
+        flex-wrap: wrap;
+    }
+
+    .img-historia-wrapper {
+        width: 48%; /* Dos imágenes por fila en pantallas medianas */
+    }
+}
+
+/* Responsive: Para pantallas pequeñas, mostrar una imagen por fila */
+@media (max-width: 480px) {
+    .img-historia-wrapper {
+        width: 100%; /* Una imagen por fila en pantallas pequeñas */
+    }
 }
