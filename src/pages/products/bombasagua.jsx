@@ -107,6 +107,34 @@ const BombasAgua = ({cartItems, setCartItems, setSuccessMessage }) => {
     }
   };
 
+  const sortProductos = (productosToSort) => {
+    let result = [...productosToSort];
+    
+    if (sortOrder) {
+      result.sort((a, b) => {
+        return sortOrder === 'asc' ? a.precio - b.precio : b.precio - a.precio;
+      });
+    }
+  
+    if (sortName) {
+      result.sort((a, b) => {
+        return sortName === 'asc' ? 
+          a.nombre.localeCompare(b.nombre) : 
+          b.nombre.localeCompare(a.nombre);
+      });
+    }
+  
+    return result;
+  };
+
+  // Products to display with filters
+  const productosToDisplay = sortProductos(
+    (isSearchActive ? searchResults : productos).filter(producto => 
+      (filterMarca === '' || producto.marca === filterMarca) &&
+      (filterMaterial === '' || producto.material === filterMaterial)
+    )
+  );
+
   useEffect(() => {
     if (errorMessage) {
       console.log(errorMessage);
@@ -168,45 +196,6 @@ const BombasAgua = ({cartItems, setCartItems, setSuccessMessage }) => {
     setSortOrder(''); // Reset price sort when name sort is selected
   };
 
-  // Filter and sort products
-  const getFilteredProducts = useCallback(() => {
-    let filtered = [...(productos || [])];
-
-    // Apply marca filter
-    if (filterMarca) {
-      filtered = filtered.filter(p => p.marca === filterMarca);
-    }
-
-    // Apply material filter
-    if (filterMaterial) {
-      filtered = filtered.filter(p => p.material === filterMaterial);
-    }
-
-    // Apply price sorting
-    if (sortOrder) {
-      filtered.sort((a, b) => {
-        if (sortOrder === 'asc') {
-          return a.precio - b.precio;
-        } else {
-          return b.precio - a.precio;
-        }
-      });
-    }
-
-    // Apply name sorting
-    if (sortName) {
-      filtered.sort((a, b) => {
-        if (sortName === 'asc') {
-          return a.nombre.localeCompare(b.nombre);
-        } else {
-          return b.nombre.localeCompare(a.nombre);
-        }
-      });
-    }
-
-    return filtered;
-  }, [productos, filterMarca, filterMaterial, sortOrder, sortName]);
-
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= totalPages) {
       setCurrentPage(newPage);
@@ -214,12 +203,12 @@ const BombasAgua = ({cartItems, setCartItems, setSuccessMessage }) => {
   };
 
   // Determinar qué productos mostrar basado en la búsqueda
-  const productsToDisplay = isSearchActive ? searchResults : productos;
-  const totalPages = Math.ceil(productsToDisplay.length / 16);
+  const totalPages = Math.ceil(productosToDisplay.length / 16);
   const startIndex = (currentPage - 1) * 16;
   const endIndex = startIndex + 16;
 
-  const productosEnPagina = productsToDisplay.slice(startIndex, endIndex);
+  const productosEnPagina = productosToDisplay.slice(startIndex, endIndex);
+
 
   if (isLoading || loadingImages) {
     return (
