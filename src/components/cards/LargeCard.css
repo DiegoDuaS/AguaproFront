@@ -210,9 +210,9 @@
 /* Para tablets y pantallas medianas */
 @media (max-width: 768px) {
   .large-card {
-      width: 95%;
+      width: 90%;
       max-width: 700px;
-      height: 70%; /* Ajusta la altura para pantallas más pequeñas */
+      height: auto; /* Ajusta la altura para pantallas más pequeñas */
       padding: 15px;
   }
 
@@ -234,7 +234,7 @@
   }
 
   .infobox {
-      width: 90%;
+      width: 100px;
       height: 200px; /* Reduce la altura para tablets */
   }
 
@@ -286,7 +286,6 @@
 /* Para dispositivos móviles */
 @media (max-width: 480px) {
   .large-card {
-      width: 100%;
       max-width: 400px;
       height: 80%; /* Aumenta la altura en pantallas más pequeñas */
       padding: 10px;
