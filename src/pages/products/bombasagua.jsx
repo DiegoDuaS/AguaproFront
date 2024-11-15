@@ -8,6 +8,7 @@ import searchIcon from './../../image/searchIcon.png';
 import './products.css';
 import FilterCatalogo from './FitersCatalogo';
 import { FaRegSadCry } from "react-icons/fa";
+import FilterCatalogo from './FitersCatalogo';
 
 const BombasAgua = ({cartItems, setCartItems, setSuccessMessage }) => {
   const [isLargeCardOpen, setIsLargeCardOpen] = useState(false);

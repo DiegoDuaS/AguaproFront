@@ -22,7 +22,7 @@ export async function fetchTypeId(tipo) {
   }
 }
 
-
+// 2. crear producto
 export async function createProduct(nombre, descripcion, tipo_producto, marca, modelo, material, capacidad_min, capacidad_max, precio, disponibilidad) {
   let typeId = null;
   
