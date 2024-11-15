@@ -88,3 +88,19 @@
     justify-content: space-between;
   }
   
+  @media (max-width: 768px) {
+    .filter-button {
+        padding: 8px 12px; /* Reduce el padding para pantallas medianas */
+        font-size: 14px;   /* Ajusta el tamaño de la fuente */
+        margin-left: 10px; /* Reduce el margen izquierdo */
+    }
+}
+
+/* Media query para dispositivos móviles */
+@media (max-width: 480px) {
+    .filter-button {
+        padding: 6px 10px; /* Aún más compacto para móviles */
+        font-size: 13px;   /* Reduce el tamaño de fuente */
+        margin-left: 5px;  /* Margen más pequeño */
+    }
+}

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './EditProdCard.css';
+import './editUsercard.css';
 import useUpdateUser from '../../hooks/useUpdateUser';
 import useUpdateUserRole from '../../hooks/useUpdateUserRole';
 
@@ -55,45 +56,41 @@ const EditUserCard = ({ isOpen, closeCard, user, refetchUsers }) => {
   };
 
   return (
-    <div className="large-card-edit" ref={cardRef}>
+    <div className="large-card-prod-nu" ref={cardRef}>
       <button className="close-button" onClick={closeCard}>X</button>
       <h2 className='text'>{user.username} - #{user.id}</h2>
-      <div className='tables-section'>
-        <div className="section">
-          <div className="vertical-table">
-            <div className="table-row2">
-              <div className="table-cell title">Username</div>
+     
+              <div className="title">Username</div>
               <input
                 type="text"
-                className="table-cell input"
+                className="input2"
                 value={username}
                 placeholder={user.username}
                 onChange={(e) => setUsername(e.target.value)}
               />
-            </div>
-            <div className="table-row2">
-              <div className="table-cell title">Email</div>
+              <div className="title">Email</div>
               <input
                 type="text"
-                className="table-cell input"
+                className="input2"
                 value={email}
                 placeholder={user.email}
                 onChange={(e) => setEmail(e.target.value)}
               />
-            </div>
-            <div className="table-row2">
-              <div className="table-cell title">Role</div>
-              <input
-                type="text"
-                className="table-cell input"
+              <div className="title">Rol</div>
+              <select
+                className="input2"
                 value={role}
-                placeholder={user.role}
                 onChange={(e) => setRole(e.target.value)}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
+              >
+                <option value="" disabled>{user.role || "Selecciona un rol"}</option>
+                <option value="vendedor">vendedor</option>
+                <option value="secretaria">secretaría</option>
+                <option value="analista">analista</option>
+                <option value="bodeguero">bodeguero</option>
+                <option value="admin">admin</option>
+                <option value="user">user</option>
+              </select>
+  
       <button className="save-button" onClick={handleSave} disabled={isUpdatingUser || isUpdatingRole}>
         {(isUpdatingUser || isUpdatingRole) ? 'Guardando...' : 'Guardar'}
       </button>

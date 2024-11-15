@@ -1,28 +1,61 @@
 import './services.css'
-import React, { useState } from 'react';
-import FormsSer from '../../components/forms/formsSer';
-import { AiFillEdit } from "react-icons/ai";
+import React from 'react';
+
+import logoImg from '../../image/logo2.jpg';
+import presentacionImg from '../../image/perforacion.jpg';
+import historia1 from '../../image/perforacion2.jpg';
+import historia2 from '../../image/incendio.jpg';
+import historia3 from '../../image/bombeo.jpg';
 
 function QuienesSomos() {
     
     return (
         <main className="main-content-ser">
-            <h2>¿Quiénes somos?</h2>
-            <p className="textservice">
-            Somos AGUATESA S.A., una empresa guatemalteca especializada en soluciones integrales para la gestión y aprovechamiento eficiente 
-            del agua. Nos dedicamos a la perforación de pozos mecánicos, mantenimiento de estos pozos, venta de equipos de bombeo de 
-            alta calidad, pruebas de bombeo, y ofrecemos servicios técnicos especializados en sistemas hidroneumáticos. Nuestro compromiso es 
-            brindar a nuestros clientes soluciones efectivas que aseguren un suministro de agua confiable y adaptado a sus necesidades.
-            </p>
-            <h3 className='subtitle'>Nuestra Historia</h3>
-            <p className='textservice'>
-            Con más de 25 años de experiencia comprobable en el sector, en AGUATESA S.A. hemos crecido al lado de nuestros clientes y nos hemos 
-            consolidado como un referente en proyectos relacionados con agua. Gracias a nuestro equipo técnico especializado y a nuestro rol 
-            como importadores directos, ofrecemos un amplio inventario de equipos de bombeo y repuestos de calidad. Además, contamos con 
-            grúas hidráulicas 4x4 y perforadoras de alta capacidad, como la Ingersoll Rand T4W Rotopercusión y Chicago Pneumatic, así 
-            como vehículos de apoyo especializados para aforos. Nuestros servicios están disponibles los 365 días del año y 24 horas al día, 
-            para responder a cualquier necesidad con equipos y asistencia de primera calidad. 
-            </p>
+            <div class="top-banner">
+                <div class="image-wrapper">
+                    <img class="per-about" src={presentacionImg} alt="Imagen Servicios Mant 1"/>
+                </div>
+                <div class="quienes-somos">
+                    <div class="title-logo">
+                        <img class="logo-about" src={logoImg} alt="Imagen Logo Aguatesa 1"/>
+                        <h2>¿Quiénes somos?</h2>
+                    </div>
+                    <p class="textservice">
+                        Somos AGUATESA S.A., una empresa guatemalteca especializada en soluciones integrales para la gestión y aprovechamiento eficiente 
+                        del agua. Nos dedicamos a la perforación de pozos mecánicos, mantenimiento de estos pozos, venta de equipos de bombeo de 
+                        alta calidad, pruebas de bombeo, y ofrecemos servicios técnicos especializados en sistemas hidroneumáticos. Nuestro compromiso es 
+                        brindar a nuestros clientes soluciones efectivas que aseguren un suministro de agua confiable y adaptado a sus necesidades.
+                    </p>
+                    
+                </div>
+            </div>
+
+            
+            <div className='historia'>
+                <h3 className='subtitle'>Nuestra Historia</h3>
+                <p className='textservice'>
+                Con más de 25 años de experiencia comprobable en el sector, en AGUATESA S.A. hemos crecido al lado de nuestros clientes y nos hemos 
+                consolidado como un referente en proyectos relacionados con agua. Gracias a nuestro equipo técnico especializado y a nuestro rol 
+                como importadores directos, ofrecemos un amplio inventario de equipos de bombeo y repuestos de calidad. Además, contamos con 
+                grúas hidráulicas 4x4 y perforadoras de alta capacidad, como la Ingersoll Rand T4W Rotopercusión y Chicago Pneumatic, así 
+                como vehículos de apoyo especializados para aforos. Nuestros servicios están disponibles los 365 días del año y 24 horas al día, 
+                para responder a cualquier necesidad con equipos y asistencia de primera calidad. 
+                </p>
+            </div>
+
+            <div className='history-images'>
+                <div class="img-historia-wrapper">
+                    <img class="img-historia" src={historia1} alt="Imagen Servicios Mant 1"/>
+                </div>
+                <div class="img-historia-wrapper">
+                    <img class="img-historia" src={historia2} alt="Imagen Servicios Mant 1"/>
+                </div>
+                <div class="img-historia-wrapper">
+                    <img class="img-historia" src={historia3} alt="Imagen Servicios Mant 1"/>
+                </div>
+            </div>
+            
+            
             <div className='mision-vision-sect'>
                 <div className='side-mv'>
                     <h3 className='subtitle'>Misión</h3>
@@ -42,22 +75,17 @@ function QuienesSomos() {
                 </div>
             </div>
             
-            <div className='imagescontainer'>
-                <img className='per' src="src\image\perforacion.jpg" alt="Imagen Servicios Mant 1"/>
-            </div>
             <h3 className='subtitle'>Contacténos</h3>
             <p className='textservice'>
                 <strong>Dirección:</strong> 10 Calle 5-28 Zona 6, Villa Nueva, Residenciales Catalina
             </p>
             <p className='textservice'>
-                <strong>Teléfono:</strong> <span>(502) 6670-3030 / 6631-1845</span>
+                <strong>Teléfono:</strong> <span>(502) 6670-3030</span>
             </p>
             <p className='textservice'>
                 <strong>Correo:</strong> <span>ventas@aguatesa.com</span>
             </p>
-            <p className='textservice'>
-             ventas2@aguatesa.com
-            </p>
+            <p className='textservice'> ventas2@aguatesa.com</p>
       </main>
     );
 }

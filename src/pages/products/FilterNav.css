@@ -1,18 +1,21 @@
-.navbar-menu {
+.navbar-menu-fi {
   position: fixed;
   top: 120px; /* Altura de la sección fija (ajustar según sea necesario) */
   bottom: 0;
   left:0;
   background-color:white;
   box-shadow: 1px 1px 7px rgba(0,0,0,0.15);
-  transition: 0.3s ease;  
+  transition: 0.3s ease;
+  overflow-y: auto;  
+  transition: 0.3s ease;
 }
-.navbar__list {
+.navbar__list-fi {
   list-style-type: none;
+  transition: 0.3s ease;
   
 }
 
-.navbar__li {
+.navbar__li-fi {
   display: inline-block;
   padding:0px 0px 0px 12px;
   position: relative;
@@ -30,46 +33,58 @@
   height: auto;
   cursor: pointer;
   background-color:white;  
+  transition: 0.3s ease;
 }
-.navbar__li:hover {
+.navbar__li-fi:hover {
   background-color: 7px solid #58b5fc; /* Apply hover effect to navbar__li */
 }
-.navbar__li-box {
-  height: 43px;
+.navbar__li-box-fi {
+  height: auto;
   margin-top: 15px;
   left:0;
 }
 
-.navbar__li-box:hover {
+.navbar__li-box-fi:hover {
   border-left: 7px solid #58b5fc;
   cursor: point;
 }
 
-.navbar__li-box.second-item-moved {
-  margin-top: 58px; /* Adjust based on submenu height */
+.navbar__li-box-fi.second-item-moved {
+  margin-top: auto; /* Adjust based on submenu height */
 }
 
-.submenu {
+.navbar__li-box-fi.third-item-moved {
+  margin-top: auto; /* Adjust based on submenu height */
+}
+
+.navbar__li-box-fi.fourth-item-moved {
+  margin-top: auto; /* Adjust based on submenu height */
+}
+
+.submenu-fi {
   position: relative;
+  height: 30px;
   width: 200px; /* Ancho del submenu */
-  background-color: white; /* Color de fondo del submenu */
+  /*background-color: white;*/ /* Color de fondo del submenu */
   border: none; /* Borde del submenu */
   list-style: none; /* Quita los estilos de la lista */
   padding: 0;
   margin: 0;
   display: none; /* Oculta el submenu inicialmente */
   right:0;
+  font-size: 0.9rem;
 }
 
-.submenu.open {
+.submenu-fi.open {
   display: block;
+  height: auto;
 }
 
-.submenu li {
+.submenu-fi li {
   position:relative;
-  padding: 10px 15px;
+  padding-left: 10px;
   cursor: pointer;
-  background-color: white;
+  /*background-color: white;*/
   border: none;
   height: auto;
   box-shadow:none;
@@ -80,16 +95,22 @@
   font-weight: 400;
 }
 
-.submenu li:hover {
+.submenu-fi li:hover {
   background-color: #f0f0f0;
 }
 
+.selected-option {
+  background-color: #f0f0f0; /* Highlight selected option */
+   /* Change text color for contrast */
+}
 
-@media (max-width: 480px) {
-  .navbar-menu {
-    top: 90px;
+
+@media (max-width: 768px) {
+  .navbar-menu-fi {
+    top: 90px; 
   }
-  .navbar__li{
+
+  .navbar__li-fi{
     font-size: 14px;
   }
 }
