@@ -193,6 +193,7 @@
   }
 }
 
+
 @media (max-width: 480px) {
   .titleContainer {
     font-size: 2em;
@@ -235,4 +236,3 @@
     height: 50px;
   }
 }
-
