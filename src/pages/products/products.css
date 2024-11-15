@@ -55,4 +55,29 @@
     .main-content-prod{
         margin-top: 70px;
     }
+
+    .clean-btn{
+        margin-left: 5px;
+        font-size: 0.8rem;
+    }
+  }
+
+  .no-products-message{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 40px;
+    margin-bottom: 100px;
+    height: 100px;
+    justify-content: space-between;
+  }
+
+  .search-notice{
+    display: flex;
+    height: auto;
+    size-adjust: 10px;
+  }
+
+  .clean-btn{
+    margin-left: 10px;
   }
