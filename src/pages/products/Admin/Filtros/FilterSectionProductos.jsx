@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { FaFilter, FaSortAmountDown, FaSortAmountUp } from 'react-icons/fa';
 import { MdFilterAltOff } from "react-icons/md";
 
+
 const FilterSection = ({ 
   isFilterOpen, 
   toggleFilter, 
@@ -23,7 +24,6 @@ const FilterSection = ({
   };
 
   const hasActiveFilters = filterAvailability || filterVisibility || sortOrder;
-
   return (
     <div>
       {isFilterOpen && (
@@ -85,7 +85,6 @@ const FilterSection = ({
               </div>
             </div>
           )}
-
           {hasActiveFilters && (
             <button 
               onClick={handleResetFilters}
@@ -95,6 +94,7 @@ const FilterSection = ({
               <MdFilterAltOff />
             </button>
           )}
+
         </div>
         </>
       )}

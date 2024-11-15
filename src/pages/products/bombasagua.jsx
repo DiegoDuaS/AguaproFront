@@ -26,6 +26,7 @@ const BombasAgua = ({cartItems, setCartItems, setSuccessMessage }) => {
   const [sortName, setSortName] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
 
+
   useEffect(() => {
     if (productos && productos.length > 0) {
       const fetchImages = async () => {
@@ -81,7 +82,6 @@ const BombasAgua = ({cartItems, setCartItems, setSuccessMessage }) => {
       fetchImages();
     }
   }, [productos]);
-
 
   const handleSearch = useCallback(() => {
     const trimmedSearchTerm = searchTerm.trim().toLowerCase();
@@ -234,7 +234,6 @@ const BombasAgua = ({cartItems, setCartItems, setSuccessMessage }) => {
     )
   }
 
-  
   return (
     <main className="main-content-prod">
       <h2>Bombas de Agua</h2>

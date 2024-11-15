@@ -39,6 +39,7 @@ const PedidosPage = () => {
   const [userMail, setUserMail] = useState('');
   const [idCancel, setIdCancel] = useState(0);
 
+
   const sortPedidos = (pedidosToSort) => {
     if (sortOrder === 'asc') {
       return [...pedidosToSort].sort((a, b) => a.monto_total - b.monto_total);
@@ -293,6 +294,7 @@ const PedidosPage = () => {
       <StateCard message={errorMessageState} isOpen={!!errorMessageState} type={2}/>
       <StateCard message={warningMessage} isOpen={!!warningMessage} type={4}/>
       <CancelCard isOpen={isCancelCardOpen} closeCard={setIsCancelCardOpen} userMail={userMail} pedidoId={idCancel} setSuccessMessage={setSuccessMessage} setErrorMessage={setErrorMessageState} setWarningMessage={setWarningMessage} refetch={refetch} />
+
     
       <div className="table">
         <div className="table-grid table-header">

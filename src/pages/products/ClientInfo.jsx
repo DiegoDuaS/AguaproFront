@@ -15,6 +15,7 @@ const ClientInfo = () => {
 
   const { getUserInfo, isLoading, errorMessage } = useUserInfo('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app');
   const { client, loading: clientLoading, refetch: refetchClient } = useFetchClient(userReference);
+
   
   // Hooks for handling updates and registration
   const { updateUser, isLoading: updatingUser, errorMessage: updateUserError } = useUpdateUser('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app');
@@ -39,6 +40,7 @@ const ClientInfo = () => {
       updateClientEmail();
     }
   }, [formData2.email, client]);
+
 
   // Fetch and set user info
   useEffect(() => {
@@ -70,6 +72,7 @@ const ClientInfo = () => {
         direccion: client.data.direccion || '',
         user_reference: userReference,
         email: formData2.email,
+
       });
     }
   }, [client]);
@@ -120,7 +123,6 @@ const ClientInfo = () => {
     setErrorMessage2("An error occurred while submitting the form.");
   }
 };
-
  
 
   if (isLoading || clientLoading || updatingUser || registeringClient || updatingClient) {

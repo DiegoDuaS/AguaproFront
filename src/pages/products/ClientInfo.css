@@ -83,7 +83,6 @@
   justify-content: space-around;
 }
 
-
 /* Ajustes para pantallas de 768px o menos */
 @media (max-width: 768px) {
   .client-info-container, .user-info-container {
@@ -123,3 +122,4 @@
     padding: 12px;
   }
 }
+
