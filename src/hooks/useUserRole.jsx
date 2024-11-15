@@ -8,10 +8,20 @@ const useUserRole = (userId) => {
   useEffect(() => {
     const fetchUserRole = async () => {
       try {
-        const response = await fetch(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/user/${userId}`);
-        const data = await response.json();  // Parse the response as JSON
+        // Obtenemos el token desde localStorage o alguna otra fuente
+        const token = localStorage.getItem('token'); 
+
+        const response = await fetch(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/user/${userId}`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,  // Header de autorización
+            'Content-Type': 'application/json',  // Opcional, dependiendo de si se necesita
+          }
+        });
+
+        const data = await response.json();
         if (data.status === 'success') {
-          setRole(data.data[0].role);  // Access the role from the response
+          setRole(data.data[0].role); // Accede al rol desde la respuesta
         } else {
           setError('Failed to retrieve user role');
         }
@@ -31,4 +41,3 @@ const useUserRole = (userId) => {
 };
 
 export default useUserRole;
-

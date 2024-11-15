@@ -96,6 +96,7 @@ const NewUserCard = ({ isOpen, closeCard, onRegister,  setSuccessMessage, setErr
                                 <option value="secretaria">secretaría</option>
                                 <option value="analista">analista</option>
                                 <option value="bodeguero">bodeguero</option>
+                                <option value="logistica">logística</option>
                                 <option value="admin">admin</option>
                                 <option value="user">user</option>
                             </select>

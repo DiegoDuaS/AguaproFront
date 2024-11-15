@@ -58,23 +58,29 @@ const SolicitudesPage = () => {
 
   const handleEstadoChange = useCallback(async (solicitudId, nuevoEstado) => {
     try {
+      // Obtener el token de localStorage
+      const token = localStorage.getItem('token');
+  
       const response = await fetch(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/solicitud/${solicitudId}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': token ? `Bearer ${token}` : '', // Incluir token si existe
+        },
         body: JSON.stringify({ estado: nuevoEstado }),
       });
-
+  
       if (response.ok) {
         setSuccessMessage('Estado de solicitud actualizado correctamente');
         refetch();
       } else {
-        setErrorMessageState('Error al actualizar el estado de la solicitud')
+        setErrorMessageState('Error al actualizar el estado de la solicitud');
         throw new Error('Error al actualizar el estado de la solicitud');
       }
     } catch (error) {
-      setErrorMessageState('Error al actualizar el estado de la solicitud')
+      setErrorMessageState('Error al actualizar el estado de la solicitud');
     }
-  }, [refetch, successMessage]);
+  }, [refetch, setSuccessMessage, setErrorMessageState]);
   
   if (isLoading) {
     return(

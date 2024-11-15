@@ -276,3 +276,104 @@ h3.checkout {
   padding-bottom: 20px;
   border-radius: 10px;
 }
+
+@media (max-width: 1200px) {
+  .order-container {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .order-details {
+    flex: 1;
+    padding: 10px;
+  }
+
+  .order-summary {
+    flex: 1;
+    padding: 10px;
+    border-left: none;
+    border-top: #000000 1px solid;
+  }
+}
+
+@media (max-width: 768px) {
+
+  h2{
+    font-size: 1.5rem;
+  }
+  .containerch {
+    margin-left: 20px;
+    margin-right: 20px;
+    padding: 15px;
+  }
+
+  .order-container {
+    width: 100%;
+    flex-direction: column;
+    height: auto;
+  }
+
+  .order-details, .order-summary {
+    flex: 1;
+    padding: 10px;
+  }
+
+  .confirm-btn {
+    width: 100%;
+    justify-content: center;
+    font-size: small;
+  }
+
+  .confirm-btn button {
+    width: 40%;
+    padding: 12px;
+    font-size: 18px;
+    font-size: small;
+  }
+
+  .form-group label, .form-group input {
+    width: 100%;
+    font-size: 12px;
+  }
+
+  .form-group label{
+    width: 50%;
+  }
+
+  
+  .forma-group label{
+    font-size: 14px;
+  }
+
+  .section_checkout {
+    width: 100%;
+  }
+
+  table{
+    font-size: 13px;
+  }
+
+  .center-container{
+    font-size: 13px;
+  }
+
+  .title_check_side{
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .order-container {
+    padding: 5px;
+  }
+
+  .order-details, .order-summary {
+    padding: 5px;
+  }
+
+  .confirm-btn button {
+    width: 40%;
+    padding: 14px;
+    font-size: 12px;
+  }
+}
