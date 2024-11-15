@@ -111,7 +111,7 @@ const Checkout = ({ onRouteChange, cartItems, navigateToLogin }) => {
         await sendPaymentRequest(clientPay);
        
         const PayInfo = {
-          mailTo: ['gor22246@uvg.edu.gt', 'wolfunicorn912@gmail.com'],
+          mailTo: ['ventas@aguatesa.com', 'ventas2@aguatesa.com'],
           nombre: formData.nombre,
           correo: formData.email,
           telefono: formData.telefono,
