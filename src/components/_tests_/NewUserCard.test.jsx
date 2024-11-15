@@ -74,7 +74,7 @@ describe('NewUserCard', () => {
         fireEvent.change(screen.getByPlaceholderText('Correo'), { target: { value: 'test@example.com' } });
     
         // Select a role
-        fireEvent.change(screen.getByPlaceholderText('Selecciona un rol'), { target: { value: 'admin' } });
+        fireEvent.change(screen.getByRole('combobox'), { target: { value: 'admin' } });
     
         // Click the save button
         fireEvent.click(screen.getByText('Guardar'));
