@@ -120,10 +120,12 @@ const Checkout = ({ onRouteChange, cartItems, navigateToLogin }) => {
           banco: formData.banco,
           numAutorizacion: formData.numeroAutorizacion
         };
-        console.log(successPay);
+        //console.log(successPay);
         await sendSalesReviewRequest(PayInfo);
-        if(successPay && successReview){
+        if(successReview){
+          //onRouteChange('Bombas de agua');
           setSuccessMessage("Se envió el pago");
+          onRouteChange('Bombas de agua');
         } else {
           setErrorMessage("Hubo un error al envia el pago");
         }
