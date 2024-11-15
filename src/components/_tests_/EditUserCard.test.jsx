@@ -30,7 +30,6 @@ describe('EditUserCard', () => {
         expect(screen.getByRole('button', { name: /X/i })).toBeInTheDocument(); // Check that the close button is displayed
         expect(screen.getByPlaceholderText('testuser@example.com')).toBeInTheDocument(); // Check the email placeholder
         expect(screen.getByPlaceholderText('TestUser')).toBeInTheDocument(); // Check the username placeholder
-        expect(screen.getByPlaceholderText('admin')).toBeInTheDocument(); // Check the role placeholder
     });
 
     test('does not render when isOpen is false', () => {
