@@ -17,7 +17,7 @@ import { FaFilter } from 'react-icons/fa';
 import { FaCircleCheck } from "react-icons/fa6";
 
 const ProductosPage = () => {
-  const { data: productos, errorMessage, isLoading, refetch } = useApiP('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/catalogo');
+  const { data: productos, errorMessage, isLoading, refetch } = useApiP('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/productos');
   const [isInformationCardOpen, setIsInformationCardOpen] = useState(false);
   const [isNewCardOpen, setIsNewCardOpen] = useState(false);
   const [isEditCardOpen, setIsEditCardOpen] = useState(false);

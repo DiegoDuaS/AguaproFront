@@ -61,3 +61,55 @@
     color: #555;
     text-align: justify; 
 }
+
+@media (max-width: 768px) {
+    .display-card {
+        flex-direction: column; /* Cambia la dirección a columna */
+        padding: 15px;
+        width: 90%;
+    }
+
+    .display-image {
+        width: 100%; /* Imagen ocupa el ancho completo */
+        height: auto; /* Ajusta la altura automáticamente */
+        margin: 0 0 15px 0; /* Margen inferior para separar de contenido */
+    }
+
+    .display-image.left{
+        margin-right: 0px;
+    }
+
+    .display-image.right{
+        margin-left: 0px;
+    }
+
+    .display-content {
+        max-width: 100%; /* Contenido ocupa el ancho completo */
+        text-align: center; /* Centra el texto en pantalla pequeña */
+        margin: 0; /* Elimina márgenes superior e inferior */
+    }
+
+    .display-content h2 {
+        font-size: 1.3em; /* Reduce tamaño de la fuente */
+    }
+
+    .display-content p {
+        font-size: 0.95em; /* Reduce tamaño de la fuente */
+    }
+}
+
+/* Estilos para pantallas de 480px o menos (como teléfonos pequeños) */
+@media (max-width: 480px) {
+    .display-card {
+        padding: 10px;
+    }
+
+    .display-content h2 {
+        font-size: 1.1em;
+    }
+
+    .display-content p {
+        font-size: 0.9em;
+    }
+}
+

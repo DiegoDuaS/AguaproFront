@@ -6,6 +6,7 @@ import { CircularProgress } from '@mui/material';
 import { BiError } from "react-icons/bi";
 import searchIcon from './../../image/searchIcon.png';
 import './products.css';
+import FilterCatalogo from './FitersCatalogo';
 
 const BombasAgua = ({cartItems, setCartItems, setSuccessMessage }) => {
   const [isLargeCardOpen, setIsLargeCardOpen] = useState(false);
@@ -15,6 +16,16 @@ const BombasAgua = ({cartItems, setCartItems, setSuccessMessage }) => {
   const [loadingImages, setLoadingImages] = useState(false);
   const [imageError, setImageError] = useState(null);
   const imageCache = useRef({});
+  const [searchTerm, setSearchTerm] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const [isSearchActive, setIsSearchActive] = useState(false);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [filterMarca, setFilterMarca] = useState('');
+  const [filterMaterial, setFilterMaterial] = useState('');
+  const [sortOrder, setSortOrder] = useState('');
+  const [sortName, setSortName] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+
 
   useEffect(() => {
     if (productos && productos.length > 0) {
@@ -72,10 +83,6 @@ const BombasAgua = ({cartItems, setCartItems, setSuccessMessage }) => {
     }
   }, [productos]);
 
-  const [searchTerm, setSearchTerm] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
-  const [isSearchActive, setIsSearchActive] = useState(false);
-
   const handleSearch = useCallback(() => {
     const trimmedSearchTerm = searchTerm.trim().toLowerCase();
     if (!trimmedSearchTerm) {
@@ -99,6 +106,34 @@ const BombasAgua = ({cartItems, setCartItems, setSuccessMessage }) => {
       handleSearch();
     }
   };
+
+  const sortProductos = (productosToSort) => {
+    let result = [...productosToSort];
+    
+    if (sortOrder) {
+      result.sort((a, b) => {
+        return sortOrder === 'asc' ? a.precio - b.precio : b.precio - a.precio;
+      });
+    }
+  
+    if (sortName) {
+      result.sort((a, b) => {
+        return sortName === 'asc' ? 
+          a.nombre.localeCompare(b.nombre) : 
+          b.nombre.localeCompare(a.nombre);
+      });
+    }
+  
+    return result;
+  };
+
+  // Products to display with filters
+  const productosToDisplay = sortProductos(
+    (isSearchActive ? searchResults : productos).filter(producto => 
+      (filterMarca === '' || producto.marca === filterMarca) &&
+      (filterMaterial === '' || producto.material === filterMaterial)
+    )
+  );
 
   useEffect(() => {
     if (errorMessage) {
@@ -133,6 +168,48 @@ const BombasAgua = ({cartItems, setCartItems, setSuccessMessage }) => {
     setSuccessMessage("Tu producto se añadió al carrito")
   };
 
+  const getMarcas = useCallback(() => {
+    if (!productos) return [];
+    return [...new Set(productos.map(p => p.marca))].sort();
+  }, [productos]);
+
+  const getMateriales = useCallback(() => {
+    if (!productos) return [];
+    return [...new Set(productos.map(p => p.material))].sort();
+  }, [productos]);
+
+  const handleMarcaChange = (e) => {
+    setFilterMarca(e);
+  };
+
+  const handleMaterialChange = (e) => {
+    setFilterMaterial(e);
+  };
+
+  const handleSortChange = (order) => {
+    setSortOrder(order);
+    setSortName(''); // Reset name sort when price sort is selected
+  };
+
+  const handleNameSort = (order) => {
+    setSortName(order);
+    setSortOrder(''); // Reset price sort when name sort is selected
+  };
+
+  const handlePageChange = (newPage) => {
+    if (newPage >= 1 && newPage <= totalPages) {
+      setCurrentPage(newPage);
+    }
+  };
+
+  // Determinar qué productos mostrar basado en la búsqueda
+  const totalPages = Math.ceil(productosToDisplay.length / 16);
+  const startIndex = (currentPage - 1) * 16;
+  const endIndex = startIndex + 16;
+
+  const productosEnPagina = productosToDisplay.slice(startIndex, endIndex);
+
+
   if (isLoading || loadingImages) {
     return (
       <main className="main-content-loading">
@@ -157,9 +234,6 @@ const BombasAgua = ({cartItems, setCartItems, setSuccessMessage }) => {
     )
   }
 
-  // Determinar qué productos mostrar basado en la búsqueda
-  const productsToDisplay = isSearchActive ? searchResults : productos;
-
   return (
     <main className="main-content-prod">
       <h2>Bombas de Agua</h2>
@@ -175,11 +249,27 @@ const BombasAgua = ({cartItems, setCartItems, setSuccessMessage }) => {
         <button className="search-btn" onClick={handleSearch}>
           <img src={searchIcon} alt="Search" />
         </button>
+        <FilterCatalogo
+          isFilterOpen={isFilterOpen}
+          toggleFilter={() => setIsFilterOpen(!isFilterOpen)}
+          marcas={getMarcas()}
+          materiales={getMateriales()}
+          filterMarca={filterMarca}
+          filterMaterial={filterMaterial}
+          handleMarcaChange={handleMarcaChange}
+          handleMaterialChange={handleMaterialChange}
+          sortOrder={sortOrder}
+          handleSortChange={handleSortChange}
+          sortName={sortName}
+          handleNameSort={handleNameSort}
+        />
       </div>
+
+
       <div className='space2' />
 
       <ul className="small-card-list">
-        {productsToDisplay.map(product => (
+        {productosEnPagina.map(product => (
           <Card
             key={product.id_producto}
             nombre={product.nombre}
@@ -198,6 +288,25 @@ const BombasAgua = ({cartItems, setCartItems, setSuccessMessage }) => {
           imageRef={images[selectedProduct.id_producto]}
         />
       )}
+      <div className='space2' />
+      <div className="pagination-controls">
+          <div className='change-page'>
+            <button 
+              onClick={() => handlePageChange(currentPage - 1)} 
+              disabled={currentPage === 1}
+            >
+              Anterior
+            </button>
+            <span>Página {currentPage} de {totalPages}</span>
+            <button 
+              onClick={() => handlePageChange(currentPage + 1)} 
+              disabled={currentPage === totalPages}
+            >
+              Siguiente
+            </button>
+          </div>
+      </div>
+      <div className='space2' />
     </main>
   );
 };

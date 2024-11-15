@@ -1,76 +1,72 @@
 import React, { useState } from 'react';
-import { FaSortAmountDown, FaSortAmountUp } from 'react-icons/fa';
+import { FaFilter, FaSortAmountDown, FaSortAmountUp } from 'react-icons/fa';
 import { MdFilterAltOff } from "react-icons/md";
 
-const FilterSectionUsuarios = ({ 
+const FilterSectionPedidos = ({ 
   isFilterOpen, 
-  filterRole, 
-  handleFilterChange, 
+  filterState, 
+  handleFilterChange,
   sortOrder, 
   handleSortChange 
 }) => {
-  const [isFilterOpenRole, setIsFilterOpenRole] = useState(false);
-  const [isFilterOpenDate, setIsFilterOpenDate] = useState(false);
-  
-  const toggleSort = (order) => {
-    if (sortOrder === order) {
-      handleSortChange('');
-    } else {
-      handleSortChange(order);
-    }
-  };
+  const [isFilterOpenEstados, setIsFilterOpenEstados] = useState(false);
+  const [isFilterOpenPrecios, setIsFilterOpenPrecios] = useState(false);
 
   const handleResetFilters = () => {
     handleFilterChange({ target: { value: '' } });
     handleSortChange('');
   };
 
-  const hasActiveFilters = filterRole || sortOrder;
-  
+  const hasActiveFilters = filterState || sortOrder;
+
   return (
     <div>
       {isFilterOpen && (
         <div className='filter-sort-section'>
           <button 
-            onClick={() => setIsFilterOpenRole(!isFilterOpenRole)} 
+            onClick={() => setIsFilterOpenEstados(!isFilterOpenEstados)} 
             className="filter-dropdown"
           >
-            Rol
+            Estado
           </button>
-          {isFilterOpenRole && (
+          {isFilterOpenEstados && (
             <div className="filter-dropdown">
-              <select value={filterRole} onChange={handleFilterChange}>
-                <option value="">Todos</option>
-                <option value="admin">Admin</option>
-                <option value="user">User</option>
+              <select value={filterState} onChange={handleFilterChange}>
+                <option value="">Todos los estados</option>
+                <option value="Pendiente">Pendiente</option>
+                <option value="Procesando">Procesando</option>
+                <option value="Enviado">Enviado</option>
+                <option value="Entregado">Entregado</option>
+                <option value="Cancelado">Cancelado</option>
               </select>
             </div>
           )}
 
           <button 
-            onClick={() => setIsFilterOpenDate(!isFilterOpenDate)} 
+            onClick={() => setIsFilterOpenPrecios(!isFilterOpenPrecios)} 
             className="filter-dropdown"
           >
-            Fecha de Creación
+            Precio
           </button>
-          {isFilterOpenDate && (
+          {isFilterOpenPrecios && (
             <div className="sort-controls">
               <div className='filter-dropdown'>
                 <button 
-                  onClick={() => toggleSort('asc')} 
+                  onClick={() => handleSortChange('asc')} 
                   className={`sort-button ${sortOrder === 'asc' ? 'active' : ''}`}
                 >
-                  <FaSortAmountUp /> Fecha: Antiguo a Reciente
+                  <FaSortAmountUp /> Precio: Bajo a Alto
                 </button>
                 <button 
-                  onClick={() => toggleSort('desc')} 
+                  onClick={() => handleSortChange('desc')} 
                   className={`sort-button ${sortOrder === 'desc' ? 'active' : ''}`}
                 >
-                  <FaSortAmountDown /> Fecha: Reciente a Antiguo
+                  <FaSortAmountDown /> Precio: Alto a Bajo
                 </button>
               </div>
             </div>
           )}
+
           {hasActiveFilters && (
             <button 
               onClick={handleResetFilters}
@@ -80,11 +76,10 @@ const FilterSectionUsuarios = ({
               <MdFilterAltOff />
             </button>
           )}
-
         </div>
       )}
     </div>
   );
 };
 
-export default FilterSectionUsuarios;
+export default FilterSectionPedidos;

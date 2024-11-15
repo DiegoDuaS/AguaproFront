@@ -9,7 +9,7 @@
   top: 7%;
   left: 80%;
   color: #000;
-  z-index: 2;
+  z-index: 2000;
 }
 
 .user-menu h3 {
@@ -36,4 +36,10 @@
 .user-menu-option:hover {
   background-color: #f0f0f0;
   padding: 5px;
+}
+@media (max-width: 768px) {
+  .user-menu {
+    left: 50%; /* Centrado */
+    transform: translateX(-50%); /* Centrado horizontal */
+  }
 }

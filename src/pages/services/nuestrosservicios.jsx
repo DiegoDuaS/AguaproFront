@@ -12,6 +12,8 @@ import panelesImg from '../../image/paneles.jpg';
 import bombeoImg from '../../image/bombeo.jpg';
 import camaraImg from '../../image/camara.jpg';
 import limpiezaCImg from '../../image/limpiezaC.jpg';
+import hidroNeuImg from '../../image/hidroneumatico.jpg';
+import mantECImg from '../../image/mantec.jpg';
 import StateCard from '../../components/cards/stateCard';
 
 function NuestrosServicios() {
@@ -45,6 +47,8 @@ function NuestrosServicios() {
             <DisplayLeft
                 titulo={"Mantenimiento de equipo centrífugo y bombas verticales"} 
                 texto={"Ofrecemos mantenimiento especializado para equipos de bombeo centrífugos y bombas verticales, con potencias de 0.5 a 40 hp en voltajes de 115V, 230V y 460V, abarcando motores monofásicos y trifásicos. Trabajamos con marcas líderes como Myers, Franklin Electric, Sta-Rite, Berkeley, Apec, SEI, LEO y Pedrollo, realizando inspecciones detalladas, limpieza, lubricación y pruebas de rendimiento para asegurar un funcionamiento eficiente y prolongar la vida útil del equipo, optimizando su desempeño en aplicaciones industriales y residenciales. "}
+                imagen={mantECImg}
+
             />
             <DisplayRight 
                 titulo={"Limpieza mecánica a pozos mecánicos"} 
@@ -82,8 +86,9 @@ function NuestrosServicios() {
                 imagen={limpiezaCImg}
             />
             <DisplayLeft 
-                titulo={"Instalación y Mantenimiento a calentadores de agua"} 
-                texto={"Para determinar el estado del pozo mecánico, realizamos una evaluación exhaustiva que incluye el análisis de diversas características esenciales. Esto abarca la medición de la profundidad del pozo, así como la inspección del estado interno mediante la introducción de una cámara de video especializada. Esta tecnología nos permite identificar obstrucciones o daños que puedan estar afectando la eficiencia del pozo. También verificamos el estado de la rejilla y ofrecemos una vista lateral de 360° de la tubería, asegurando un diagnóstico completo que nos ayude a implementar las soluciones necesarias para optimizar el funcionamiento del pozo."}
+                titulo={"Servicio Técnico Hidroneumáticos a Bombas"} 
+                texto={"Brindamos servicio técnico especializado para sistemas hidroneumáticos, asegurando el mantenimiento, reparación y optimización de bombas utilizadas en estos sistemas. Nuestro equipo verifica el estado de los componentes, ajusta la presión y realiza pruebas de rendimiento para garantizar un suministro de agua constante y eficiente. Con nuestro servicio técnico, las bombas hidroneumáticas operan de manera confiable, prolongando su vida útil y mejorando la eficiencia del sistema hidráulico en general."}
+                imagen={hidroNeuImg}
             />
             <h3 className='subtitle'>¿Quieres solicitar un servicio?</h3>
             {showForms ? (

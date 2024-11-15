@@ -88,3 +88,20 @@
     justify-content: space-between;
   }
   
+.filter-reset-btn {
+  padding: 8px;
+  border-radius: 4px;
+  background: #f0f0f0;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  margin-left: 8px;
+  transition: background-color 0.3s;
+}
+
+.filter-reset-btn:hover {
+  background: #b64040;
+  color: white;
+}
+

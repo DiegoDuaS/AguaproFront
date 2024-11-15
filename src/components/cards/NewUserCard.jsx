@@ -60,7 +60,7 @@ const NewUserCard = ({ isOpen, closeCard, onRegister,  setSuccessMessage, setErr
                                 type="text"
                                 className="input2"
                                 value={username}
-                                placeholder="nombre de usuario"
+                                placeholder="Nombre de usuario"
                                 onChange={(e) => setUsername(e.target.value)}
                             />
                         </div>
@@ -70,7 +70,7 @@ const NewUserCard = ({ isOpen, closeCard, onRegister,  setSuccessMessage, setErr
                                 type="password" // Change to password for better security
                                 className="input2"
                                 value={password}
-                                placeholder="contraseña"
+                                placeholder="Contraseña"
                                 onChange={(e) => setPassword(e.target.value)}
                             />
                         </div>
@@ -80,19 +80,25 @@ const NewUserCard = ({ isOpen, closeCard, onRegister,  setSuccessMessage, setErr
                                 type="email" // Change to email for better validation
                                 className="input2"
                                 value={email}
-                                placeholder="correo"
+                                placeholder="Correo"
                                 onChange={(e) => setEmail(e.target.value)}
                             />
                         </div>
                         <div className="table-row-nu">
                             <div className="title">Rol</div>
-                            <input
-                                type="text"
+                            <select
                                 className="input2"
                                 value={role}
-                                placeholder="rol del usuario"
                                 onChange={(e) => setRole(e.target.value)}
-                            />
+                            >
+                                <option value="" disabled>Selecciona un rol</option>
+                                <option value="vendedor">vendedor</option>
+                                <option value="secretaria">secretaría</option>
+                                <option value="analista">analista</option>
+                                <option value="bodeguero">bodeguero</option>
+                                <option value="admin">admin</option>
+                                <option value="user">user</option>
+                            </select>
                         </div>
                     </div>
                 </div>

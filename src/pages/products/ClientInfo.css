@@ -82,3 +82,44 @@
   width: 100%;
   justify-content: space-around;
 }
+
+/* Ajustes para pantallas de 768px o menos */
+@media (max-width: 768px) {
+  .client-info-container, .user-info-container {
+    width: 90%; /* Reduce el ancho en pantallas pequeñas */
+    padding: 15px;
+    margin-top: 60px;
+  }
+
+  .form-unit-client{
+    width: 90%;
+  }
+
+  .form-group-cf {
+    width: 100%; /* Acomoda el formulario al ancho completo del contenedor */
+    flex-direction: column; /* Cambia la dirección de los elementos */
+    align-items: flex-start;
+  }
+
+  .form-group-cf input {
+    width: 100%;
+  }
+
+  .form-group-cf label {
+    text-align: left; /* Cambia la alineación del texto */
+    margin-bottom: 5px;
+    margin-right: 0;
+  }
+
+  .button-section-2 {
+    flex-direction: column; /* Coloca los botones uno encima del otro */
+    align-items: center;
+    gap: 10px; /* Espacio entre botones */
+  }
+
+  .button-container-cf button {
+    width: 100%; /* Botón ocupa el ancho completo en pantallas pequeñas */
+    padding: 12px;
+  }
+}
+

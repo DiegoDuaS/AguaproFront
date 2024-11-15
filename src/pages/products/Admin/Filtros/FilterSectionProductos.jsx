@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { FaFilter, FaSortAmountDown, FaSortAmountUp } from 'react-icons/fa';
+import { MdFilterAltOff } from "react-icons/md";
+
 
 const FilterSection = ({ 
   isFilterOpen, 
@@ -15,6 +17,13 @@ const FilterSection = ({
   const [isFilterOpenVisibility, setIsFilterOpenVisibility] = useState(false);
   const [isFilterOpenPrice, setIsFilterOpenPrice] = useState(false);
 
+  const handleResetFilters = () => {
+    handleFilterChange({ target: { value: '' } });
+    handleVisibilityChange({ target: { value: '' } });
+    handleSortChange('');
+  };
+
+  const hasActiveFilters = filterAvailability || filterVisibility || sortOrder;
   return (
     <div>
       {isFilterOpen && (
@@ -76,6 +85,16 @@ const FilterSection = ({
               </div>
             </div>
           )}
+          {hasActiveFilters && (
+            <button 
+              onClick={handleResetFilters}
+              className="filter-reset-btn"
+              title="Reset all filters"
+            >
+              <MdFilterAltOff />
+            </button>
+          )}
+
         </div>
         </>
       )}

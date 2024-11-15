@@ -11,6 +11,8 @@ import InfoProdPedidoCard from '../../../components/cards/InfoProdPedidoCard';
 import { color } from 'chart.js/helpers';
 import { FaFilter } from 'react-icons/fa';
 import { FaSortAmountDown, FaSortAmountUp } from 'react-icons/fa';
+import CancelCard from '../../../components/cards/cancelcard';
+import FilterSectionPedidos from './Filtros/FilterSectionPedidos';
 
 const API_BASE_URL = 'https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app';
 
@@ -20,7 +22,9 @@ const PedidosPage = () => {
   const [selectedPedido, setSelectedPedido] = useState(null);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessageState, setErrorMessageState] = useState('');
+  const [warningMessage, setWarningMessage] = useState('');
   const [isCardOpen, setIsCardOpen] = useState(false);
+  const [isCancelCardOpen, setIsCancelCardOpen] = useState(false);
   const [productos, setProductos] = useState([]);
   const [isLoadingProductos, setIsLoadingProductos] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -32,6 +36,9 @@ const PedidosPage = () => {
   const [isFilterOpenPrecios, setIsFilterOpenPrecios] = useState(false);
   const [sortOrder, setSortOrder] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
+  const [userMail, setUserMail] = useState('');
+  const [idCancel, setIdCancel] = useState(0);
+
 
   const sortPedidos = (pedidosToSort) => {
     if (sortOrder === 'asc') {
@@ -105,26 +112,32 @@ const PedidosPage = () => {
     fetchProductos(pedidoId);
   }, [fetchProductos]);
   
-  const handleEstadoChange = useCallback(async (pedidoId, newEstado) => {
-    const estadoMap = { "Pendiente": 1, "Procesando": 2, "Enviado": 3, "Entregado": 4, "Cancelado": 5 };
+  const handleEstadoChange = useCallback(async (pedidoId, newEstado, clientMail) => {
+    const estadoMap = { "Pendiente": 1, "Aprobado": 2, "Procesando": 3, "Enviado": 4, "Entregado": 5, "Cancelado": 6 };
     const idEstado = estadoMap[newEstado] || 0;
-
-    try {
-      const response = await fetch(`${API_BASE_URL}/pedidos/${pedidoId}/status`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ pedidoId, estatus: idEstado }),
-      });
-
-      if (response.ok) {
-        showMessage('Estado actualizado correctamente');
-        refetch();
-      } else {
-        throw new Error('Error al actualizar el estado del pedido');
+    if (newEstado === "Cancelado"){
+      setIdCancel(pedidoId)
+      setUserMail(clientMail);
+      setIsCancelCardOpen(true)
+    }
+    else{
+      try {
+        const response = await fetch(`${API_BASE_URL}/pedidos/${pedidoId}/status`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ pedidoId, estatus: idEstado }),
+        });
+  
+        if (response.ok) {
+          showMessage('Estado actualizado correctamente');
+          refetch();
+        } else {
+          throw new Error('Error al actualizar el estado del pedido');
+        }
+      } catch (error) {
+        showMessage('Error al conectar con el servidor. Intente nuevamente.', true);
+        console.error(error);
       }
-    } catch (error) {
-      showMessage('Error al conectar con el servidor. Intente nuevamente.', true);
-      console.error(error);
     }
   }, [refetch, showMessage]);
 
@@ -270,53 +283,18 @@ const PedidosPage = () => {
           <FaFilter /> Filter
         </button>
         </div>
-        
-        <div className='filter-sort-section'>
-        {isFilterOpen && (
-          <>
-            <button onClick={toggleFilterEstados} className="filter-dropdown">
-              Estado
-            </button>
-            {isFilterOpenEstados && (
-              <div className="filter-dropdown">
-                <select value={filterState} onChange={handleFilterChange}>
-                  <option value="">Todos los estados</option>
-                  <option value="Pendiente">Pendiente</option>
-                  <option value="Procesando">Procesando</option>
-                  <option value="Enviado">Enviado</option>
-                  <option value="Entregado">Entregado</option>
-                  <option value="Cancelado">Cancelado</option>
-                </select>
-              </div>
-            )}
-
-              <button onClick={toggleFilterPrecios} className="filter-dropdown">
-                Precio
-              </button>
-              {isFilterOpenPrecios && (
-                <div className="sort-controls">
-                  <div className='filter-dropdown'>
-                    <button 
-                      onClick={() => handleSortChange('asc')} 
-                      className={`sort-button ${sortOrder === 'asc' ? 'active' : ''}`}
-                    >
-                      <FaSortAmountUp /> Precio: Bajo a Alto
-                    </button>
-                    <button 
-                      onClick={() => handleSortChange('desc')} 
-                      className={`sort-button ${sortOrder === 'desc' ? 'active' : ''}`}
-                    >
-                      <FaSortAmountDown /> Precio: Alto a Bajo
-                    </button>
-                  </div>
-                </div>
-              )}
-            </>
-          )}
-        </div>
-      
+        <FilterSectionPedidos
+          isFilterOpen={isFilterOpen}
+          filterState={filterState}
+          handleFilterChange={handleFilterChange}
+          sortOrder={sortOrder}
+          handleSortChange={handleSortChange}
+        />
       <StateCard message={successMessage} isOpen={!!successMessage} type={1}/>
       <StateCard message={errorMessageState} isOpen={!!errorMessageState} type={2}/>
+      <StateCard message={warningMessage} isOpen={!!warningMessage} type={4}/>
+      <CancelCard isOpen={isCancelCardOpen} closeCard={setIsCancelCardOpen} userMail={userMail} pedidoId={idCancel} setSuccessMessage={setSuccessMessage} setErrorMessage={setErrorMessageState} setWarningMessage={setWarningMessage} refetch={refetch} />
+
     
       <div className="table">
         <div className="table-grid table-header">
@@ -374,11 +352,11 @@ const PedidosPage = () => {
             )}
             <select
               value={pedido.estado} 
-              onChange={(e) => handleEstadoChange(pedido.id_pedido, e.target.value)}
+              onChange={(e) => handleEstadoChange(pedido.id_pedido, e.target.value, pedido.contacto)}
               className={`state ${pedido.estado.toLowerCase()}`}
               aria-label={`Estado para pedido ${pedido.id_pedido}`}
             >
-              {['Pendiente', 'Procesando', 'Enviado', 'Entregado', 'Cancelado'].map((estado, index) => (
+              {['Pendiente', 'Aprobado', 'Procesando', 'Enviado', 'Entregado', 'Cancelado'].map((estado, index) => (
                 <option className="option" value={estado} key={index + 1}>{estado}</option>
               ))}
             </select>
