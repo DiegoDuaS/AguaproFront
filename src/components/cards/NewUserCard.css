@@ -7,7 +7,7 @@
     transform: translate(-50%, -50%);
     width: 90%;
     max-width: 900px;
-    height: 60%;
+    height: auto;
     background-color: #F5F4F1;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     border-radius: 8px;
@@ -16,7 +16,7 @@
     margin-top: 20px;
     color: #000000;
     align-items: center;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 .large-card-prod-nu::-webkit-scrollbar {

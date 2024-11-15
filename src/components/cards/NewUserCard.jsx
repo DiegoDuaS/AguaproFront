@@ -86,13 +86,19 @@ const NewUserCard = ({ isOpen, closeCard, onRegister,  setSuccessMessage, setErr
                         </div>
                         <div className="table-row-nu">
                             <div className="title">Rol</div>
-                            <input
-                                type="text"
+                            <select
                                 className="input2"
                                 value={role}
-                                placeholder="Rol del usuario"
                                 onChange={(e) => setRole(e.target.value)}
-                            />
+                            >
+                                <option value="" disabled>Selecciona un rol</option>
+                                <option value="vendedor">vendedor</option>
+                                <option value="secretaria">secretaría</option>
+                                <option value="analista">analista</option>
+                                <option value="bodeguero">bodeguero</option>
+                                <option value="admin">admin</option>
+                                <option value="user">user</option>
+                            </select>
                         </div>
                     </div>
                 </div>

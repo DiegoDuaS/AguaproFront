@@ -9,6 +9,8 @@ import usePaymentRequest from '../../hooks/usePaymentRequest';
 import useSalesReviewRequest from '../../hooks/useSalesReviewRequest';
 import useUpdateUserEmail from '../../hooks/useUpdateUserEmail';
 import StateCard from '../../components/cards/stateCard';
+import paymentMethodImage from '../../image/paymentoptions.png'
+import cargoExpreso from '../../image/cargoexpreso.png';
 
 const Checkout = ({ onRouteChange, cartItems, navigateToLogin }) => {
   const shippingFee = 35.0;
@@ -31,6 +33,79 @@ const Checkout = ({ onRouteChange, cartItems, navigateToLogin }) => {
   const {updatedResult, registerClient, isLoading: registerLoading, successMessage: registerSuccess, errorMessage: registerError } = useRegisterClient("https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app");
   const { client, loading: clientLoading, refetch: refetchClient } = useFetchClient(userReference);
 
+  function calcularFechaEntrega(diasHabiles, feriados = []) {
+    // Obtener la fecha actual
+    let fechaActual = new Date();
+    
+    // Iterar para agregar los días hábiles
+    let diasAgregados = 0;
+  
+    while (diasAgregados < diasHabiles) {
+      fechaActual.setDate(fechaActual.getDate() + 1); // Sumar un día
+  
+      // Comprobar si es un día hábil
+      const esFinDeSemana = fechaActual.getDay() === 0 || fechaActual.getDay() === 6; // Domingo = 0, Sábado = 6
+      const esFeriado = feriados.some(feriado => 
+        new Date(feriado).toDateString() === fechaActual.toDateString()
+      );
+  
+      // Solo cuenta el día si es hábil
+      if (!esFinDeSemana && !esFeriado) {
+        diasAgregados++;
+      }
+    }
+  
+    return fechaActual.toLocaleDateString();
+  }
+
+  function obtenerFeriadosAño(anio) {
+    const feriadosFijos = [
+      `${anio}-01-01`, // Año Nuevo
+      `${anio}-05-01`, // Dia del trabajo
+      `${anio}-07-01`, // Dia del ejercito
+      `${anio}-08-15`, // Dia de la virgen de asusncion
+      `${anio}-09-15`, // Dia de la independencia
+      `${anio}-10-20`, // Dia de la revolucion
+      `${anio}-11-01`, // Dia de todos los santos
+      `${anio}-12-24`, // Noche Buena
+      `${anio}-12-25`, // Navidad
+    ];
+  
+    // Función para calcular el Viernes Santo
+    const calcularViernesSanto = (anio) => {
+      const fechaPascua = calcularFechaPascua(anio);
+      fechaPascua.setDate(fechaPascua.getDate() - 2); // Dos días antes de Pascua
+      return fechaPascua.toISOString().split('T')[0];
+    };
+  
+    // Calcular otros feriados variables
+    const viernesSanto = calcularViernesSanto(anio);
+  
+    // Agregar feriados variables
+    return [...feriadosFijos, viernesSanto];
+  }
+  
+  // Función para calcular la fecha de Pascua
+  function calcularFechaPascua(anio) {
+    let f = Math.floor,
+      G = anio % 19,
+      C = f(anio / 100),
+      H = (C - f(C / 4) - f((8 * C + 13) / 25) + 19 * G + 15) % 30,
+      I = H - (f(H / 28) * (1 - f(29 / (H + 1)) * f((21 - G) / 11))),
+      J = (anio + f(anio / 4) + I + 2 - C + f(C / 4)) % 7,
+      L = I - J,
+      mes = 3 + f((L + 40) / 44),
+      dia = L + 28 - 31 * f(mes / 4);
+    return new Date(anio, mes - 1, dia);
+  }
+  
+  // Ejemplo de uso
+  const anioActual = new Date().getFullYear();
+  const feriados = obtenerFeriadosAño(anioActual);
+
+   
+  const fechaEntrega3Dias = calcularFechaEntrega(3, feriados);
+
   //console.log(client);
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -45,6 +120,19 @@ const Checkout = ({ onRouteChange, cartItems, navigateToLogin }) => {
   const hasEmptyFields1 = () => (
     formData.nombre === '' || formData.direccion === '' || formData.telefono === '' || formData.nit === ''
   );
+
+  const hasEmptyFields2 = () => {
+    if (formData.paymentMethod === 'tarjeta') {
+      return formData.numeroTarjeta !== '' && formData.fechaVencimiento !== '' && formData.cvv !== '';
+    }
+    if (formData.paymentMethod === 'transferencia') {
+      return formData.banco !== '' && formData.numeroAutorizacion !== '';
+    }
+    if (formData.paymentMethod === 'deposito') {
+      return formData.banco !== '' && formData.numeroAutorizacion !== '';
+    }
+    return false;
+   };
 
   const handleNextStep = async () => {
     // Cambia al siguiente paso cuando se confirma la información
@@ -216,7 +304,7 @@ useEffect(() => {
         <h2> Checkout</h2>
         <div className="order-container">
           <div className="order-details">
-            <h2>Orden #ENEZ025AAA</h2>
+            <h2>Confirmación de Orden</h2>
             <div className='title_check_side' onClick={ (e) => setCheckoutStep('entrega')}>
                   <h3 className='checkout'>Información de entrega</h3>
                   <div className={`circle ${hasEmptyFields1() ? '' : 'active'}`}></div>
@@ -284,7 +372,7 @@ useEffect(() => {
 
             <div className='title_check_side' onClick={handleNextStep}>
               <h3 className='checkout'>Información de pago</h3>
-              <div className='circle'></div>
+              <div className={`circle ${hasEmptyFields2() ? 'active' : ''}`}></div>
             </div>
 
             {checkoutStep === 'pago' && (
@@ -321,83 +409,91 @@ useEffect(() => {
                   </div>
 
                   {formData.paymentMethod === 'tarjeta' && (
-                    <div className="tarjeta-info">
-                      <div className="form-group">
-                        <label>Número de tarjeta</label>
-                        <input 
-                          type="text" 
-                          name="numeroTarjeta" 
-                          value={formData.numeroTarjeta} 
-                          onChange={handleInputChange} 
-                          placeholder="Número de tarjeta" 
-                        />
-                      </div>
-                      <div className="form-group">
-                        <label>Fecha de vencimiento</label>
-                        <input 
-                          type="text" 
-                          name="fechaVencimiento" 
-                          value={formData.fechaVencimiento} 
-                          onChange={handleInputChange} 
-                          placeholder="MM/YY" 
-                        />
-                      </div>
-                      <div className="form-group">
-                        <label>CVV</label>
-                        <input 
-                          type="text" 
-                          name="cvv" 
-                          value={formData.cvv} 
-                          onChange={handleInputChange} 
-                          placeholder="CVV" 
-                        />
-                      </div>
-                      <div className="confirm-btn">
-                        <button onClick={handleNextStep}>Confirmar Información de Pago</button>
-                      </div>
+                    <>
+                      <img className="types-card" src={paymentMethodImage}></img>
+                      <div className="tarjeta-info">
+                        <div className="form-group">
+                          <label>Número de tarjeta</label>
+                          <input 
+                            type="text" 
+                            name="numeroTarjeta" 
+                            value={formData.numeroTarjeta} 
+                            onChange={handleInputChange} 
+                            placeholder="Número de tarjeta" 
+                          />
+                        </div>
+                        <div className="form-group">
+                          <label>Fecha de vencimiento</label>
+                          <input 
+                            type="text" 
+                            name="fechaVencimiento" 
+                            value={formData.fechaVencimiento} 
+                            onChange={handleInputChange} 
+                            placeholder="MM/YY" 
+                          />
+                        </div>
+                        <div className="form-group">
+                          <label>CVV</label>
+                          <input 
+                            type="text" 
+                            name="cvv" 
+                            value={formData.cvv} 
+                            onChange={handleInputChange} 
+                            placeholder="CVV" 
+                          />
+                        </div>
+                        <div className="confirm-btn">
+                          <button onClick={handleNextStep}>Confirmar Información de Pago</button>
+                        </div>
                     </div>
+                    <p className='clarification'>* Por su seguridad, esta información no se guardará para próximas compras</p>
+                    </>
                   )}
 
                  
                 {(formData.paymentMethod === 'deposito' || formData.paymentMethod === 'transferencia') && (
-                  <div className="tarjeta-info">
-                    <div className="form-group">
-                      <label>Monto</label>
-                      <input 
-                        type="text" 
-                        name="monto"
-                        value={`Q ${total.toFixed(2)}`} 
-                        disabled
-                        placeholder="Monto total" 
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label>Banco</label>
-                      <input 
-                        type="text" 
-                        name="banco" 
-                        value={formData.banco} 
-                        onChange={handleInputChange} 
-                        placeholder="Nombre del banco donde fue realizado el pago" 
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label>Número de autorización</label>
-                      <input 
-                        type="text" 
-                        name="numeroAutorizacion" 
-                        value={formData.numeroAutorizacion} 
-                        onChange={handleInputChange} 
-                        placeholder="Número de autorización" 
-                      />
-                    </div>
-                    
-                      <div className="confirm-btn">
-                        <button onClick={handleNextStep}>Confirmar Información de Pago</button>
+                  <> 
+                    <p className='clarification'>* Esta forma de pago se debe de verificar antes de proceder con el envío. Esto puede agregar un par de días más al tiempo estimado.</p>
+                    <div className="tarjeta-info">
+                      <div className="form-group">
+                        <label>Monto</label>
+                        <input 
+                          type="text" 
+                          name="monto"
+                          value={`Q ${total.toFixed(2)}`} 
+                          disabled
+                          placeholder="Monto total" 
+                        />
                       </div>
-                    </div>
+                      <div className="form-group">
+                        <label>Banco</label>
+                        <input 
+                          type="text" 
+                          name="banco" 
+                          value={formData.banco} 
+                          onChange={handleInputChange} 
+                          placeholder="Nombre del banco donde fue realizado el pago" 
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label>Número de autorización</label>
+                        <input 
+                          type="text" 
+                          name="numeroAutorizacion" 
+                          value={formData.numeroAutorizacion} 
+                          onChange={handleInputChange} 
+                          placeholder="Número de autorización" 
+                        />
+                      </div>
+                      
+                        <div className="confirm-btn">
+                          <button onClick={handleNextStep}>Confirmar Información de Pago</button>
+                        </div>
+                      </div>
+                    </> 
                   )}
                 </div>
+                
               </>
             )}
           </div>
@@ -433,12 +529,17 @@ useEffect(() => {
             </div>
 
             <div className="center-container">
-              <div className="subtotal">Subtotal: Q{subtotal.toFixed(2)}</div>
-              <div className="total">Total (con envio): Q{total.toFixed(2)}</div>
+              <div className="subtotal">Subtotal: <strong>Q{subtotal.toFixed(2)}</strong> </div>
+              <div className="total">Total (con envio): <strong>Q{total.toFixed(2)}</strong> </div>
               { !isOrderConfirmed && checkoutStep === 'pago' && (
-                <div className="confirm-btn">
-                  <button onClick={handleConfirmOrder}>Confirmar Orden</button>
+                <div className='confirm-section'>
+                  <img className="cargo" src={cargoExpreso}></img>
+                  <div className="confirm-btn">
+                    <button onClick={handleConfirmOrder}>Confirmar Orden</button>
+                  </div>
+                  <p className='clarification'>Fecha estimada de entrega: <strong>{fechaEntrega3Dias}</strong></p>
                 </div>
+                
               )}
               <p className='info_extra'>¿Te hizo falta algún producto?</p> 
               <span className="registerLink" onClick={handleLeave}>
