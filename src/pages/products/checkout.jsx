@@ -5,6 +5,8 @@ import { useFetchClient } from '../../hooks/useFetchClient';
 import { useUpdateClient } from '../../hooks/useUpdateClient';
 import useRegisterClient from '../../hooks/useRegisterClient';
 import useCreatePedido from '../../hooks/useCreatePedido';
+import usePaymentRequest from '../../hooks/usePaymentRequest';
+import useSalesReviewRequest from '../../hooks/useSalesReviewRequest';
 import useUpdateUserEmail from '../../hooks/useUpdateUserEmail';
 import StateCard from '../../components/cards/stateCard';
 
@@ -20,6 +22,9 @@ const Checkout = ({ onRouteChange, cartItems, navigateToLogin }) => {
   const [isOrderConfirmed, setIsOrderConfirmed] = useState(false);
   //console.log(cartItems);
 
+
+  const { sendPaymentRequest, loading: loadingPay, error: errorPay, success: successPay } = usePaymentRequest();
+  const { sendSalesReviewRequest, loading: loadingReview, error: errorReview, success: successReview } = useSalesReviewRequest();
   const { createPedido, loading: pedidoLoading, error: errorPedido, message, pedidoId } = useCreatePedido();
   const { userData, loading, error, success, updateUserEmail } = useUpdateUserEmail();
   const { updateClient, loading: updateLoading, success: updateSuccess, error: updateError } = useUpdateClient();
@@ -94,7 +99,34 @@ const Checkout = ({ onRouteChange, cartItems, navigateToLogin }) => {
       if (!isOrderConfirmed) {
         setWarningMessage("Por favor confirma tu orden antes de proceder al pago.");
       } else {
-        console.log("Pago confirmado");
+        //console.log("Pago confirmado");
+        const metodo = formData.paymentMethod === "transferencia" ? "la transferencia" : 
+              formData.paymentMethod === "deposito" ? "el deposito" : 
+              "Método no reconocido";
+        const clientPay = {
+           mailto: formData.email,
+           metodo,
+          };
+        console.log(clientPay);
+        await sendPaymentRequest(clientPay);
+       
+        const PayInfo = {
+          mailTo: ['gor22246@uvg.edu.gt', 'wolfunicorn912@gmail.com'],
+          nombre: formData.nombre,
+          correo: formData.email,
+          telefono: formData.telefono,
+          idPedido: pedidoId,
+          monto: total,
+          banco: formData.banco,
+          numAutorizacion: formData.numeroAutorizacion
+        };
+        console.log(successPay);
+        await sendSalesReviewRequest(PayInfo);
+        if(successPay && successReview){
+          setSuccessMessage("Se envió el pago");
+        } else {
+          setErrorMessage("Hubo un error al envia el pago");
+        }
       }
     } 
     
