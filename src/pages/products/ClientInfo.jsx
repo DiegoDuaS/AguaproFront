@@ -242,6 +242,8 @@ const ClientInfo = () => {
         )}
       </div>
       <StateCard message={"Información Actualizada Correctamente"} isOpen={!!successMessage} type={1}></StateCard>
+      <StateCard message={"Hubo un Error al Guardar la Información"} isOpen={!!errorMessage2} type={2}></StateCard>
+      <StateCard message={registerClientError} isOpen={!!registerClientError} type={2}></StateCard>
     </div>
   );
 };
