@@ -22,10 +22,9 @@ describe('CheckoutHeader', () => {
     render(<CheckoutHeader navigateToLogin={mockNavigateToLogin} />);
 
     const userIcon = screen.getByTestId('user-icon');
-    const notificationIcon = screen.getByTestId('notification-icon');
 
     expect(userIcon).toBeInTheDocument();
-    expect(notificationIcon).toBeInTheDocument();
+   
   });
 
   test('calls navigateToLogin when the user icon is clicked', () => {

@@ -73,18 +73,18 @@ const { role, loading, error } = useUserRole(userId);
     } else {
       console.log("hay token");
       const isValid = await validateToken(token);
-      if (isValid && role === 'admin') {
+      if (isValid && (role === 'admin' || role === 'bodeguero' || role == 'secretaria' || role == 'analista' || role == 'logistica')) {
         setActivePage('AdminPage');
       } else if (isValid) {
         setIsUserMenuOpen(true);
       } else {
-        console.log("Token no valido");
         setActivePage('Login');
       }
     }
   };
   
   const handleCheckout = ()=> {
+    setIsCartOpen(false);
     setActivePage('CheckoutPage');
   }; 
 

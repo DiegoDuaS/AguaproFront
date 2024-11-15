@@ -3,15 +3,20 @@ import { useState } from 'react';
 const useUpdateProduct = (url) => {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
+
   const updateProduct = async (productId, productData) => {
     setIsLoading(true);
     setErrorMessage(null);
 
     try {
+      // Obtener el token de localStorage
+      const token = localStorage.getItem('token');
+
       const response = await fetch(`${url}/productos/${productId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': token ? `Bearer ${token}` : '',  // Incluir el token si existe
         },
         body: JSON.stringify(productData),
       });
@@ -19,7 +24,7 @@ const useUpdateProduct = (url) => {
       if (response.ok) {
         const result = await response.json();
         if (result.message === 'Product updated successfully') {
-          // Update was successful
+          // Actualización exitosa
           return { success: true };
         } else {
           setErrorMessage('Respuesta inesperada del servidor.');
@@ -41,4 +46,3 @@ const useUpdateProduct = (url) => {
 };
 
 export default useUpdateProduct;
-

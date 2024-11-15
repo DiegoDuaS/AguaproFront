@@ -8,11 +8,15 @@ const useUpdateUserRole = (url) => {
     setIsLoading(true);
     setErrorMessage(null);
 
+    // Obtener el token de localStorage o donde esté guardado
+    const token = localStorage.getItem('token'); 
+
     try {
       const response = await fetch(`${url}/user/${userId}/role`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': token ? `Bearer ${token}` : '', // Agregar el token si existe
         },
         body: JSON.stringify(roleData),
       });

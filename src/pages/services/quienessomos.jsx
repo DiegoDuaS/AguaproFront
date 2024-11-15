@@ -1,11 +1,11 @@
 import './services.css'
 import React from 'react';
+
 import logoImg from '../../image/logo2.jpg';
 import presentacionImg from '../../image/perforacion.jpg';
 import historia1 from '../../image/perforacion2.jpg';
 import historia2 from '../../image/incendio.jpg';
 import historia3 from '../../image/bombeo.jpg';
-
 
 function QuienesSomos() {
     
@@ -54,6 +54,8 @@ function QuienesSomos() {
                     <img class="img-historia" src={historia3} alt="Imagen Servicios Mant 1"/>
                 </div>
             </div>
+            
+            
             <div className='mision-vision-sect'>
                 <div className='side-mv'>
                     <h3 className='subtitle'>Misión</h3>
@@ -72,13 +74,13 @@ function QuienesSomos() {
                     </p>
                 </div>
             </div>
+            
             <h3 className='subtitle'>Contacténos</h3>
             <p className='textservice'>
                 <strong>Dirección:</strong> 10 Calle 5-28 Zona 6, Villa Nueva, Residenciales Catalina
             </p>
             <p className='textservice'>
                 <strong>Teléfono:</strong> <span>(502) 6670-3030</span>
-
             </p>
             <p className='textservice'>
                 <strong>Correo:</strong> <span>ventas@aguatesa.com</span>

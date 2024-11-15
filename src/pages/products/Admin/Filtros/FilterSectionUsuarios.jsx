@@ -11,7 +11,7 @@ const FilterSectionUsuarios = ({
 }) => {
   const [isFilterOpenRole, setIsFilterOpenRole] = useState(false);
   const [isFilterOpenDate, setIsFilterOpenDate] = useState(false);
-  
+
   const toggleSort = (order) => {
     if (sortOrder === order) {
       handleSortChange('');
@@ -26,7 +26,7 @@ const FilterSectionUsuarios = ({
   };
 
   const hasActiveFilters = filterRole || sortOrder;
-  
+
   return (
     <div>
       {isFilterOpen && (
@@ -71,6 +71,7 @@ const FilterSectionUsuarios = ({
               </div>
             </div>
           )}
+
           {hasActiveFilters && (
             <button 
               onClick={handleResetFilters}
@@ -80,7 +81,6 @@ const FilterSectionUsuarios = ({
               <MdFilterAltOff />
             </button>
           )}
-
         </div>
       )}
     </div>

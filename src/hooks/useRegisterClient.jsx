@@ -5,11 +5,12 @@ const useRegisterClient = (url) => {
   const [successMessage, setSuccessMessage] = useState(null);
   const [updatedResult, setUpdatedResult] = useState(null);
 
-
   const registerClient = async (clientData, userReference) => {
     setIsLoading(true);
     setErrorMessage(null);
     setUpdatedResult(null);
+
+    //console.log(clientData);
     try {
       // POST request to register the client
       const response = await fetch(`${url}/clientes`, {

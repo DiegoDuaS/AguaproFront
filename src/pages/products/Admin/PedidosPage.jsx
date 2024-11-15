@@ -39,7 +39,6 @@ const PedidosPage = () => {
   const [userMail, setUserMail] = useState('');
   const [idCancel, setIdCancel] = useState(0);
 
-
   const sortPedidos = (pedidosToSort) => {
     if (sortOrder === 'asc') {
       return [...pedidosToSort].sort((a, b) => a.monto_total - b.monto_total);
@@ -115,16 +114,22 @@ const PedidosPage = () => {
   const handleEstadoChange = useCallback(async (pedidoId, newEstado, clientMail) => {
     const estadoMap = { "Pendiente": 1, "Aprobado": 2, "Procesando": 3, "Enviado": 4, "Entregado": 5, "Cancelado": 6 };
     const idEstado = estadoMap[newEstado] || 0;
-    if (newEstado === "Cancelado"){
-      setIdCancel(pedidoId)
+  
+    if (newEstado === "Cancelado") {
+      setIdCancel(pedidoId);
       setUserMail(clientMail);
-      setIsCancelCardOpen(true)
-    }
-    else{
+      setIsCancelCardOpen(true);
+    } else {
       try {
+        // Obtener el token de localStorage
+        const token = localStorage.getItem('token');
+  
         const response = await fetch(`${API_BASE_URL}/pedidos/${pedidoId}/status`, {
           method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token ? `Bearer ${token}` : '',  // Incluir el token si existe
+          },
           body: JSON.stringify({ pedidoId, estatus: idEstado }),
         });
   
@@ -147,9 +152,14 @@ const PedidosPage = () => {
 
   const updateDireccion = useCallback(async (pedidoId, newDireccion) => {
     try {
+      const token = localStorage.getItem('token');
+
       const response = await fetch(`${API_BASE_URL}/pedidos/${pedidoId}/direccion`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token ? `Bearer ${token}` : '',  // Incluir el token si existe
+        },
         body: JSON.stringify({ pedidoId, direccion: newDireccion }),
       });
 
@@ -294,7 +304,6 @@ const PedidosPage = () => {
       <StateCard message={errorMessageState} isOpen={!!errorMessageState} type={2}/>
       <StateCard message={warningMessage} isOpen={!!warningMessage} type={4}/>
       <CancelCard isOpen={isCancelCardOpen} closeCard={setIsCancelCardOpen} userMail={userMail} pedidoId={idCancel} setSuccessMessage={setSuccessMessage} setErrorMessage={setErrorMessageState} setWarningMessage={setWarningMessage} refetch={refetch} />
-
     
       <div className="table">
         <div className="table-grid table-header">

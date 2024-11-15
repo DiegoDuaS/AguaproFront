@@ -8,8 +8,18 @@ const useApiP = (url) => {
   const fetchData = useCallback(async () => {
     setIsLoading(true);
     setErrorMessage(null);
+
+    // Obtener el token de localStorage o donde sea que esté guardado
+    const token = localStorage.getItem('token'); 
+
     try {
-      const response = await fetch(url);
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Authorization': token ? `Bearer ${token}` : '', // Solo agregar el token si existe
+          'Content-Type': 'application/json', // Si es necesario, añade este header
+        },
+      });
 
       if (response.ok) {
         const responseData = await response.json();

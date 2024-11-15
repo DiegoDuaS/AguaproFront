@@ -15,7 +15,7 @@ const RegisterPage = ({ onRouteChange }) => {
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
   const [email, setEmail] = useState('');
-  const [role, setRole] = useState('');
+  const [role, setRole] = useState('user');
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -84,14 +84,14 @@ return (
         />
         <input
           className="inputBox"
-          type="password"
+          type="text"
           placeholder="Ingrese su contraseña"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
         <input
           className="inputBox"
-          type="password"
+          type="text"
           placeholder="Confirme su contraseña"
           value={passwordConfirm}
           onChange={(e) => setPasswordConfirm(e.target.value)}

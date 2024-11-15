@@ -87,9 +87,11 @@ const EditUserCard = ({ isOpen, closeCard, user, refetchUsers }) => {
                 <option value="secretaria">secretaría</option>
                 <option value="analista">analista</option>
                 <option value="bodeguero">bodeguero</option>
+                <option value="logistica">logística</option>
                 <option value="admin">admin</option>
                 <option value="user">user</option>
               </select>
+  
       <button className="save-button" onClick={handleSave} disabled={isUpdatingUser || isUpdatingRole}>
         {(isUpdatingUser || isUpdatingRole) ? 'Guardando...' : 'Guardar'}
       </button>

@@ -48,7 +48,6 @@ function NuestrosServicios() {
                 titulo={"Mantenimiento de equipo centrífugo y bombas verticales"} 
                 texto={"Ofrecemos mantenimiento especializado para equipos de bombeo centrífugos y bombas verticales, con potencias de 0.5 a 40 hp en voltajes de 115V, 230V y 460V, abarcando motores monofásicos y trifásicos. Trabajamos con marcas líderes como Myers, Franklin Electric, Sta-Rite, Berkeley, Apec, SEI, LEO y Pedrollo, realizando inspecciones detalladas, limpieza, lubricación y pruebas de rendimiento para asegurar un funcionamiento eficiente y prolongar la vida útil del equipo, optimizando su desempeño en aplicaciones industriales y residenciales. "}
                 imagen={mantECImg}
-
             />
             <DisplayRight 
                 titulo={"Limpieza mecánica a pozos mecánicos"} 

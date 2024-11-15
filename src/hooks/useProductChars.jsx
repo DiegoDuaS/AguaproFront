@@ -1,7 +1,5 @@
-import { GiConsoleController } from "react-icons/gi";
 
 
-// 1. elegir/crear tipo producto
 export async function fetchTypeId(tipo) {
   try {
     const response = await fetch(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/tipos_producto`, {
@@ -27,15 +25,17 @@ export async function fetchTypeId(tipo) {
 // 2. crear producto
 export async function createProduct(nombre, descripcion, tipo_producto, marca, modelo, material, capacidad_min, capacidad_max, precio, disponibilidad) {
   let typeId = null;
-    if (tipo_producto) { // nombre del tipo
-      typeId = await fetchTypeId(tipo_producto);
-      if (!typeId) {
-        return 'No fue posible guardar el dato de tipo';
-      }
+  
+  if (tipo_producto) { // nombre del tipo
+    typeId = await fetchTypeId(tipo_producto);
+    if (!typeId) {
+      return 'No fue posible guardar el dato de tipo';
+    }
   }
+
   const newProduct = {
     nombre: nombre,
-    descripción: descripcion,
+    descripcion: descripcion,
     tipo_producto: typeId,
     marca: marca,
     modelo: modelo,
@@ -47,10 +47,14 @@ export async function createProduct(nombre, descripcion, tipo_producto, marca, m
   };
 
   try {
-    const response = await fetch('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/productos', { // Reemplaza con la URL correcta
+    // Obtener el token de localStorage
+    const token = localStorage.getItem('token');
+    
+    const response = await fetch('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/productos', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': token ? `Bearer ${token}` : '',  // Incluir el token si existe
       },
       body: JSON.stringify(newProduct)
     });
@@ -64,7 +68,7 @@ export async function createProduct(nombre, descripcion, tipo_producto, marca, m
   } catch (error) {
     console.error('Error al crear el producto:', error);
   }
-}    
+}
 
 // 3. elegir/crear energía
 async function fetchEnergyId(min_hp, max_hp, capacitor) {
