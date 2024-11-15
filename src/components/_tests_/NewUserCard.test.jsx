@@ -37,10 +37,9 @@ describe('NewUserCard', () => {
         );
 
         expect(screen.getByText('Nuevo Usuario')).toBeInTheDocument();
-        expect(screen.getByPlaceholderText('nombre de usuario')).toBeInTheDocument();
-        expect(screen.getByPlaceholderText('contraseña')).toBeInTheDocument();
-        expect(screen.getByPlaceholderText('correo')).toBeInTheDocument();
-        expect(screen.getByPlaceholderText('rol del usuario')).toBeInTheDocument();
+        expect(screen.getByPlaceholderText('Nombre de usuario')).toBeInTheDocument();
+        expect(screen.getByPlaceholderText('Contraseña')).toBeInTheDocument();
+        expect(screen.getByPlaceholderText('Correo')).toBeInTheDocument();
     });
 
     test('calls closeCard when clicking outside of the card', () => {
@@ -68,16 +67,18 @@ describe('NewUserCard', () => {
                 setErrorMessage={setErrorMessageMock}
             />
         );
-
+    
         // Fill the input fields
-        fireEvent.change(screen.getByPlaceholderText('nombre de usuario'), { target: { value: 'testuser' } });
-        fireEvent.change(screen.getByPlaceholderText('contraseña'), { target: { value: 'password123' } });
-        fireEvent.change(screen.getByPlaceholderText('correo'), { target: { value: 'test@example.com' } });
-        fireEvent.change(screen.getByPlaceholderText('rol del usuario'), { target: { value: 'admin' } });
-
+        fireEvent.change(screen.getByPlaceholderText('Nombre de usuario'), { target: { value: 'testuser' } });
+        fireEvent.change(screen.getByPlaceholderText('Contraseña'), { target: { value: 'password123' } });
+        fireEvent.change(screen.getByPlaceholderText('Correo'), { target: { value: 'test@example.com' } });
+    
+        // Select a role
+        fireEvent.change(screen.getByRole('combobox'), { target: { value: 'admin' } });
+    
         // Click the save button
         fireEvent.click(screen.getByText('Guardar'));
-
+    
         // Wait for assertions
         await waitFor(() => {
             expect(setSuccessMessageMock).toHaveBeenCalledWith('Usuario registrado con exito');
@@ -85,7 +86,7 @@ describe('NewUserCard', () => {
                 username: 'testuser',
                 password: 'password123',
                 email: 'test@example.com',
-                role: 'admin',
+                role: 'admin', // Ensure the role is 'admin'
             });
             expect(setErrorMessageMock).toHaveBeenCalledWith('');
         });
@@ -110,10 +111,9 @@ describe('NewUserCard', () => {
         );
 
         // Fill the input fields
-        fireEvent.change(screen.getByPlaceholderText('nombre de usuario'), { target: { value: 'testuser' } });
-        fireEvent.change(screen.getByPlaceholderText('contraseña'), { target: { value: 'password123' } });
-        fireEvent.change(screen.getByPlaceholderText('correo'), { target: { value: 'test@example.com' } });
-        fireEvent.change(screen.getByPlaceholderText('rol del usuario'), { target: { value: 'admin' } });
+        fireEvent.change(screen.getByPlaceholderText('Nombre de usuario'), { target: { value: 'testuser' } });
+        fireEvent.change(screen.getByPlaceholderText('Contraseña'), { target: { value: 'password123' } });
+        fireEvent.change(screen.getByPlaceholderText('Correo'), { target: { value: 'test@example.com' } });
 
         // Click the save button
         fireEvent.click(screen.getByText('Guardar'));

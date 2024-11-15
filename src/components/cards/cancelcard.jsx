@@ -24,9 +24,13 @@ const CancelCard = ({ isOpen, closeCard, userMail, pedidoId, setSuccessMessage, 
         setErrorMessage("Error al enviar el correo de cancelacion");
       } else {
         try {
+          const token = localStorage.getItem('token');
           const response = await fetch(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/pedidos/${pedidoId}/status`, {
             method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': token ? `Bearer ${token}` : '',  // Incluir el token si existe
+            },
             body: JSON.stringify({ pedidoId, estatus: 6 }),
           });
     

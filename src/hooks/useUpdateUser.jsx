@@ -8,11 +8,15 @@ const useUpdateUser = (url) => {
     setIsLoading(true);
     setErrorMessage(null);
 
+    // Obtener el token de localStorage o donde esté guardado
+    const token = localStorage.getItem('token'); 
+
     try {
       const response = await fetch(`${url}/user/${userId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': token ? `Bearer ${token}` : '', // Agregar el token si existe
         },
         body: JSON.stringify(userData),
       });

@@ -9,10 +9,14 @@ const useUpdateDisponibilidad = (url) => {
     setErrorMessage(null);
 
     try {
+      // Obtener el token de localStorage
+      const token = localStorage.getItem('token');
+
       const response = await fetch(`${url}/productos/disponibilidad/${productId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': token ? `Bearer ${token}` : '',  // Incluir el token si existe
         },
         body: JSON.stringify({ disponibilidad }), // Enviar solo la disponibilidad
       });

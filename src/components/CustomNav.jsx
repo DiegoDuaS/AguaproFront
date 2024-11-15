@@ -19,9 +19,9 @@ const CustomNav = ({ items, onOptionSelect, isOpen, setIsSidebarOpen, setActiveP
   };
 
   const handleSubMenuClick = (subItem) => {
-    onOptionSelect(subItem);
-    setIsSidebarOpen(false); // Close the sidebar when a submenu item is clicked
-    isOpen(false)
+    onOptionSelect(subItem); // Notifica al padre sobre la selección
+    setIsSidebarOpen(false); // Cierra el menú
+    setSelectedOption(null); // Limpia la selección del menú
   };
 
   return (

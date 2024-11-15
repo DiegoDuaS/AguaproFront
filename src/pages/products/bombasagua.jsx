@@ -7,6 +7,7 @@ import { BiError } from "react-icons/bi";
 import searchIcon from './../../image/searchIcon.png';
 import './products.css';
 import FilterCatalogo from './FitersCatalogo';
+import { FaRegSadCry } from "react-icons/fa";
 
 const BombasAgua = ({cartItems, setCartItems, setSuccessMessage }) => {
   const [isLargeCardOpen, setIsLargeCardOpen] = useState(false);
@@ -136,6 +137,17 @@ const BombasAgua = ({cartItems, setCartItems, setSuccessMessage }) => {
   );
 
   useEffect(() => {
+    // Verifica si el término de búsqueda está vacío antes de ejecutar handleSearch
+    if (searchTerm === '') {
+      handleSearch();
+    }
+  }, [searchTerm]);
+  
+  const handleEliminarBusqueda = () => {
+    setSearchTerm(''); // Esto disparará el useEffect automáticamente
+  };
+
+  useEffect(() => {
     if (errorMessage) {
       console.log(errorMessage);
     }
@@ -209,8 +221,12 @@ const BombasAgua = ({cartItems, setCartItems, setSuccessMessage }) => {
 
   const productosEnPagina = productosToDisplay.slice(startIndex, endIndex);
 
+  function isContentLoaded(isLoading, loadingImages) {
+    return !isLoading && !loadingImages;
+  }
 
-  if (isLoading || loadingImages) {
+
+  if (!isContentLoaded(isLoading, loadingImages)) {
     return (
       <main className="main-content-loading">
         <h2>Bombas de Agua</h2>
@@ -264,22 +280,52 @@ const BombasAgua = ({cartItems, setCartItems, setSuccessMessage }) => {
           sortName={sortName}
           handleNameSort={handleNameSort}
         />
+        {searchTerm !== "" && (
+          <button  className="clean-btn" onClick={handleEliminarBusqueda}>Eliminar Busqueda</button>
+        )}
       </div>
 
 
       <div className='space2' />
+      {productosEnPagina.length === 0 ? (
+        <p className="no-products-message">
+          <FaRegSadCry size={60}/>
+          Actualmente, no contamos con productos que cumplan con estas especificaciones.
+        </p>
+      ) : (
+        <>
+          <ul className="small-card-list">
+            {productosEnPagina.map(product => (
+              <Card
+                key={product.id_producto}
+                nombre={product.nombre}
+                precio={product.precio}
+                imagen={images[product.id_producto] || 'fallback-image.png'}
+                onMoreInfoClick={() => openCard(product)}
+              />
+            ))}
+          </ul>
+          <div className='space2' />
+            <div className="pagination-controls">
+                <div className='change-page'>
+                  <button 
+                    onClick={() => handlePageChange(currentPage - 1)} 
+                    disabled={currentPage === 1}
+                  >
+                    Anterior
+                  </button>
+                  <span>Página {currentPage} de {totalPages}</span>
+                  <button 
+                    onClick={() => handlePageChange(currentPage + 1)} 
+                    disabled={currentPage === totalPages}
+                  >
+                    Siguiente
+                  </button>
+                </div>
+          </div>
+        </>
+      )}
 
-      <ul className="small-card-list">
-        {productosEnPagina.map(product => (
-          <Card
-            key={product.id_producto}
-            nombre={product.nombre}
-            precio={product.precio}
-            imagen={images[product.id_producto] || 'fallback-image.png'}
-            onMoreInfoClick={() => openCard(product)}
-          />
-        ))}
-      </ul>
       {selectedProduct && (
         <LargeCard
           isOpen={isLargeCardOpen}
@@ -289,24 +335,6 @@ const BombasAgua = ({cartItems, setCartItems, setSuccessMessage }) => {
           imageRef={images[selectedProduct.id_producto]}
         />
       )}
-      <div className='space2' />
-      <div className="pagination-controls">
-          <div className='change-page'>
-            <button 
-              onClick={() => handlePageChange(currentPage - 1)} 
-              disabled={currentPage === 1}
-            >
-              Anterior
-            </button>
-            <span>Página {currentPage} de {totalPages}</span>
-            <button 
-              onClick={() => handlePageChange(currentPage + 1)} 
-              disabled={currentPage === totalPages}
-            >
-              Siguiente
-            </button>
-          </div>
-      </div>
       <div className='space2' />
     </main>
   );

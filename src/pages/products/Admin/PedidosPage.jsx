@@ -114,16 +114,22 @@ const PedidosPage = () => {
   const handleEstadoChange = useCallback(async (pedidoId, newEstado, clientMail) => {
     const estadoMap = { "Pendiente": 1, "Aprobado": 2, "Procesando": 3, "Enviado": 4, "Entregado": 5, "Cancelado": 6 };
     const idEstado = estadoMap[newEstado] || 0;
-    if (newEstado === "Cancelado"){
-      setIdCancel(pedidoId)
+  
+    if (newEstado === "Cancelado") {
+      setIdCancel(pedidoId);
       setUserMail(clientMail);
-      setIsCancelCardOpen(true)
-    }
-    else{
+      setIsCancelCardOpen(true);
+    } else {
       try {
+        // Obtener el token de localStorage
+        const token = localStorage.getItem('token');
+  
         const response = await fetch(`${API_BASE_URL}/pedidos/${pedidoId}/status`, {
           method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token ? `Bearer ${token}` : '',  // Incluir el token si existe
+          },
           body: JSON.stringify({ pedidoId, estatus: idEstado }),
         });
   
@@ -146,9 +152,14 @@ const PedidosPage = () => {
 
   const updateDireccion = useCallback(async (pedidoId, newDireccion) => {
     try {
+      const token = localStorage.getItem('token');
+
       const response = await fetch(`${API_BASE_URL}/pedidos/${pedidoId}/direccion`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token ? `Bearer ${token}` : '',  // Incluir el token si existe
+        },
         body: JSON.stringify({ pedidoId, direccion: newDireccion }),
       });
 

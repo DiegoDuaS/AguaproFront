@@ -9,16 +9,60 @@ import AdminHeader from "../../components/headers/AdminHeader.jsx";
 import PropTypes from 'prop-types';
 import UsuariosPage from './Admin/UsuariosPage.jsx';
 import { BsBoxSeam, BsGraphUp, BsGear } from "react-icons/bs";
-import {FaUsers } from "react-icons/fa";
+import { FaUsers } from "react-icons/fa";
 import { GoMail } from "react-icons/go";
 import { PiClipboardText } from "react-icons/pi";
 
-
 const AdminPage = ({ onRouteChange }) => {
-  const [selectedOption, setSelectedOption] = useState(() => {
-    return localStorage.getItem('activeOption') || 'Pedidos';
-  });
+  // Obtener el rol del usuario desde localStorage
+  const obtenerRolDeUsuario = () => {
+    const usuarioJSON = localStorage.getItem('user');
+    const usuario = usuarioJSON ? JSON.parse(usuarioJSON) : null;
+    return usuario ? usuario.role : null;
+  };
   
+  const rolUsuario = obtenerRolDeUsuario();
+
+  // Opciones de menú según el rol del usuario
+  const opcionesPorRol = {
+    vendedor: [
+      ["Pedidos", PiClipboardText],
+      ["Solicitudes", GoMail],
+      ["Productos", BsBoxSeam]
+    ],
+    secretaria: [
+      ["Clientes", FaUsers],
+      ["Solicitudes", GoMail],
+      ["Pedidos", PiClipboardText],
+      ["Usuarios", BsGear]
+    ],
+    bodeguero: [
+      ["Productos", BsBoxSeam]
+    ],
+    analista: [
+      ["Analítica", BsGraphUp]
+    ],
+    logistica: [
+      ["Pedidos", PiClipboardText]
+    ],
+    admin: [
+      ["Pedidos", PiClipboardText],
+      ["Productos", BsBoxSeam],
+      ["Analítica", BsGraphUp],
+      ["Clientes", FaUsers],
+      ["Usuarios", BsGear],
+      ["Solicitudes", GoMail]
+    ]
+  };
+
+  // Obtener las opciones de menú según el rol del usuario
+  const opcionesMenu = rolUsuario ? opcionesPorRol[rolUsuario] : [];
+
+  // Estado de la opción seleccionada, se establece la opción predeterminada del rol si no hay nada en localStorage
+  const [selectedOption, setSelectedOption] = useState(() => {
+    return localStorage.getItem('activeOption') || (opcionesMenu.length > 0 ? opcionesMenu[0][0] : 'Pedidos');
+  });
+
   const [isExpanded, setIsExpanded] = useState(false);
 
   useEffect(() => {
@@ -46,7 +90,7 @@ const AdminPage = ({ onRouteChange }) => {
       case 'Solicitudes':
         return <SolicitudesPage />;
       default:
-        return <PedidosPage />; // Página por defecto
+        return <PedidosPage />;
     }
   };
 
@@ -75,14 +119,7 @@ const AdminPage = ({ onRouteChange }) => {
       />
       <div style={{ display: 'flex', flex: '1' }}>
         <CustomNav
-          li={[
-            ["Pedidos", PiClipboardText ],
-            ["Productos", BsBoxSeam],
-            ["Analítica", BsGraphUp],
-            ["Clientes", FaUsers],
-            ["Usuarios", BsGear],
-            ["Solicitudes", GoMail]
-          ]}
+          li={opcionesMenu}
           onOptionSelect={handleOptionSelect}
           isExpanded={isExpanded}
         />

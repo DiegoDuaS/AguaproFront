@@ -34,7 +34,7 @@ const LoginPage = ({ onRouteChange }) => {
     try {
         const responseData = await userLogin(login, username, password);
         
-        if (responseData.role === 'admin') {
+        if (responseData.role === 'admin' || responseData.role === 'vendedor' || responseData.role === 'secretaria' || responseData.role === 'bodeguero' || responseData.role === 'analista' || responseData.role === 'logistica') {
             onRouteChange('AdminPage');
         } else {
             onRouteChange('Bombas de agua');

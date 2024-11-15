@@ -67,7 +67,7 @@ const NewUserCard = ({ isOpen, closeCard, onRegister,  setSuccessMessage, setErr
                         <div className="table-row-nu">
                             <div className="title">Contraseña</div>
                             <input
-                                type="password" // Change to password for better security
+                                type="text" // Change to password for better security
                                 className="input2"
                                 value={password}
                                 placeholder="Contraseña"
@@ -96,6 +96,7 @@ const NewUserCard = ({ isOpen, closeCard, onRegister,  setSuccessMessage, setErr
                                 <option value="secretaria">secretaría</option>
                                 <option value="analista">analista</option>
                                 <option value="bodeguero">bodeguero</option>
+                                <option value="logistica">logística</option>
                                 <option value="admin">admin</option>
                                 <option value="user">user</option>
                             </select>

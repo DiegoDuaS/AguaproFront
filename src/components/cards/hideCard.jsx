@@ -26,51 +26,63 @@ const HideCard = ({ isOpen, closeCard, product, setSuccsessMessage, setErrorMess
   }, [notMatch]);
 
   const handleHide = async () => {
-    if(writtenName === product.nombre){
-        try {
-            const response = await fetch(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/productos/hide/${product.id_producto}`, {
-              method: 'PUT',
-              headers: { 'Content-Type': 'application/json' }
-            });
-      
-            if (response.ok) {
-              setSuccsessMessage('Producto ocultado correctamente.');
-              setErrorMessage(''); 
-              await refetchProducts(); 
-              closeCard();
-            } else {
-              throw new Error('Error al ocultar el producto');
-            }
-          } catch (error) {
-            setErrorMessage('Error al conectar con el servidor. Intente nuevamente.');
-            setSuccsessMessage(''); 
+    if (writtenName === product.nombre) {
+      try {
+        // Obtener el token de localStorage
+        const token = localStorage.getItem('token');
+  
+        const response = await fetch(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/productos/hide/${product.id_producto}`, {
+          method: 'PUT',
+          headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': token ? `Bearer ${token}` : '', // Incluir token si existe
           }
+        });
+  
+        if (response.ok) {
+          setSuccsessMessage('Producto ocultado correctamente.');
+          setErrorMessage('');
+          await refetchProducts();
+          closeCard();
+        } else {
+          throw new Error('Error al ocultar el producto');
+        }
+      } catch (error) {
+        setErrorMessage('Error al conectar con el servidor. Intente nuevamente.');
+        setSuccsessMessage('');
+      }
+    } else {
+      setNotMatch('Los nombres no coinciden, intenta nuevamente.');
     }
-    else{
-        setNotMatch('Los nombres no coinciden, intenta nuevamente.')
-    }
-  }
-
+  };
+  
   const handleUnHide = async () => {
-        try {
-            const response = await fetch(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/productos/unhide/${product.id_producto}`, {
-              method: 'PUT',
-              headers: { 'Content-Type': 'application/json' }
-            });
-      
-            if (response.ok) {
-              setSuccsessMessage('Producto publicado correctamente.');
-              setErrorMessage(''); 
-              await refetchProducts(); 
-              closeCard();
-            } else {
-              throw new Error('Error al publicar el producto');
-            }
-          } catch (error) {
-            setErrorMessage('Error al conectar con el servidor. Intente nuevamente.');
-            setSuccsessMessage(''); 
-          }
-  }
+    try {
+      // Obtener el token de localStorage
+      const token = localStorage.getItem('token');
+  
+      const response = await fetch(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/productos/unhide/${product.id_producto}`, {
+        method: 'PUT',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': token ? `Bearer ${token}` : '', // Incluir token si existe
+        }
+      });
+  
+      if (response.ok) {
+        setSuccsessMessage('Producto publicado correctamente.');
+        setErrorMessage('');
+        await refetchProducts();
+        closeCard();
+      } else {
+        throw new Error('Error al publicar el producto');
+      }
+    } catch (error) {
+      setErrorMessage('Error al conectar con el servidor. Intente nuevamente.');
+      setSuccsessMessage('');
+    }
+  };
+  
 
   if (state === 1  && product.estado == "en venta"){
     return (
