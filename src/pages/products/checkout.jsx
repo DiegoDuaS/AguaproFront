@@ -11,6 +11,7 @@ import useUpdateUserEmail from '../../hooks/useUpdateUserEmail';
 import StateCard from '../../components/cards/stateCard';
 import paymentMethodImage from '../../image/paymentoptions.png'
 import cargoExpreso from '../../image/cargoexpreso.png';
+import uploadImage from '../../image/upload.png'
 
 const Checkout = ({ onRouteChange, cartItems, navigateToLogin }) => {
   const shippingFee = 35.0;
@@ -22,8 +23,8 @@ const Checkout = ({ onRouteChange, cartItems, navigateToLogin }) => {
   const [errorMessage, setErrorMessage] = useState('');
   const userReference = localStorage.getItem('id');
   const [isOrderConfirmed, setIsOrderConfirmed] = useState(false);
-  //console.log(cartItems);
-
+  const [image, setImage] = useState(null);
+  const [file, setFile] = useState(null);
 
   const { sendPaymentRequest, loading: loadingPay, error: errorPay, success: successPay } = usePaymentRequest();
   const { sendSalesReviewRequest, loading: loadingReview, error: errorReview, success: successReview } = useSalesReviewRequest();
@@ -32,6 +33,18 @@ const Checkout = ({ onRouteChange, cartItems, navigateToLogin }) => {
   const { updateClient, loading: updateLoading, success: updateSuccess, error: updateError } = useUpdateClient();
   const {updatedResult, registerClient, isLoading: registerLoading, successMessage: registerSuccess, errorMessage: registerError } = useRegisterClient("https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app");
   const { client, loading: clientLoading, refetch: refetchClient } = useFetchClient(userReference);
+  
+  const handleImageChange = (e) => {
+        const selectedFile = e.target.files[0];
+        if (selectedFile) {
+            setFile(selectedFile);
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setImage(reader.result); // Set the image state to the data URL for preview
+            };
+            reader.readAsDataURL(selectedFile); // Read the file as a data URL
+        }
+    };  
 
   function calcularFechaEntrega(diasHabiles, feriados = []) {
     // Obtener la fecha actual
@@ -123,13 +136,13 @@ const Checkout = ({ onRouteChange, cartItems, navigateToLogin }) => {
 
   const hasEmptyFields2 = () => {
     if (formData.paymentMethod === 'tarjeta') {
-      return formData.numeroTarjeta !== '' && formData.fechaVencimiento !== '' && formData.cvv !== '';
+      return formData.numeroTarjeta === '' && formData.fechaVencimiento === '' && formData.cvv === '';
     }
     if (formData.paymentMethod === 'transferencia') {
-      return formData.banco !== '' && formData.numeroAutorizacion !== '';
+      return formData.banco === '' && formData.numeroAutorizacion === '';
     }
     if (formData.paymentMethod === 'deposito') {
-      return formData.banco !== '' && formData.numeroAutorizacion !== '';
+      return formData.banco === '' && formData.numeroAutorizacion === '';
     }
     return false;
    };
@@ -141,7 +154,18 @@ const Checkout = ({ onRouteChange, cartItems, navigateToLogin }) => {
         setWarningMessage("Completa todos los campos")
       }
       else{
-        if (client) {
+        setCheckoutStep('pago');
+      }
+    } else if (checkoutStep === 'pago') {
+      if(hasEmptyFields2()){
+        setWarningMessage("Completa todos los campos")
+      }
+      else{            
+        setCheckoutStep('pedido');            
+      }
+    } else {
+      
+      if (client) {
           const cleanData = {
             nombre: formData.nombre,
             direccion: formData.direccion,
@@ -173,29 +197,16 @@ const Checkout = ({ onRouteChange, cartItems, navigateToLogin }) => {
           // Register a new client if no client exists
           console.log(cleanData);
           await registerClient(cleanData, null);
-          if (registerSuccess) {
-            console.log(updatedResult);
-            setSuccessMessage("Información guardada correctamente");
-            refetchClient(); // Fetch client data after registration
-          } else if (registerError) {
-            setErrorMessage(registerError);
-          }
         }
-        setCheckoutStep('pago');
-      }
-    } else if (checkoutStep === 'pago') {
-      if (!isOrderConfirmed) {
-        setWarningMessage("Por favor confirma tu orden antes de proceder al pago.");
-      } else {
-        //console.log("Pago confirmado");
+
         const metodo = formData.paymentMethod === "transferencia" ? "la transferencia" : 
               formData.paymentMethod === "deposito" ? "el deposito" : 
               "Método no reconocido";
         const clientPay = {
            mailto: formData.email,
            metodo,
-          };
-        console.log(clientPay);
+        };
+        
         await sendPaymentRequest(clientPay);
        
         const PayInfo = {
@@ -208,48 +219,36 @@ const Checkout = ({ onRouteChange, cartItems, navigateToLogin }) => {
           banco: formData.banco,
           numAutorizacion: formData.numeroAutorizacion
         };
-        //console.log(successPay);
+
         await sendSalesReviewRequest(PayInfo);
-        if(successReview){
-          //onRouteChange('Bombas de agua');
-          setSuccessMessage("Se envió el pago");
+
+        const productos = cartItems.map((item) => ({
+          idProducto: item.id_producto,
+          cantidad: item.quantity,
+        }));
+    
+        const pedidoData = {
+          clienteId: client ? client.data.id_cliente : updatedResult.id_cliente,
+          productos,
+          nitEmpresa: formData.nit,
+          idDescuento: null, // Add discount ID if applicable
+          direccion: formData.direccion,
+        };
+
+        // Make the pedido
+        await createPedido(pedidoData);
+     
+        if (message && successReview && (registerSuccess || (updateSuccess && success))) {
+          setSuccessMessage("Orden confirmada correctamente");
           onRouteChange('Bombas de agua');
         } else {
-          setErrorMessage("Hubo un error al envia el pago");
+          setErrorMessage("Hubo un problema al procesar el pedido");
         }
-      }
-    } 
-    
-  };
-
-  const handleConfirmOrder = async () => {
-    const productos = cartItems.map((item) => ({
-      idProducto: item.id_producto,
-      cantidad: item.quantity,
-    }));
-    
-    const pedidoData = {
-      clienteId: client ? client.data.id_cliente : updatedResult.id_cliente,
-      productos,
-      nitEmpresa: formData.nit,
-      idDescuento: null, // Add discount ID if applicable
-      direccion: formData.direccion,
-    };
-
-    // Make the pedido
-    await createPedido(pedidoData);
-    //console.log(pedidoId);
-    // Handle success or error messaging
-    if (message) {
-      //console.log("pedido hecho");
-      setIsOrderConfirmed(true);
-      setSuccessMessage("Orden confirmada correctamente");
-      //setSuccessMessage(message);
-      //setCheckoutStep('confirmation'); // Go to the confirmation step
-    } else {
-      setErrorMessage("Hubo un problema al procesar el pedido");
+     
     }
+    
   };
+
 
   const handleLeave = () => {
     onRouteChange('Bombas de agua');
@@ -485,7 +484,21 @@ useEffect(() => {
                           placeholder="Número de autorización" 
                         />
                       </div>
-                      
+                      <div className="image-upload-container-ch">
+                        {image ? (
+                          <img src={image} alt="Preview" className='img_prod_new-ch' />
+                        ) : (
+                          <img src={uploadImage} alt="Preview" className='img_prod_new-ch' />
+                        )}
+                        <input
+                          id="upload_btn-ch"
+                          type="file"
+                          onChange={handleImageChange}
+                          accept=".jpg, .png"
+                        />  
+                        <label for="upload_btn-ch" className='upload_image'>Subir Imagen</label>
+                        <p>Solo archivos .png o .jpg</p>       
+                      </div>    
                         <div className="confirm-btn">
                           <button onClick={handleNextStep}>Confirmar Información de Pago</button>
                         </div>
@@ -531,11 +544,11 @@ useEffect(() => {
             <div className="center-container">
               <div className="subtotal">Subtotal: <strong>Q{subtotal.toFixed(2)}</strong> </div>
               <div className="total">Total (con envio): <strong>Q{total.toFixed(2)}</strong> </div>
-              { !isOrderConfirmed && checkoutStep === 'pago' && (
+              { !isOrderConfirmed && checkoutStep === 'pedido' && (
                 <div className='confirm-section'>
                   <img className="cargo" src={cargoExpreso}></img>
                   <div className="confirm-btn">
-                    <button onClick={handleConfirmOrder}>Confirmar Orden</button>
+                    <button onClick={handleNextStep}>Confirmar Orden</button>
                   </div>
                   <p className='clarification'>Fecha estimada de entrega: <strong>{fechaEntrega3Dias}</strong></p>
                 </div>
