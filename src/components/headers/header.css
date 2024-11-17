@@ -20,7 +20,6 @@
     font-size: 2.5rem; /* Adjust font size as needed */
     font-weight: bold;
     color: #00668C;
-    padding-left: 40px;
     font-family: "Khand";
     letter-spacing: 3px;
   }
@@ -118,6 +117,18 @@
     color:#00668C; 
     margin-bottom: 40px;
     font-size: 2em;
+  }
+
+  .logo-image{
+    height: 70px;
+    width: 120px;
+  }
+
+  .logoname-holder{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    padding-left: 20px;
   }
   
   @media (max-width: 768px) {
