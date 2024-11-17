@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import './admin.css';
 import { CircularProgress } from '@mui/material';
 import searchIcon from './../../../image/searchIcon.png';
@@ -127,6 +127,13 @@ const UsuariosPage = () => {
     setSortOrder(order);
   };
 
+  const uniqueRoles = useMemo(() => {
+    if (!usuarios) return [];
+    const roles = [...new Set(usuarios.map(user => user.role))];
+    return roles.sort(); // Sort alphabetically
+  }, [usuarios]);
+
+
   const filteredAndSortedUsers = useCallback(() => {
     let result = isSearchActive ? searchResults : usuarios;
     if (filterRole) {
@@ -236,6 +243,7 @@ const UsuariosPage = () => {
         handleFilterChange={handleFilterChange}
         sortOrder={sortOrder}
         handleSortChange={handleSortChange}
+        availableRoles={uniqueRoles}
       />
 
       <div className='clients-tablespace'> 
