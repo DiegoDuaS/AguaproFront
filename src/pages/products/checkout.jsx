@@ -205,7 +205,7 @@ const Checkout = ({ onRouteChange, cartItems, navigateToLogin }) => {
         //await sendPaymentRequest(clientPay);
        
         const PayInfo = {
-          mailTo: ['wolfunicorn912@gmail.com', 'nickygordillo912@gmail.com'],
+          mailTo: ['ventas@aguatesa.com', 'ventas2@aguatesa.com'],
           nombre: formData.nombre,
           correo: formData.email,
           telefono: formData.telefono,
