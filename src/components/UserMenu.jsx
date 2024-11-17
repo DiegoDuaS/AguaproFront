@@ -3,7 +3,7 @@ import { FiUser, FiLogOut } from "react-icons/fi"; // Importing icons for the op
 import './UserMenu.css'; // Add some styling
 import useUserData from '../hooks/useUserData';
 
-const UserMenu = ({ closeUserMenu, onLogout, onViewInfo }) => {
+const UserMenu = ({ closeUserMenu, onLogout, onViewInfo}) => {
   const userMenuRef = useRef(null);
 
   const handleClickOutside = (event) => {
