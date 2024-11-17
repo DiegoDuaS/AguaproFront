@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { FaFilter, FaSortAmountDown, FaSortAmountUp } from 'react-icons/fa';
 import { BsSortAlphaDown, BsSortAlphaUp } from 'react-icons/bs';
 import FilterNav from './FilterNav';  // Import the FilterNav component
@@ -58,13 +58,18 @@ const FilterCatalogo = ({
     }
   };
   const handleResetFilters = () => {
+    console.log("Reseted")
     handleMarcaChange('');
     handleMaterialChange('');
     handleSortChange('');
     handleNameSort('');
-    toggleFilter();
+    if (isFilterOpen === true){
+      toggleFilter();
+    }
   };
 
+  const filterButtonRef = useRef(null);
+  const unfilterButtonRef = useRef(null);
   
   const hasActiveFilters = filterMarca || filterMaterial || sortOrder || sortName;
 
@@ -72,11 +77,12 @@ const FilterCatalogo = ({
   return (
     <div className="filter-container">
     <div className="filter-controls">
-      <button onClick={toggleFilter} className="filter-button2">
+      <button ref={filterButtonRef} onClick={toggleFilter} className="filter-button2">
         <FaFilter /> Filtros
       </button>
-      {isFilterOpen && hasActiveFilters && (
+      {hasActiveFilters && (
         <button 
+          ref={unfilterButtonRef}
           onClick={handleResetFilters}
           className="filter-reset-btn"
           title="Reset all filters"
@@ -93,6 +99,8 @@ const FilterCatalogo = ({
           onFilterSelect={handleFilterSelect}
           isOpen={isFilterOpen}
           setIsSidebarOpen={toggleFilter}
+          filterButtonRef={filterButtonRef}
+          unfilterButtonRef={unfilterButtonRef}
         />
       </div>
     )}
