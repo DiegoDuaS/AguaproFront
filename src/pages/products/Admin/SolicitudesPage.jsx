@@ -34,6 +34,46 @@ const SolicitudesPage = () => {
     21: "Jalapa",
     22: "Jutiapa"
   };
+  const [searchTerm, setSearchTerm] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const [isSearchActive, setIsSearchActive] = useState(false);
+
+
+  const handleSearch = useCallback(() => {
+    const trimmedSearchTerm = searchTerm.trim().toLowerCase();
+    if (!trimmedSearchTerm) {
+      setSearchResults([]);
+      setIsSearchActive(false);
+      return;
+    }
+
+    const filteredResults = solicitudes.filter(solicitud => {
+      const searchFields = [
+        solicitud.nombre,
+        solicitud.correo,
+        solicitud.telefono,
+        solicitud.empresa,
+        departamentos[solicitud.departamento],
+        solicitud.tipo_servicio,
+        solicitud.estado
+      ];
+      
+      return searchFields.some(field => 
+        String(field).toLowerCase().includes(trimmedSearchTerm)
+      );
+    });
+
+    setSearchResults(filteredResults);
+    setIsSearchActive(true);
+    setCurrentPage(1); // Reset to first page when searching
+  }, [searchTerm, solicitudes, departamentos]);
+
+  // Handle Enter key press
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
+  };
 
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= totalPages) {
@@ -41,10 +81,11 @@ const SolicitudesPage = () => {
     }
   };
 
-  const totalPages = Math.ceil(solicitudes.length / 10);
+  const displayedSolicitudes = isSearchActive ? searchResults : solicitudes;
+  const totalPages = Math.ceil(displayedSolicitudes.length / 10);
   const startIndex = (currentPage - 1) * 10;
   const endIndex = startIndex + 10;
-  const SolicitudesEnPagina = solicitudes.slice(startIndex, endIndex);
+  const SolicitudesEnPagina = displayedSolicitudes.slice(startIndex, endIndex);
 
 
   useEffect(() => {
@@ -134,17 +175,20 @@ const SolicitudesPage = () => {
     <div className="container">
       <div className="text">Solicitudes</div>
       <div className='filter-section'>
-          <div className="search-bar">
-            <input
-              className="searchbar"
-              type="text"
-              placeholder="Buscar ID, Nombre, Descripción, Precio, Disponibilidad o Marca..."
-            />
-            <button className="search-btn">
-              <img src={searchIcon} alt="Search" />
-            </button>
-          </div>
+        <div className="search-bar">
+          <input
+            className="searchbar"
+            type="text"
+            placeholder="Buscar por nombre, correo, teléfono, empresa..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyPress={handleKeyPress}
+          />
+          <button className="search-btn" onClick={handleSearch}>
+            <img src={searchIcon} alt="Search" />
+          </button>
         </div>
+      </div>
 
         <div className="table">
         <div className="table-grid table-header">
@@ -159,7 +203,7 @@ const SolicitudesPage = () => {
         </div>
         {SolicitudesEnPagina.map((solicitud) => {
           return(
-            <div className="table-grid table-row">
+            <div className="table-grid table-row" key={solicitud.id_solicitud}>
               <p className='table-text'>{solicitud.nombre}</p>
               <p className='table-text'>{solicitud.correo}</p>
               <p className='table-text'>{solicitud.telefono}</p>
@@ -168,47 +212,46 @@ const SolicitudesPage = () => {
               <p className='table-text'>{solicitud.tipo_servicio}</p>
               <p className='table-text'>{solicitud.fecha_creacion.slice(0,10)}</p>
               <select
-              value={solicitud.estado} 
-              onChange={(e) => handleEstadoChange(solicitud.id_solicitud, e.target.value)}
-              className={`state ${solicitud.estado.toLowerCase()}`}
-              aria-label={`Estado para solicitud ${solicitud.id_solicitud}`}
+                value={solicitud.estado} 
+                onChange={(e) => handleEstadoChange(solicitud.id_solicitud, e.target.value)}
+                className={`state ${solicitud.estado.toLowerCase()}`}
+                aria-label={`Estado para solicitud ${solicitud.id_solicitud}`}
               >
-              {[
-                { label: 'Pendiente', value: 'pendiente' },
-                { label: 'En seguimiento', value: 'enviado' },
-                { label: 'Completada', value: 'entregado' },
-                { label: 'Cancelada por cliente', value: 'cancelado' },
-              ].map((estado, index) => (
-                <option className="option" value={estado.value} key={index + 1}>
-                  {estado.label}
-                </option>
-              ))}
-            </select>
+                {[
+                  { label: 'Pendiente', value: 'pendiente' },
+                  { label: 'En seguimiento', value: 'enviado' },
+                  { label: 'Completada', value: 'entregado' },
+                  { label: 'Cancelada por cliente', value: 'cancelado' },
+                ].map((estado, index) => (
+                  <option className="option" value={estado.value} key={index + 1}>
+                    {estado.label}
+                  </option>
+                ))}
+              </select>
             </div>
-          )
-      })}
+          );
+        })}
       </div>
       <div className="pagination-controls">
-          <div className='change-page'>
-            <button 
-              onClick={() => handlePageChange(currentPage - 1)} 
-              disabled={currentPage === 1}
-            >
-              Anterior
-            </button>
-            <span>Página {currentPage} de {totalPages}</span>
-            <button 
-              onClick={() => handlePageChange(currentPage + 1)} 
-              disabled={currentPage === totalPages}
-            >
-              Siguiente
-            </button>
-          </div>
+        <div className='change-page'>
+          <button 
+            onClick={() => handlePageChange(currentPage - 1)} 
+            disabled={currentPage === 1}
+          >
+            Anterior
+          </button>
+          <span>Página {currentPage} de {totalPages}</span>
+          <button 
+            onClick={() => handlePageChange(currentPage + 1)} 
+            disabled={currentPage === totalPages}
+          >
+            Siguiente
+          </button>
         </div>
+      </div>
       <StateCard message={successMessage} isOpen={!!successMessage} type={1}/>
       <StateCard message={errorMessageState} isOpen={!!errorMessageState} type={2}/>
     </div>
-    
   );
 };
 
