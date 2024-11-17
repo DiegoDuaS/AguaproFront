@@ -178,13 +178,8 @@ const Checkout = ({ onRouteChange, cartItems, navigateToLogin }) => {
           await updateClient(client.data.id_cliente, cleanData);
           //console.log(userReference);
           await updateUserEmail(userReference, cleanData.email);
-          console.log(success);
-          if (updateSuccess && success) {
-            setSuccessMessage("Información guardada correctamente");
-            refetchClient(); // Refresh client data after update
-          } else if (updateError) {
-            setErrorMessage(updateError);
-          }
+          //console.log(success);
+         
         } else {
           const cleanData = {
             nombre: formData.nombre,
@@ -207,10 +202,10 @@ const Checkout = ({ onRouteChange, cartItems, navigateToLogin }) => {
            metodo,
         };
         
-        await sendPaymentRequest(clientPay);
+        //await sendPaymentRequest(clientPay);
        
         const PayInfo = {
-          mailTo: ['ventas@aguatesa.com', 'ventas2@aguatesa.com'],
+          mailTo: ['wolfunicorn912@gmail.com', 'nickygordillo912@gmail.com'],
           nombre: formData.nombre,
           correo: formData.email,
           telefono: formData.telefono,
@@ -220,7 +215,7 @@ const Checkout = ({ onRouteChange, cartItems, navigateToLogin }) => {
           numAutorizacion: formData.numeroAutorizacion
         };
 
-        await sendSalesReviewRequest(PayInfo);
+        //await sendSalesReviewRequest(PayInfo, file);
 
         const productos = cartItems.map((item) => ({
           idProducto: item.id_producto,
@@ -236,8 +231,12 @@ const Checkout = ({ onRouteChange, cartItems, navigateToLogin }) => {
         };
 
         // Make the pedido
-        await createPedido(pedidoData);
-     
+        await createPedido(pedidoData); 
+        if(message){
+          await sendSalesReviewRequest(PayInfo, file);
+          await sendPaymentRequest(clientPay);
+        }
+             
         if (message && successReview && (registerSuccess || (updateSuccess && success))) {
           setSuccessMessage("Orden confirmada correctamente");
           onRouteChange('Bombas de agua');
@@ -497,11 +496,12 @@ useEffect(() => {
                           accept=".jpg, .png"
                         />  
                         <label for="upload_btn-ch" className='upload_image'>Subir Imagen</label>
-                        <p>Solo archivos .png o .jpg</p>       
-                      </div>    
-                        <div className="confirm-btn">
+                        <p>Solo archivos .png o .jpg</p>
+                         <div className="confirm-btn">
                           <button onClick={handleNextStep}>Confirmar Información de Pago</button>
-                        </div>
+                         </div>       
+                      </div>    
+                    
                       </div>
                     </> 
                   )}
