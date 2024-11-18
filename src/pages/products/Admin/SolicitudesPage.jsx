@@ -4,6 +4,8 @@ import { CircularProgress } from '@mui/material';
 import useApiP from '../../../hooks/useAPIProducts';
 import { BiError } from "react-icons/bi";
 import StateCard from '../../../components/cards/stateCard';
+import { FaFilter } from 'react-icons/fa';
+import FilterSectionSolicitudes from './Filtros/FilterSectionSolicitudes';
 
 const SolicitudesPage = () => {
   const { data: solicitudes, errorMessage, isLoading, refetch } = useApiP('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/solicitudes');
@@ -37,7 +39,15 @@ const SolicitudesPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [isSearchActive, setIsSearchActive] = useState(false);
-
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [filters, setFilters] = useState({
+    departamento: '',
+    estado: '',
+    fechaInicio: '',
+    fechaFin: '',
+    nombre: ''
+  });
+  const [sortOrder, setSortOrder] = useState('');
 
   const handleSearch = useCallback(() => {
     const trimmedSearchTerm = searchTerm.trim().toLowerCase();
@@ -54,7 +64,6 @@ const SolicitudesPage = () => {
         solicitud.telefono,
         solicitud.empresa,
         departamentos[solicitud.departamento],
-        solicitud.tipo_servicio,
         solicitud.estado
       ];
       
@@ -65,14 +74,18 @@ const SolicitudesPage = () => {
 
     setSearchResults(filteredResults);
     setIsSearchActive(true);
-    setCurrentPage(1); // Reset to first page when searching
+    setCurrentPage(1);
   }, [searchTerm, solicitudes, departamentos]);
 
-  // Handle Enter key press
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
       handleSearch();
     }
+  };
+
+  const handleSortChange = (order) => {
+    setSortOrder(order);
+    setCurrentPage(1);
   };
 
   const handlePageChange = (newPage) => {
@@ -81,12 +94,57 @@ const SolicitudesPage = () => {
     }
   };
 
-  const displayedSolicitudes = isSearchActive ? searchResults : solicitudes;
-  const totalPages = Math.ceil(displayedSolicitudes.length / 10);
+  const toggleFilter = () => {
+    setIsFilterOpen(!isFilterOpen);
+  };
+  
+  const handleFilterChange = (filterName, value) => {
+    setFilters(prev => ({
+      ...prev,
+      [filterName]: value
+    }));
+    setCurrentPage(1);
+  };
+  
+  const handleResetFilters = () => {
+    setFilters({
+      departamento: '',
+      estado: '',
+    });
+    setSortOrder('');
+    setCurrentPage(1);
+  };
+
+  const filteredSolicitudes = (isSearchActive ? searchResults : solicitudes).filter(solicitud => {
+    const matchesDepartamento = !filters.departamento || 
+      solicitud.departamento.toString() === filters.departamento;
+    
+    const matchesEstado = !filters.estado || 
+      solicitud.estado === filters.estado;
+    
+    return matchesDepartamento && matchesEstado;
+  });
+  
+  const sortedSolicitudes = [...filteredSolicitudes].sort((a, b) => {
+    if (!sortOrder) return 0;
+    
+    const [field, direction] = sortOrder.split('_');
+    const multiplier = direction === 'asc' ? 1 : -1;
+    
+    switch (field) {
+      case 'fecha':
+        return multiplier * (new Date(a.fecha_creacion) - new Date(b.fecha_creacion));
+      case 'nombre':
+        return multiplier * a.nombre.localeCompare(b.nombre);
+      default:
+        return 0;
+    }
+  });
+
+  const totalPages = Math.ceil(sortedSolicitudes.length / 10);
   const startIndex = (currentPage - 1) * 10;
   const endIndex = startIndex + 10;
-  const SolicitudesEnPagina = displayedSolicitudes.slice(startIndex, endIndex);
-
+  const SolicitudesEnPagina = sortedSolicitudes.slice(startIndex, endIndex);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -99,14 +157,13 @@ const SolicitudesPage = () => {
 
   const handleEstadoChange = useCallback(async (solicitudId, nuevoEstado) => {
     try {
-      // Obtener el token de localStorage
       const token = localStorage.getItem('token');
   
       const response = await fetch(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/solicitud/${solicitudId}`, {
         method: 'PUT',
         headers: { 
           'Content-Type': 'application/json',
-          'Authorization': token ? `Bearer ${token}` : '', // Incluir token si existe
+          'Authorization': token ? `Bearer ${token}` : '',
         },
         body: JSON.stringify({ estado: nuevoEstado }),
       });
@@ -145,7 +202,7 @@ const SolicitudesPage = () => {
           <p className='loading'>Cargando solicitudes...</p>
         </div>
       </div>
-    ) ;
+    );
   }
 
   if (errorMessage) {
@@ -187,10 +244,21 @@ const SolicitudesPage = () => {
           <button className="search-btn" onClick={handleSearch}>
             <img src={searchIcon} alt="Search" />
           </button>
+          <button onClick={toggleFilter} className="filter-button">
+            <FaFilter /> Filter
+          </button>
         </div>
-      </div>
-
-        <div className="table">
+      </div>  
+      <FilterSectionSolicitudes
+        isFilterOpen={isFilterOpen}
+        departamentos={departamentos}
+        filters={filters}
+        handleFilterChange={handleFilterChange}
+        handleResetFilters={handleResetFilters}
+        sortOrder={sortOrder}
+        handleSortChange={handleSortChange}
+      />
+      <div className="table">
         <div className="table-grid table-header">
           <h3>Nombre</h3>
           <h3>Correo</h3>
