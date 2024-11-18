@@ -13,7 +13,7 @@ import { FaUsers } from "react-icons/fa";
 import { GoMail } from "react-icons/go";
 import { PiClipboardText } from "react-icons/pi";
 
-const AdminPage = ({ onRouteChange }) => {
+const AdminPage = ({ onRouteChange, setSuccessMessage }) => {
   // Obtener el rol del usuario desde localStorage
   const obtenerRolDeUsuario = () => {
     const usuarioJSON = localStorage.getItem('user');
@@ -98,6 +98,7 @@ const AdminPage = ({ onRouteChange }) => {
     // Lógica para cerrar sesión
     localStorage.removeItem('token');
     localStorage.removeItem('activeOption');
+    setSuccessMessage('Se cerró sesión correctamente');
     onRouteChange('Bombas de agua');
   };
 

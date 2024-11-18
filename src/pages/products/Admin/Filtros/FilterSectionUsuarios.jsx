@@ -7,7 +7,8 @@ const FilterSectionUsuarios = ({
   filterRole, 
   handleFilterChange, 
   sortOrder, 
-  handleSortChange 
+  handleSortChange,
+  availableRoles
 }) => {
   const [isFilterOpenRole, setIsFilterOpenRole] = useState(false);
   const [isFilterOpenDate, setIsFilterOpenDate] = useState(false);
@@ -36,17 +37,23 @@ const FilterSectionUsuarios = ({
             className="filter-dropdown"
           >
             Rol
-          </button>
+            </button>
           {isFilterOpenRole && (
             <div className="filter-dropdown">
-              <select value={filterRole} onChange={handleFilterChange}>
-                <option value="">Todos</option>
-                <option value="admin">Admin</option>
-                <option value="user">User</option>
+              <select 
+                value={filterRole} 
+                onChange={handleFilterChange}
+                className="role-select"
+              >
+                <option value="">Todos los Roles</option>
+                {availableRoles.map((role) => (
+                  <option key={role} value={role.toLowerCase()}>
+                    {role.charAt(0).toUpperCase() + role.slice(1)}
+                  </option>
+                ))}
               </select>
             </div>
           )}
-
           <button 
             onClick={() => setIsFilterOpenDate(!isFilterOpenDate)} 
             className="filter-dropdown"

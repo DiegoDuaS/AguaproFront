@@ -10,13 +10,14 @@ const usePaymentRequest = () => {
     setError(null);
     
     try { 
+      
       //console.log("doing pay");
       const response = await fetch('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/pedido/pago', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(clientPay),
+         body: JSON.stringify(clientPay),
       });
       //console.log(response.status);
       const result = await response.json();

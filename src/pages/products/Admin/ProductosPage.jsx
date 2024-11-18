@@ -43,6 +43,10 @@ const ProductosPage = () => {
   };
 
   useEffect(() => {
+    setCurrentPage(1);
+  }, [isSearchActive, searchResults, filterAvailability, filterVisibility]);
+
+  useEffect(() => {
     const timer = setTimeout(() => {
       setSuccessMessage('');
       setErrorMessageState('');

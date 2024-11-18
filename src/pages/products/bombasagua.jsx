@@ -99,6 +99,7 @@ const BombasAgua = ({cartItems, setCartItems, setSuccessMessage }) => {
     );
 
     setSearchResults(filteredResults);
+    setCurrentPage(1);
     setIsSearchActive(true);
   }, [searchTerm, productos]);
 
@@ -107,6 +108,10 @@ const BombasAgua = ({cartItems, setCartItems, setSuccessMessage }) => {
       handleSearch();
     }
   };
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [isSearchActive, searchResults, filterMarca, filterMaterial, sortOrder, sortName]);
 
   const sortProductos = (productosToSort) => {
     let result = [...productosToSort];
@@ -124,7 +129,7 @@ const BombasAgua = ({cartItems, setCartItems, setSuccessMessage }) => {
           b.nombre.localeCompare(a.nombre);
       });
     }
-  
+
     return result;
   };
 
@@ -212,6 +217,9 @@ const BombasAgua = ({cartItems, setCartItems, setSuccessMessage }) => {
     if (newPage >= 1 && newPage <= totalPages) {
       setCurrentPage(newPage);
     }
+    window.scrollTo({
+      top: 0, 
+    });
   };
 
   // Determinar qué productos mostrar basado en la búsqueda
@@ -287,6 +295,7 @@ const BombasAgua = ({cartItems, setCartItems, setSuccessMessage }) => {
 
 
       <div className='space2' />
+      <h3>Página {currentPage}</h3>
       {productosEnPagina.length === 0 ? (
         <p className="no-products-message">
           <FaRegSadCry size={60}/>
