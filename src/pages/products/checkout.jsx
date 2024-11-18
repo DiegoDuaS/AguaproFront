@@ -136,16 +136,16 @@ const Checkout = ({ onRouteChange, cartItems, navigateToLogin }) => {
 
   const hasEmptyFields2 = () => {
     if (formData.paymentMethod === 'tarjeta') {
-      return formData.numeroTarjeta === '' && formData.fechaVencimiento === '' && formData.cvv === '';
+      return formData.numeroTarjeta === '' || formData.fechaVencimiento === '' || formData.cvv === '';
     }
-    if (formData.paymentMethod === 'transferencia') {
-      return formData.banco === '' && formData.numeroAutorizacion === '';
+    else if (formData.paymentMethod === 'transferencia') {
+      return formData.banco === '' || formData.numeroAutorizacion === '' || image === null;
     }
-    if (formData.paymentMethod === 'deposito') {
-      return formData.banco === '' && formData.numeroAutorizacion === '';
-    }
+    else if (formData.paymentMethod === 'deposito') {
+      return formData.banco === '' || formData.numeroAutorizacion === '' || image === null;
+    } 
     return false;
-   };
+ };
 
   const handleNextStep = async () => {
     // Cambia al siguiente paso cuando se confirma la información
@@ -370,7 +370,7 @@ useEffect(() => {
 
             <div className='title_check_side' onClick={handleNextStep}>
               <h3 className='checkout'>Información de pago</h3>
-              <div className={`circle ${hasEmptyFields2() ? 'active' : ''}`}></div>
+              <div className={`circle ${hasEmptyFields2() ? '' : 'active'}`}></div>
             </div>
 
             {checkoutStep === 'pago' && (
