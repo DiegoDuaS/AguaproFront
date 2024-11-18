@@ -20,7 +20,6 @@
     font-size: 2.5rem; /* Adjust font size as needed */
     font-weight: bold;
     color: #00668C;
-    padding-left: 40px;
     font-family: "Khand";
     letter-spacing: 3px;
   }
@@ -119,6 +118,18 @@
     margin-bottom: 40px;
     font-size: 2em;
   }
+
+  .logo-image{
+    height: 70px;
+    width: 120px;
+  }
+
+  .logoname-holder{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    padding-left: 20px;
+  }
   
   @media (max-width: 768px) {
     .brand {
@@ -129,6 +140,16 @@
 
 /* Estilos responsive para pantallas pequeñas (móviles) */
 @media (max-width: 480px) {
+    .logo-image{
+      height: 50px;
+      width: 100px;
+    }
+
+    .logoname-holder{
+      padding-left: 2px;
+  
+    }
+
     .fixed-header {
         height: 60px;
         padding-left: 10px;
@@ -137,7 +158,7 @@
 
     .brand {
         font-size: 1.8rem;
-        padding-left: 10px;
+        padding-left: 5px;
     }
 
     .search-bar {

@@ -22,6 +22,9 @@ const CustomNav = ({ items, onOptionSelect, isOpen, setIsSidebarOpen, setActiveP
     onOptionSelect(subItem); // Notifica al padre sobre la selección
     setIsSidebarOpen(false); // Cierra el menú
     setSelectedOption(null); // Limpia la selección del menú
+    window.scrollTo({
+      top: 0, 
+    });
   };
 
   return (

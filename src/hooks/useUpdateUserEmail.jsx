@@ -14,7 +14,7 @@ const useUpdateUserEmail = () => {
 
     try {
       setLoading(true); // Start loading before making the request
-
+      const token = localStorage.getItem('token');
       // Fetch user data if not already fetched
       const response = await fetch(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/user/${userId}`);
       const data = await response.json();
@@ -27,6 +27,7 @@ const useUpdateUserEmail = () => {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
+            'Authorization': token ? `Bearer ${token}` : '',
           },
           body: JSON.stringify({
             username: data.data[0].username, // Use fetched username
@@ -35,7 +36,7 @@ const useUpdateUserEmail = () => {
         });
 
         const updateData = await updateResponse.json();
-
+        //console.log(updateData);
         if (updateData.status === 'success') {
           setSuccess(true);
         } else {

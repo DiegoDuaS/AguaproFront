@@ -2,32 +2,38 @@ import React, { useState, useEffect, useRef } from "react";
 import PropTypes from 'prop-types';
 import './FilterNav.css';
 
-const FilterNav = ({ filters, onFilterSelect, isOpen, setIsSidebarOpen }) => {
+const FilterNav = ({ filters, onFilterSelect, isOpen, setIsSidebarOpen, filterButtonRef, unfilterButtonRef }) => {
   const [selectedFilter, setSelectedFilter] = useState(null);
   const [selectedOptions, setSelectedOptions] = useState({});
   
   const menuRef = useRef(null);
 
-  // Close the menu if clicking outside, without clearing selectedOptions
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (menuRef.current && !menuRef.current.contains(event.target)) {
-        setIsSidebarOpen(false); // Close the menu only
+      if (
+        isOpen &&
+        menuRef.current &&
+        !menuRef.current.contains(event.target) &&
+        filterButtonRef.current &&
+        !filterButtonRef.current.contains(event.target) &&
+        unfilterButtonRef.current &&
+        !unfilterButtonRef.current.contains(event.target) 
+      ) {
+        setIsSidebarOpen(false); // Cierra el menú
       }
     };
 
-    document.addEventListener('click', handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
     return () => {
-      document.removeEventListener('click', handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [setIsSidebarOpen]);
+  }, [isOpen, setIsSidebarOpen]);
 
   const handleFilterClick = (filter) => {
     setSelectedFilter((prevFilter) => (prevFilter === filter ? null : filter));
   };
 
   const handleSubMenuClick = (filterName, option) => {
-    // Set selected option for the specific submenu
     setSelectedOptions((prevOptions) => ({
       ...prevOptions,
       [filterName]: option,
@@ -36,7 +42,7 @@ const FilterNav = ({ filters, onFilterSelect, isOpen, setIsSidebarOpen }) => {
   };
 
   return (
-    <nav className="navbar-menu-fi" style={{ width: isOpen ? 250 : 0 }}>
+    <nav ref={menuRef} className="navbar-menu-fi" style={{ width: isOpen ? 250 : 0 }}>
       <ul className="navbar__list-fi" style={{ display: isOpen ? "block" : "none" }}>
         {filters.map((filter, index) => (
           <div
@@ -67,18 +73,6 @@ const FilterNav = ({ filters, onFilterSelect, isOpen, setIsSidebarOpen }) => {
       </ul>
     </nav>
   );
-};
-
-FilterNav.propTypes = {
-  filters: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      options: PropTypes.arrayOf(PropTypes.string),
-    })
-  ).isRequired,
-  onFilterSelect: PropTypes.func.isRequired,
-  isOpen: PropTypes.bool.isRequired,
-  setIsSidebarOpen: PropTypes.func.isRequired,
 };
 
 export default FilterNav;

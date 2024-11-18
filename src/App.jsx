@@ -13,6 +13,7 @@ import RegisterPage from './pages/products/register';
 import ClientInfoPage from './pages/products/ClientInfo';
 import CheckoutPage from './pages/products/checkout';
 import AdminPage from './pages/products/AdminPage';
+import ForgetPage from './pages/products/ForgetPage.jsx';
 import { AuthProvider } from './hooks/authProvider.jsx'; 
 import validateToken from './hooks/Auth';
 import useUserRole from './hooks/useUserRole';
@@ -25,15 +26,17 @@ function App() {
   const [isCartOpen, setIsCartOpen] = useState(false); // Estado para el carrito
   const [cartItems, setCartItems] = useState([]); // Estado para los elementos del carrito
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const [successCartMessage, setSuccessCartMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   
   useEffect(() => {
     const timer = setTimeout(() => {
       setSuccessMessage('');
+      setSuccessCartMessage('');
     }, 4000);
 
     return () => clearTimeout(timer);
-  }, [successMessage]);
+  }, [successMessage, successCartMessage]);
 
   useEffect(() => {
     const storedPage = localStorage.getItem('activePage'); // Obtener la página almacenada
@@ -121,6 +124,7 @@ const { role, loading, error } = useUserRole(userId);
     localStorage.removeItem('token');
     localStorage.removeItem('id');
     setActivePage('Bombas de agua');
+    setSuccessMessage('Se cerró sesión Correctamente')
     closeUserMenu();
   };
 
@@ -135,14 +139,18 @@ const { role, loading, error } = useUserRole(userId);
             color='#00668C'
             viewBox='0 0 400 300'
             className='scroll'/>
+      <StateCard message={successMessage} isOpen={!!successMessage} type={1}/>
       {activePage === 'Login' && (
-        <LoginPage onRouteChange={setActivePage} />
+        <LoginPage onRouteChange={setActivePage} setSuccessMessage={setSuccessMessage}/>
       )}
       {activePage === 'RegisterPage' && (
         <RegisterPage onRouteChange={setActivePage} />
       )}
+      {activePage === 'ForgetPage' && (
+        <ForgetPage onRouteChange={setActivePage} />
+      )}
       {activePage === 'AdminPage' && (
-        <AdminPage onRouteChange={setActivePage} />
+        <AdminPage onRouteChange={setActivePage} setSuccessMessage={setSuccessMessage}/>
       )}
       {activePage === 'CheckoutPage' && (
         <CheckoutPage onRouteChange={setActivePage} 
@@ -156,10 +164,10 @@ const { role, loading, error } = useUserRole(userId);
               onViewInfo={handleViewInfo}
             />
       )}
-      {activePage !== 'RegisterPage' && activePage !== 'CheckoutPage' && activePage !== 'Login' && activePage !== 'AdminPage' && (
+      {activePage !== 'RegisterPage' && activePage !== 'CheckoutPage' && activePage !== 'Login' && activePage !== 'AdminPage' && activePage !== 'ForgetPage' && (
         <>
           <Header toggleCart={toggleCart} navigateToLogin={navigateToLogin} cantItemscart={cartItems.length}/>
-          <StateCard message={successMessage} isOpen={!!successMessage} type={3}/>
+          <StateCard message={successCartMessage} isOpen={!!successCartMessage} type={3}/>
           <div className="fixed-section">
             <img
               style={{ top: '20px', height: '20px', width: '30px', cursor: 'pointer' }}
@@ -193,7 +201,7 @@ const { role, loading, error } = useUserRole(userId);
           {activePage === 'Bombas de agua' && <BombasAgua 
               cartItems={cartItems}
               setCartItems={setCartItems}
-              setSuccessMessage={setSuccessMessage}/>}
+              setSuccessMessage={setSuccessCartMessage}/>}
           {activePage === 'Quienes Somos' && <QuienesSomos />}
           {activePage === 'Nuestros Servicios' && <NuestrosServicios />}
           {activePage === 'ClientInfoPage' && (<ClientInfoPage onRouteChange={setActivePage}/>)}

@@ -148,7 +148,7 @@
   border-radius: 8px;
   border: 2px solid #acacac;
   height: 48px;
-  margin-bottom: 8px;
+  margin-bottom: 0px;
   
 }
 
@@ -162,6 +162,7 @@
   background-color:rgba(255, 255, 255, 0.87);
   padding-left: 8px;
   padding-bottom: 0;
+  margin-bottom: 0;
   font-size: 15px;
   color: black;
   border: 0;
@@ -171,6 +172,23 @@
 
 .inputError {
   border: 2px solid rgb(198, 0, 0);
+}
+
+.forget{
+  font-size: 14px;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.forget-password{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.code-ver{
+  margin-top: 0;
+  margin-bottom: 10px;
 }
 
 @media (max-width: 768px) {
@@ -191,6 +209,10 @@
   .inputButton {
     width: 100%;
   }
+
+  .forget-password{
+   width: 90%;
+  }
 }
 
 
@@ -202,15 +224,16 @@
   .inputBox{
     font-size: 1em;
     height: 40px;
-    width: 80%;
+    width: 86%;
     font-size: 0.9em;
   }
 
   .passwordInputBox{
     font-size: 1em;
     height: 40px;
-    width: 82%;
+    width: 98%;
     font-size: 0.9em;
+    margin-bottom: 0;
   }
 
   .passinputBox{

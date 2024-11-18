@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import './admin.css';
 import { CircularProgress } from '@mui/material';
 import searchIcon from './../../../image/searchIcon.png';
@@ -31,6 +31,10 @@ const UsuariosPage = () => {
   const [filterRole, setFilterRole] = useState('');
   const [sortOrder, setSortOrder] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [isSearchActive, searchResults, filterRole, sortOrder]);
 
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= totalPages) {
@@ -126,6 +130,13 @@ const UsuariosPage = () => {
   const handleSortChange = (order) => {
     setSortOrder(order);
   };
+
+  const uniqueRoles = useMemo(() => {
+    if (!usuarios) return [];
+    const roles = [...new Set(usuarios.map(user => user.role))];
+    return roles.sort(); // Sort alphabetically
+  }, [usuarios]);
+
 
   const filteredAndSortedUsers = useCallback(() => {
     let result = isSearchActive ? searchResults : usuarios;
@@ -236,6 +247,7 @@ const UsuariosPage = () => {
         handleFilterChange={handleFilterChange}
         sortOrder={sortOrder}
         handleSortChange={handleSortChange}
+        availableRoles={uniqueRoles}
       />
 
       <div className='clients-tablespace'> 
@@ -319,6 +331,8 @@ const UsuariosPage = () => {
           closeCard={closeEditCard}
           user={selectedUser}
           refetchUsers={refetch}
+          setSuccessMessage={setSuccessMessage}
+          setErrorMessage={setErrorMessageState}
         />
       )}
       <StateCard message={successMessage} isOpen={!!successMessage} type={1}/>

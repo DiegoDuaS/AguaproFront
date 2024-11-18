@@ -4,7 +4,7 @@ import './editUsercard.css';
 import useUpdateUser from '../../hooks/useUpdateUser';
 import useUpdateUserRole from '../../hooks/useUpdateUserRole';
 
-const EditUserCard = ({ isOpen, closeCard, user, refetchUsers }) => {
+const EditUserCard = ({ isOpen, closeCard, user, refetchUsers, setSuccessMessage, setErrorMessage }) => {
   const cardRef = useRef(null);
 
   const { updateUser, isLoading: isUpdatingUser, errorMessage: userError } = useUpdateUser('https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app');
@@ -13,7 +13,6 @@ const EditUserCard = ({ isOpen, closeCard, user, refetchUsers }) => {
   const [username, setUsername] = useState(user.username);
   const [email, setEmail] = useState(user.email);
   const [role, setRole] = useState(user.role);
-  const [message, setMessage] = useState('');
 
   // Close card if clicking outside the card area
   const handleClickOutside = (event) => {
@@ -37,21 +36,19 @@ const EditUserCard = ({ isOpen, closeCard, user, refetchUsers }) => {
   if (!isOpen) return null;
 
   const handleSave = async () => {
-    setMessage(''); // Clear any previous messages
     try {
       const updateUserResult = await updateUser(user.id, { username, email });
       const updateRoleResult = await updateUserRole(user.id, { role });
 
       if (updateUserResult.success && updateRoleResult.success) {
-        setMessage('Cambios guardados exitosamente.');
+        setSuccessMessage('Cambios guardados exitosamente.');
         refetchUsers();
-        closeCard(); // Optionally close the card after successful save
+        closeCard();
       } else {
-        setMessage('Hubo un error al guardar los cambios.');
+        setErrorMessage('Hubo un error al guardar los cambios.');
       }
-    } catch (error) {
-      console.error('Error al guardar los cambios:', error);
-      setMessage('Hubo un error al guardar los cambios. Inténtalo de nuevo.');
+    } catch (e) {
+      setErrorMessage('Hubo un error al guardar los cambios. Inténtalo de nuevo.');
     }
   };
 
@@ -95,8 +92,7 @@ const EditUserCard = ({ isOpen, closeCard, user, refetchUsers }) => {
       <button className="save-button" onClick={handleSave} disabled={isUpdatingUser || isUpdatingRole}>
         {(isUpdatingUser || isUpdatingRole) ? 'Guardando...' : 'Guardar'}
       </button>
-      {message && <p className="message">{message}</p>}
-      {(userError || roleError) && <p className="error-message">{userError || roleError}</p>}
+      
     </div>
   );
 };
