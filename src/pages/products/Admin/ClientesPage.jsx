@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import './admin.css';
 import { CircularProgress } from '@mui/material';
 import searchIcon from './../../../image/searchIcon.png';
@@ -28,6 +28,10 @@ const ClientesPage = () => {
   const handleSortChange = (order) => {
     setSortOrder(order);
   };
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [isSearchActive, searchResults, filterNIT, sortOrder]);
 
   const filteredAndSortedClientes = useCallback(() => {
     let result = isSearchActive ? searchResults : clientes;

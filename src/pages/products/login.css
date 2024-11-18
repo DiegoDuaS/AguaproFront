@@ -209,6 +209,10 @@
   .inputButton {
     width: 100%;
   }
+
+  .forget-password{
+   width: 90%;
+  }
 }
 
 
@@ -220,14 +224,14 @@
   .inputBox{
     font-size: 1em;
     height: 40px;
-    width: 80%;
+    width: 86%;
     font-size: 0.9em;
   }
 
   .passwordInputBox{
     font-size: 1em;
     height: 40px;
-    width: 82%;
+    width: 98%;
     font-size: 0.9em;
     margin-bottom: 0;
   }

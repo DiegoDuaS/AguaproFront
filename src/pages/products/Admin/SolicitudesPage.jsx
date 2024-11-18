@@ -49,6 +49,10 @@ const SolicitudesPage = () => {
   });
   const [sortOrder, setSortOrder] = useState('');
 
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [isSearchActive, searchResults, filters, sortOrder]);
+
   const handleSearch = useCallback(() => {
     const trimmedSearchTerm = searchTerm.trim().toLowerCase();
     if (!trimmedSearchTerm) {

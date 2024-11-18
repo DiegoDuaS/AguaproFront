@@ -54,7 +54,6 @@ const RegisterPage = ({ onRouteChange }) => {
                 onRouteChange('Bombas de agua'); // Redirect to Bombas de agua
             }
         } catch (loginError) {
-            setSuccessMessage(result.data.message); // Set success message
             setErrorMessage(''); // Clear error message
             setErrorMessage('Error during automatic login: ' + loginError.message);
         }

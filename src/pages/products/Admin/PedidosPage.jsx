@@ -39,6 +39,10 @@ const PedidosPage = () => {
   const [userMail, setUserMail] = useState('');
   const [idCancel, setIdCancel] = useState(0);
 
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [isSearchActive, searchResults, filterState, sortOrder]);
+
   const sortPedidos = (pedidosToSort) => {
     if (sortOrder === 'asc') {
       return [...pedidosToSort].sort((a, b) => a.monto_total - b.monto_total);
