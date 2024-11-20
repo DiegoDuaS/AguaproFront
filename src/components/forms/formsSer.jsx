@@ -4,7 +4,7 @@ import { Button } from 'react-bootstrap';
 import useRegisterSolicitud from '../../hooks/useRegisterSolicitud';
 import useSolicitud from '../../hooks/email/useSolicitud';
 
-const FormsSer = ({type, setShowForms, setSuccessMessage, setErrorMessage}) => {
+const FormsSer = ({type, setShowForms, setSuccessMessage, setErrorMessage, setWarningMessage}) => {
     const [name, setName] = useState("");
     const [telefono, setTelefono] = useState("");
     const [correo, setCorreo] = useState("");
@@ -43,36 +43,41 @@ const FormsSer = ({type, setShowForms, setSuccessMessage, setErrorMessage}) => {
         e.preventDefault();
         setSuccessMessage("");  // Reset success message
         setErrorMessage("");    // Reset error message
-        
-        const solicitudData = {
-            nombre: name,
-            telefono,
-            correo,
-            empresa,
-            departamento: parseInt(departamento),
-            tipo_servicio: parseInt(tipoServicio),
-            mensaje,
-        };
-        
-        // Primera solicitud: registrar solicitud principal
-        await registerSolicitud(solicitudData);
-        
-        // Si hubo un error en registerSolicitud, no continuar y mostrar error
-        if (error) {
-            setErrorMessage("Error al enviar la solicitud");
-            return;
+
+        if (!/^[0-9]{4}-[0-9]{4}$/.test(telefono)) {
+            setWarningMessage("El formato del número de teléfono debe ser 1234-5678");
         }
+        else{
+            const solicitudData = {
+                nombre: name,
+                telefono,
+                correo,
+                empresa,
+                departamento: parseInt(departamento),
+                tipo_servicio: parseInt(tipoServicio),
+                mensaje,
+            };
+            
+            // Primera solicitud: registrar solicitud principal
+            await registerSolicitud(solicitudData);
+            
+            // Si hubo un error en registerSolicitud, no continuar y mostrar error
+            if (error) {
+                setErrorMessage("Error al enviar la solicitud");
+                return;
+            }
+            
+            // Segunda solicitud: enviar correo de confirmación
+            await emailSolicitud(correo);
         
-        // Segunda solicitud: enviar correo de confirmación
-        await emailSolicitud(correo);
-    
-        // Verificar resultado de emailSolicitud
-        if (error2) {
-            setErrorMessage("Error al enviar el correo de confirmación");
-        } else {
-            setSuccessMessage("Solicitud y correo de confirmación enviados con éxito");
-            setShowForms(false); // Cerrar el formulario solo si ambas solicitudes fueron exitosas
-        }
+            // Verificar resultado de emailSolicitud
+            if (error2) {
+                setErrorMessage("Error al enviar el correo de confirmación");
+            } else {
+                setSuccessMessage("Solicitud y correo de confirmación enviados con éxito");
+                setShowForms(false); // Cerrar el formulario solo si ambas solicitudes fueron exitosas
+            }
+        }  
     };
 
     if (type === 1) {
@@ -106,7 +111,6 @@ const FormsSer = ({type, setShowForms, setSuccessMessage, setErrorMessage}) => {
                     <input
                         className="forms_input"
                         type="tel"
-                        pattern="[0-9]{4}-[0-9]{4}"
                         value={telefono}
                         placeholder="1234-5678"
                         onChange={(e) => setTelefono(e.target.value)}

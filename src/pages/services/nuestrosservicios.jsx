@@ -20,15 +20,17 @@ function NuestrosServicios() {
     const [showForms, setShowForms] = useState(false);
     const [successMessage, setSuccessMessage] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+    const [warningMessage, setWarningMessage] = useState('');
 
     useEffect(() => {
         const timer = setTimeout(() => {
           setSuccessMessage('');
           setErrorMessage('');
+          setWarningMessage('');
         }, 5000);
     
         return () => clearTimeout(timer);
-      }, [successMessage, errorMessage]);
+      }, [successMessage, errorMessage, warningMessage]);
 
     return (
         <main className="main-content-ser">
@@ -91,7 +93,7 @@ function NuestrosServicios() {
             />
             <h3 className='subtitle'>¿Quieres solicitar un servicio?</h3>
             {showForms ? (
-                <FormsSer type={1} setShowForms={setShowForms} setSuccessMessage={setSuccessMessage} setErrorMessage={setErrorMessage}/>
+                <FormsSer type={1} setShowForms={setShowForms} setSuccessMessage={setSuccessMessage} setErrorMessage={setErrorMessage} setWarningMessage={setWarningMessage}/>
             ) : (
                 <div className="fill_the_service" onClick={() => setShowForms(true)}>
                 <p>Llena un formulario con tu información</p>
@@ -113,6 +115,7 @@ function NuestrosServicios() {
             </p>
             <StateCard message={successMessage} isOpen={!!successMessage} type={1}/>
             <StateCard message={errorMessage} isOpen={!!errorMessage} type={2}/>
+            <StateCard message={warningMessage} isOpen={!!warningMessage} type={4}/>
              
       </main>
     );
