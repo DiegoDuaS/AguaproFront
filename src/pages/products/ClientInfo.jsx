@@ -26,6 +26,17 @@ const ClientInfo = () => {
   const [formData, setFormData] = useState({ nombre: '', telefono: '', nit: '', direccion: '', email: formData2.email || '' , user_reference: '' });
   const [successMessage, setSuccessMessage] = useState(false);
   const [errorMessage2, setErrorMessage2] = useState(false);
+  const [warningMessage, setWarningMessage] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setSuccessMessage('');
+      setErrorMessage2('');
+      setWarningMessage('');
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, [successMessage, errorMessage2, warningMessage]);
 
   const memoizedGetUserInfo = useCallback(getUserInfo, []);
   useEffect(() => {
@@ -99,7 +110,14 @@ const ClientInfo = () => {
   const handleSubmit = async (e) => {
   e.preventDefault();
 
-  // Ensure the form data is properly updated before submission
+  if(formData.nombre === '' || formData.telefono === '' || formData.nit === '' || formData.direccion === ''){
+    setWarningMessage("Porfavor llena todos los campos")
+  }
+  else if (!/^[0-9]{4}-[0-9]{4}$/.test(formData.telefono)) {
+    setWarningMessage("El formato del número de teléfono debe ser 1234-5678");
+  }
+  else{
+    // Ensure the form data is properly updated before submission
   setFormData({ ...formData, email: formData2.email, user_reference: parseInt(userReference, 10) });
   console.log(client);
   try {
@@ -117,8 +135,11 @@ const ClientInfo = () => {
       setSuccessMessage(true);
     }
   } catch (error) {
-    setErrorMessage2("An error occurred while submitting the form.");
+    setErrorMessage2("Hubo un error al subir el formulario");
   }
+  }
+
+  
 };
 
  
@@ -201,7 +222,7 @@ const ClientInfo = () => {
                   name="telefono"
                   value={formData.telefono}
                   onChange={handleChange}
-                  placeholder="Número de Teléfono"
+                  placeholder="1234-5678"
                 />
               </div>
               <div className="form-group-cf">
@@ -244,6 +265,7 @@ const ClientInfo = () => {
       <StateCard message={"Información Actualizada Correctamente"} isOpen={!!successMessage} type={1}></StateCard>
       <StateCard message={"Hubo un Error al Guardar la Información"} isOpen={!!errorMessage2} type={2}></StateCard>
       <StateCard message={registerClientError} isOpen={!!registerClientError} type={2}></StateCard>
+      <StateCard message={warningMessage} isOpen={!!warningMessage} type={2}></StateCard>
     </div>
   );
 };
