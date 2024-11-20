@@ -232,8 +232,7 @@ const BombasAgua = ({cartItems, setCartItems, setSuccessMessage }) => {
   function isContentLoaded(isLoading, loadingImages) {
     return !isLoading && !loadingImages;
   }
-
-
+  
   if (!isContentLoaded(isLoading, loadingImages)) {
     return (
       <main className="main-content-loading">
