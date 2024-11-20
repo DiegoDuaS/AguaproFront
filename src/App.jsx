@@ -66,6 +66,10 @@ function App() {
     setIsUserMenuOpen(!isUserMenuOpen);  // Toggle UserMenu on click
   };
 
+  const cleanCart = () => {
+    setCartItems([]); // Clear the cart
+  };
+
 const userId = localStorage.getItem('id');
 const { role, loading, error } = useUserRole(userId);
 
@@ -155,7 +159,8 @@ const { role, loading, error } = useUserRole(userId);
       {activePage === 'CheckoutPage' && (
         <CheckoutPage onRouteChange={setActivePage} 
           cartItems={cartItems} 
-          navigateToLogin={navigateToLogin} />
+          navigateToLogin={navigateToLogin}
+          cleanCart={cleanCart} />
       )}
      {isUserMenuOpen && (
             <UserMenu

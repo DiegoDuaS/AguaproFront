@@ -11,8 +11,6 @@ const useSolicitud = () => {
     
         const body1 = JSON.stringify({ mailto });
     
-        console.log(body1);
-    
         try {
             const res = await fetch(`https://aguapro-back-git-main-villafuerte-mas-projects.vercel.app/confirmacion/servicio`, {
                 method: 'POST',
@@ -37,10 +35,8 @@ const useSolicitud = () => {
             }
     
             setResponse(data);
-            console.log(data);
         } catch (err) {
             setError(err.message);
-            console.log(err);
         } finally {
             setLoading(false);
         }

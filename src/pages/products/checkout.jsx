@@ -13,7 +13,7 @@ import paymentMethodImage from '../../image/paymentoptions.png'
 import cargoExpreso from '../../image/cargoexpreso.png';
 import uploadImage from '../../image/upload.png'
 
-const Checkout = ({ onRouteChange, cartItems, navigateToLogin }) => {
+const Checkout = ({ onRouteChange, cartItems, navigateToLogin, cleanCart }) => {
   const shippingFee = 35.0;
   const subtotal = cartItems.reduce((acc, item) => acc + item.precio * item.quantity, 0);
   const total = subtotal + shippingFee;
@@ -153,6 +153,9 @@ const Checkout = ({ onRouteChange, cartItems, navigateToLogin }) => {
       if(hasEmptyFields1()){
         setWarningMessage("Completa todos los campos")
       }
+      else if (!/^[0-9]{4}-[0-9]{4}$/.test(formData.telefono)) {
+        setWarningMessage("El formato del número de teléfono debe ser 1234-5678");
+      }
       else{
         setCheckoutStep('pago');
       }
@@ -238,6 +241,7 @@ const Checkout = ({ onRouteChange, cartItems, navigateToLogin }) => {
         }
              
         if (message && successReview && (registerSuccess || (updateSuccess && success))) {
+          cleanCart();
           setSuccessMessage("Orden confirmada correctamente");
           onRouteChange('Bombas de agua');
         } else {
@@ -334,11 +338,13 @@ useEffect(() => {
                   <div className="form-group">
                     <label>Teléfono</label>
                     <input 
-                      type="text" 
+                      type="tel"
+                      pattern="[0-9]{4}-[0-9]{4}" 
                       name="telefono" 
                       value={formData.telefono} 
                       onChange={handleInputChange} 
-                      placeholder="Número de teléfono" 
+                      placeholder="1222-3112" 
+                      required
                     />
                   </div>
                   <div className="form-group">

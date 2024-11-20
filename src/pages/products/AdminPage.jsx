@@ -97,6 +97,7 @@ const AdminPage = ({ onRouteChange, setSuccessMessage }) => {
   const handleLogout = () => {
     // Lógica para cerrar sesión
     localStorage.removeItem('token');
+    localStorage.removeItem('id');
     localStorage.removeItem('activeOption');
     setSuccessMessage('Se cerró sesión correctamente');
     onRouteChange('Bombas de agua');
